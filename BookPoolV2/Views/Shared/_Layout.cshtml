@@ -1,0 +1,404 @@
+﻿
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>BookPool</title>
+    <link type="text/css" href="/Content/css/shop/materialize.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" href="/Content/css/shop/styles.css" rel="stylesheet">
+    <link type="text/css" href="/Content/css/quantity.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp" rel="stylesheet">
+    <link type="text/css" href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+    <link type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="manifest" href="/Content/manifest.json">
+    <!-- ios support -->
+    <link rel="apple-touch-icon" href="/img/icons/icon-96x96.png">
+    <meta name="apple-mobile-web-app-status-bar" content="#FFE1C4">
+    <meta name="theme-color" content="#FFE1C4">
+
+
+    <style>
+        .slider {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            bottom: 0;
+            overflow: hidden;
+            background-color: var(--primary);
+            color: #FFF;
+            transition: all 0.5s;
+            z-index: 2147483647 !important;
+        }
+
+            .slider.close {
+                bottom: 0;
+                height: 0;
+                transition: all 0.5s;
+            }
+
+        #slider-range {
+            height: 300px;
+        }
+
+        .filternavigator {
+            -webkit-box-shadow: 0px -4px 3px rgba(50, 50, 50, 0.75);
+            -moz-box-shadow: 0px -4px 3px rgba(50, 50, 50, 0.75);
+            box-shadow: 0px -4px 3px rgba(50, 50, 50, 0.75);
+        }
+
+        .content {
+            padding: 0 30px;
+        }
+
+
+        .checked {
+            color: orange;
+        }
+    </style>
+
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script type="text/javascript" src="/Content/js/shop/materialize.min.js"></script>
+    <script src="/Content/js/shop/ui.js"></script>
+    <script src="/Content/js/shopui.js"></script>
+    <script src="/Content/js/quantity.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/11.1.0/nouislider.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/11.1.0/nouislider.min.css" />
+
+    <!--fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Maven+Pro:400,500,700,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Oswald:400,500,600,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=EB+Garamond:400,400i,500,500i,600,600i,700,700i,800,800i&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600&display=swap" rel="stylesheet">
+    <meta name="theme-color" content="#FFE1C4" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+</head>
+
+<body class="white lighten-4">
+
+    <nav id="locationMainHeader" class="z-depth-0 titlenav">
+        <div class="nav-wrapper container">
+            <div id="locationContainer">
+                <a class="sidenav-trigger" style="display:inherit; width:30px; color:var(--primaryRed); cursor:pointer;" data-target="side-form">
+                    <i class="material-icons">location_on</i>
+                </a>
+                <a class="sidenav-trigger" style="display:inherit; margin-left:0px; cursor:pointer;" data-target="side-form">
+                    <span style="font-family:AvenirNextBold;">Bachir's Home</span>
+                </a>
+            </div>
+            <div id="goToHomeContainer" style="display:none;">
+                <a href="/" class="sidenav-trigger" style="display:inherit; width:30px; color:var(--primaryRed); cursor:pointer;">
+                    <i class="material-icons">keyboard_arrow_left</i>
+                </a>
+                <a href="/" class="sidenav-trigger" style="display:inherit; margin-left:0px; cursor:pointer;">
+                    <span style="font-family:AvenirNextBold;">Home</span>
+                </a>
+            </div>
+            <span class="right" style="color: var(--primaryBlue); cursor:pointer;">
+                <i style="font-size:30px;" class="material-icons sidenav-trigger" data-target="side-menu">account_circle</i>
+            </span>
+            <span class="right" style="cursor:pointer; margin-right:20px;">
+                <a href="/Checkout">
+                    <span id="itemsincartbadge" class="badge itemsincart" style="display:none;">0</span>
+                    <i style="font-size:30px; color: var(--primaryGrey);" class="material-icons">shopping_cart</i>
+                </a>
+            </span>
+        </div>
+    </nav>
+
+    <ul id="side-menu" class="sidenav side-menu">
+        <li>
+            <div class="user-view">
+                <a href="#user"><img class="circle" src="img/icons/user_icon.png"></a>
+                <a href="#name"><span class="black-text name">John Doe</span></a>
+                <a href="#email"><span class="black-text email">jdandturk@gmail.com</span></a>
+            </div>
+        </li>
+        <li>
+            <a href="/User/Wishes" class="waves-effect">
+                Wishes
+                <i class="material-icons float-right">arrow_right</i>
+            </a>
+        </li>
+        <li>
+            <a href="/User/Notifications" class="waves-effect">
+                Notifications
+                <i class="material-icons float-right">arrow_right</i>
+            </a>
+        </li>
+        <li>
+            <a href="/User/Payment" class="waves-effect">
+                Payment Options
+                <i class="material-icons float-right">arrow_right</i>
+            </a>
+        </li>
+        <li>
+            <ul class="collapsible collapsible-accordion">
+                <li>
+                    <a class="collapsible-header waves-effect">
+                        Orders
+                        <i class="material-icons float-right">arrow_drop_down</i>
+                    </a>
+                    <div class="collapsible-body">
+                        <ul>
+                            <li>
+                                <a href="/Order/MyOrders">
+                                    Your Orders
+                                    <i class="material-icons">card_giftcard</i>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="sidenav-trigger" data-target="side-form">
+                                    Address Book
+                                    <i class="material-icons">location_on</i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/Order/MyReturns">
+                                    Your Returns
+                                    <i class="material-icons">assignment_return</i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a href="/Home/About" class="waves-effect">
+                About
+                <i class="material-icons float-right">arrow_right</i>
+            </a>
+        </li>
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="/Home/Contact" class="waves-effect">
+                <i class="material-icons">mail_outline</i>Contact Us
+            </a>
+        </li>
+    </ul>
+
+    <div id="side-form" class="sidenav side-form">
+        <form class="add-recipe container section">
+            <h6>Saved Addresses</h6>
+            <div class="row">
+                <div class="col s12 m12" style="padding:0;">
+                    <div class="card">
+                        <div class="card-content" style="padding:10px;">
+                            <span class="card-title" style="line-height:10px; font-size:15px; font-weight:500;">
+                                Home
+                                <i class="material-icons" style="font-size:22px; line-height:12px; color:var(--primaryRed); float:right;">location_on</i>
+                            </span>
+                            <p style="font-size:12px;">
+                                Furn el Chebbek, Tohwita, Malaab al baladi street, Raymond semaan building, 6th floor, Georges Nasser Appartment
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m12" style="padding:0;">
+                    <div class="card">
+                        <div class="card-content" style="padding:10px;">
+                            <span class="card-title" style="line-height:10px; font-size:15px; font-weight:500;">
+                                Sarah's
+                                <i class="material-icons" style="font-size:22px; line-height:12px; color:var(--title); float:right;">location_on</i>
+                            </span>
+                            <p style="font-size:12px;">
+                                Adma, Blue street, Next to old LBC, 536 Bulding, 6th floor.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <h6>New Address</h6>
+            <div class="input-field">
+                <input id="address_name" placeholder="e.g. Home, Work" type="text" class="validate" data-length="50">
+                <label for="address_name">Address Name</label>
+            </div>
+            <div class="input-field">
+                <input id="address_full" placeholder="e.g. Town, Street, Building" type="text" class="validate" data-length="250">
+                <label for="address_full">Full Address</label>
+            </div>
+            <div class="input-field center">
+                <button class="btn-small">Add</button>
+            </div>
+        </form>
+    </div>
+
+    <div id="mainSearchBar" style="background:white; height:55px; padding-top:5px;">
+        <div class="row searchBar">
+            <div class="col s12 m12 l12">
+                <div class="sectionnav">
+                    <div class="nav-wrapper">
+                        <form>
+                            <div class="input-field" style="margin-top:5px;">
+                                <input id="search" type="search" required placeholder="What are you browsing for?">
+                                <label class="label-icon" for="search">
+                                    <i class="material-icons" style="color:var(--primaryGrey) !important">search</i>
+                                </label>
+                                <i class="material-icons" style="color:var(--primaryGrey) !important">close</i>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="content">
+        @RenderBody()
+    </div>
+
+    <div class="navbarFooter">
+        <div id="innerFooterContainer" style="margin:auto;">
+            <a href="/" class="active">
+                <i id="itemsPageFooter" class="material-icons-outlined" style="color: var(--primaryGrey);">shopping_basket</i>
+            </a>
+            <a href="/Shops">
+                <i id="shopsPageFooter" class="material-icons-outlined" style="color: var(--primaryGrey);">store</i>
+            </a>
+            <a href="/Maps">
+                <i id="mapsPageFooter" class="material-icons-outlined" style="color: var(--primaryGrey);">map</i>
+            </a>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+
+        var stickySearchHeight = 0;
+        window.onscroll = function () { stickSearchBars() };
+
+        var searchHeader = document.getElementById("mainSearchBar");
+        var stickySearch = searchHeader.offsetTop;
+
+        var sortFilterHeader = document.getElementById("mainSortByFilter");
+        var stickySortFilter = sortFilterHeader.offsetTop - stickySearch;
+
+        function stickSearchBars() {
+
+            if (window.pageYOffset > stickySearch) {
+                searchHeader.classList.add("stickySearchBar");
+            } else {
+                searchHeader.classList.remove("stickySearchBar");
+            }
+
+            if (window.pageYOffset > stickySortFilter) {
+                sortFilterHeader.classList.add("stickySortByFilter");
+            } else {
+                sortFilterHeader.classList.remove("stickySortByFilter");
+            }
+        }
+
+        $(document).on('click', '.gotoproduct', function () {
+            var category = $(this).data('data-productId');
+            var url = '/Products/Product';
+            window.location = url;
+        });
+
+        $(document).on('click', '.gotoshop', function () {
+            var shopId = $(this).data('data-shopId');
+            var url = '/Shops/Shop';
+            window.location = url;
+        });
+
+        $(document).on('click', '#messageFooterContainer', function () {
+            var shopId = $(this).data('data-shopId');
+            var url = '/Checkout';
+            window.location = url;
+        });
+
+        $(document).on('click', '#placeOrder', function () {
+            var shopId = $(this).data('data-shopId');
+            var url = '/Order/PlacedOrder';
+            window.location = url;
+        });
+
+        $(document).ready(function () {
+            $('.collapsible').collapsible();
+        });
+
+        $(document).ready(function () {
+
+            $('.filterTab').tabs();
+
+            $('.filterContainerTrigger, .sliderCloseApply, .sliderCloseCancel').click(function () {
+                $('.slider').toggleClass('close');
+            });
+
+            $(function () {
+                noUiSlider.create(document.getElementById('slider-range'), {
+                    start: [5000, 75000],
+                    step: 5000,
+                    connect: true,
+                    direction: 'rtl',
+                    orientation: 'vertical',
+                    tooltips: true,
+                    range: {
+                        'min': 5000,
+                        'max': 75000
+                    },
+                    pips: { // Show a scale with the slider
+                        mode: 'steps',
+                        stepped: true,
+                        density: 5000
+                    }
+                }).on('change', function (values) {
+                    console.log(values);
+                });
+            });
+
+        });
+
+        $(document).ready(function () {
+
+            productsSection_active();
+
+            $('.category').click(function () {
+                var category = $(this).data('data-category');
+                var url = '/Products/FilteredProducts';
+                window.location = url;
+            });
+
+        });
+
+        $(document).ready(function () {
+
+            $('.ratingFilter').click(function () {
+                var filterStar = parseInt($(this).attr('data-star'));
+
+                if (filterStar == 1) {
+                    $('#filterStarsFromTo').text('Any');
+                } else {
+                    $('#filterStarsFromTo').text(filterStar + '+');
+                }
+
+                $('.ratingFilter').each(function (i, el) {
+                    if (filterStar > parseInt($(el).attr('data-star'))) {
+                        $(el).find('.fa-star').removeClass('checked');
+                    } else {
+                        $(el).find('.fa-star').addClass('checked');
+                    }
+                });
+            });
+
+        });
+
+    </script>
+</body>
+
+</html>
