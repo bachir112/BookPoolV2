@@ -1,0 +1,289 @@
+﻿
+@{ 
+    Layout = "~/Views/Shared/_Layout_Out.cshtml";
+}
+
+<div class="row container">
+    <div class="col s12 m12 l12">
+        <h5>CHECKOUT</h5>
+    </div>
+</div>
+
+
+
+<div id="mainSortByFilter" style="background: white; height:50px;">
+    <div class="row">
+        <div class="col s12 m12 l12 noscroll" style="overflow:auto;">
+            <div style="min-width: 800px;">
+                <div id="filtersClickableTag" class="card horizontal filterContainerTrigger smallfilter">
+                    <div class="card-image" style="padding:0;">
+                        <i class="material-icons">filter_list</i>
+                    </div>
+                    <div class="card-stacked">
+                        <div class="card-content" style="padding: 2px 10px;">
+                            <p>Filters</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card horizontal smallfilter">
+                    <div class="card-stacked">
+                        <div class="card-content" style="padding: 2px 10px;">
+                            <p>Rating: 4.0+</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card horizontal smallfilter">
+                    <div class="card-image" style="padding:0;">
+                        <i class="material-icons">motorcycle</i>
+                    </div>
+                    <div class="card-stacked">
+                        <div class="card-content" style="padding: 2px 10px;">
+                            <p>Express Delivery</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card horizontal smallfilter filterContainerTrigger">
+                    <div class="card-stacked">
+                        <div class="card-content" style="padding: 2px 10px;">
+                            <p>Sort by</p>
+                        </div>
+                    </div>
+                    <div class="card-image" style="padding:0; float:right;">
+                        <i class="material-icons">arrow_drop_down</i>
+                    </div>
+                </div>
+                <div class="card horizontal smallfilter">
+                    <div class="card-stacked">
+                        <div class="card-content" style="padding: 2px 10px;">
+                            <p>Great Offers</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card horizontal smallfilter filterContainerTrigger">
+                    <div class="card-stacked">
+                        <div class="card-content" style="padding: 2px 10px;">
+                            <p>Rating</p>
+                        </div>
+                    </div>
+                    <div class="card-image" style="padding:0; float:right;">
+                        <i class="material-icons">arrow_drop_down</i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row container">
+
+    <div class="row">
+        <div class="col s12 m12 l12">
+            <h5>
+                <i style="float: left;line-height: 0.7;padding-right: 10px; color:var(--primaryRed);" class="material-icons">shopping_basket</i>
+                IN MY BASKET
+            </h5>
+        </div>
+    </div>
+
+    <div id="totalAmountContainer" style="margin-bottom:0px; background-color:white;" class="row">
+        <div class="col s12 m12 l12">
+            <h5>
+                Total Amount <span id="totalAmount" style="color:var(--primaryRed)">$0</span>
+            </h5>
+        </div>
+    </div>
+
+    <div class="col s12 m12 l12" style="overflow-x:auto;overflow-y:hidden;margin-top: 20px;margin-bottom: 20px;">
+        <form action="#">
+            <p>
+                <label>
+                    <input type="checkbox">
+                    <span>Add to checkout</span>
+                </label>
+            </p>
+        </form>
+        <div class="card" style="box-shadow:none;-webkit-box-shadow:none;max-width:400px;">
+            <div class="card-horizontal" style="overflow: hidden;">
+                <div class="img-square-wrapper" style="width: 100px;">
+                    <img class="smallImage" src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg" alt="Card image cap">
+                </div>
+                <div class="card-body">
+
+                    <div style="float:left;height: 100px;width: 100%;padding-right: 15px;padding-left: 10px;">
+                        <h5 class="card-title" style="padding-top:0px;margin-top:0px;margin-bottom:0px;color: black;font-size: 16px;">
+                            An economist walks into a brothel
+                        </h5>
+                        <p class="card-text" style="margin-bottom:6px;margin-top:6px;color:var(--primaryGrey);">
+                            Price: 20,000LL
+                        </p>
+                        <p class="card-text" style="margin-bottom:6px;margin-top:6px; font-size:12px; color:var(--secondaryOrange)">
+                            Is it worth swimming in shark-infested waters to surf a 50-foot, career-record wav...
+                        </p>
+                        <p class="card-text" style="margin-bottom: 0px;margin-top:6px;color:black;font-size:13px;font-weight:bold;bottom: 0;position: absolute;">
+                            <i class="material-icons" style="font-size:12px;">location_on</i> Beirut
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col s12 m12 l12" style="overflow-x:auto;overflow-y:hidden;margin-top: 20px;margin-bottom: 20px;">
+        <form action="#">
+            <p>
+                <label>
+                    <input type="checkbox">
+                    <span>Add to checkout</span>
+                </label>
+            </p>
+        </form>
+        <div class="card" style="box-shadow:none;-webkit-box-shadow:none;max-width:400px;">
+            <div class="card-horizontal" style="overflow: hidden;">
+                <div class="img-square-wrapper" style="width: 100px;">
+                    <img class="smallImage" src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg" alt="Card image cap">
+                </div>
+                <div class="card-body">
+
+                    <div style="float:left;height: 100px;width: 100%;padding-right: 15px;padding-left: 10px;">
+                        <h5 class="card-title" style="padding-top:0px;margin-top:0px;margin-bottom:0px;color: black;font-size: 16px;">
+                            An economist walks into a brothel
+                        </h5>
+                        <p class="card-text" style="margin-bottom:6px;margin-top:6px;color:var(--primaryGrey);">
+                            Price: 20,000LL
+                        </p>
+                        <p class="card-text" style="margin-bottom:6px;margin-top:6px; font-size:12px; color:var(--secondaryOrange)">
+                            Is it worth swimming in shark-infested waters to surf a 50-foot, career-record wav...
+                        </p>
+                        <p class="card-text" style="margin-bottom: 0px;margin-top:6px;color:black;font-size:13px;font-weight:bold;bottom: 0;position: absolute;">
+                            <i class="material-icons" style="font-size:12px;">location_on</i> Beirut
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<hr />
+
+<div class="row container">
+
+    <div class="row">
+        <div class="col s12 m12 l12">
+            <h5>
+                <i style="float: left;padding-right: 10px; line-height:0.8; color:var(--primaryRed);" class="material-icons">location_on</i>
+                DELIVERING TO
+            </h5>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s12 m6 l6">
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title" style="line-height:10px;font-weight: bold;">
+                        Home
+                    </span>
+                    <p>
+                        Furn el Chebbek, Tohwita, Malaab al baladi street, Raymond semaan building, 6th floor, Georges Nasser Appartment
+                    </p>
+                </div>
+            </div>
+            <a class="sidenav-trigger" style="cursor:pointer;" data-target="side-form">Change Delivery Address</a>
+        </div>
+    </div>
+
+
+</div>
+
+<hr />
+
+<div class="row container">
+
+    <div class="row">
+        <div class="col s12 m12 l12">
+            <h5>
+                <i style="float: left;padding-right: 10px; line-height:0.8; color:var(--primaryRed);" class="material-icons">payment</i>
+                PAYMENT METHOD
+            </h5>
+        </div>
+    </div>
+
+    <div class="input-field col s12 m6 l5">
+        <select id="paymentMethod" class="icons">
+            <option value="" disabled selected>Choose your payment option</option>
+            <option value="a" data-icon="/Content/img/payment/cashondelivery.png" class="left" selected>Cash on Delivery</option>
+            @*<optgroup label="Card">
+                    <option value="test" data-icon="/img/payment/visa.png" class="left">4228XXXXX92210</option>
+                    <option value="newCard" data-icon="/img/payment/creditcardpayment.png" class="left">Add New Card</option>
+                </optgroup>*@
+        </select>
+    </div>
+
+</div>
+
+<div class="row container">
+    <div id="newCardDetails" class="row" style="display:none;">
+
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <h5>
+                    <i style="float: left;padding-right: 10px; line-height:0.8; color:var(--primaryRed);" class="material-icons">info_outline</i>
+                    CARD INFO
+                </h5>
+            </div>
+        </div>
+        <form class="col s12">
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="last_name" type="text" class="validate">
+                    <label for="last_name">Name on card</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <i class="material-icons prefix">credit_card</i>
+                    <input id="card_number" type="text" class="validate">
+                    <label for="card_number">Card number</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s6">
+                    <input id="expiry_date" type="number" class="validate">
+                    <label for="expiry_date">Expiry date (MM/YY)</label>
+                </div>
+                <div class="input-field col s6">
+                    <input id="cvv" type="number" class="validate">
+                    <label for="cvv">CVV</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="nickname_for_card" type="text" class="validate">
+                    <label for="nickname_for_card">Nickname for card</label>
+                </div>
+            </div>
+
+            <div class="row" style="display:flex;">
+                <a style="max-width:700px; margin:auto;" class="btn-large waves-effect waves-light red">
+                    Add card
+                    <i style="float:right;" class="material-icons">add</i>
+                </a>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<hr />
+
+
+<div class="row container" style="display:flex; margin-top:50px;">
+    <a id="placeOrder" style="max-width:700px; margin:auto;" class="btn-large waves-effect waves-light">Place Order<i style="float:right;" class="material-icons">keyboard_arrow_right</i></a>
+</div>
+
+<div style="width:100%; height:200px;">
+
+</div>

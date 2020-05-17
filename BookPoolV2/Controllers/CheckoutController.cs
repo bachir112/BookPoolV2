@@ -6,19 +6,15 @@ using System.Web.Mvc;
 
 namespace BookPoolV2.Controllers
 {
-    public class HomeController : Controller
+    public class CheckoutController : Controller
     {
+        // GET: Checkout
         public ActionResult Index()
         {
             return View();
         }
 
-        public ActionResult Product()
-        {
-            return View();
-        }
-
-        public ActionResult MyOrders()
+        public ActionResult PlacedOrder()
         {
             return View();
         }

@@ -568,6 +568,7 @@ html * {
 
     .stickySearchBar + .content {
         padding-top: 40px;
+        padding-bottom:50px;
     }
 
 .stickySortByFilter {
@@ -651,13 +652,17 @@ h5{
     height: 300px;
 }
 
-.selectedProduct .card .card-image .carousel-item {
-    min-width: 400px !important;
-}
+    .selectedProduct .card .card-image .carousel-item {
+        /*min-width: 400px !important;*/
+        text-align: center;
+        /*transform: translateY(0px)!important;*/
+    }
 
 .selectedProduct .card .card-image .carousel-item img {
-    min-width: 400px !important;
+    /*min-width: 400px !important;*/
+    /*display:initial;*/
     border-radius:25px;
+    margin-top:60px;
 }
 
 .productInfoactive{

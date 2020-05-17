@@ -2,6 +2,7 @@
 @{
     Layout = null;
 }
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,7 +10,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>BookPool</title>
+    <title>Food Ninja</title>
     <link type="text/css" href="/Content/css/shop/materialize.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link type="text/css" href="/Content/css/shop/styles.css" rel="stylesheet">
@@ -17,52 +18,11 @@
     <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp" rel="stylesheet">
     <link type="text/css" href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
     <link type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="manifest" href="/Content/manifest.json">
+    <link rel="manifest" href="/manifest.json">
     <!-- ios support -->
     <link rel="apple-touch-icon" href="/img/icons/icon-96x96.png">
     <meta name="apple-mobile-web-app-status-bar" content="#FFE1C4">
     <meta name="theme-color" content="#FFE1C4">
-
-
-    <style>
-        .slider {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            bottom: 0;
-            overflow: hidden;
-            background-color: var(--primary);
-            color: #FFF;
-            transition: all 0.5s;
-            z-index: 2147483647 !important;
-        }
-
-            .slider.close {
-                bottom: 0;
-                height: 0;
-                transition: all 0.5s;
-            }
-
-        #slider-range {
-            height: 300px;
-        }
-
-        .filternavigator {
-            -webkit-box-shadow: 0px -4px 3px rgba(50, 50, 50, 0.75);
-            -moz-box-shadow: 0px -4px 3px rgba(50, 50, 50, 0.75);
-            box-shadow: 0px -4px 3px rgba(50, 50, 50, 0.75);
-        }
-
-        .content {
-            padding: 0 30px;
-        }
-
-
-        .checked {
-            color: orange;
-        }
-    </style>
-
 
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <script type="text/javascript" src="/Content/js/shop/materialize.min.js"></script>
@@ -85,6 +45,7 @@
 </head>
 
 <body class="white lighten-4">
+
 
     <nav id="locationMainHeader" class="z-depth-0 titlenav">
         <div class="nav-wrapper container">
@@ -239,7 +200,16 @@
         </form>
     </div>
 
-    <div id="mainSearchBar" style="background:white; height:55px; padding-top:5px;">
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('.collapsible').collapsible();
+        });
+
+    </script>
+
+    <div id="mainSearchBar" style="background:white; height:55px;">
         <div class="row searchBar">
             <div class="col s12 m12 l12">
                 <div class="sectionnav">
@@ -260,15 +230,81 @@
 
     </div>
 
+
     <div class="content">
         @RenderBody()
     </div>
 
-    <div class="row" id="messageFooter" style="display: none;">
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            window.onscroll = function () { stickTotalBars() };
+
+            var totalhHeader = document.getElementById("totalAmountContainer");
+            var stickyTotal = totalhHeader.offsetTop;
+
+            function stickTotalBars() {
+                console.log(stickyTotal);
+                if (window.pageYOffset > stickyTotal) {
+                    totalhHeader.classList.add("stickySearchBar");
+                } else {
+                    totalhHeader.classList.remove("stickySearchBar");
+                }
+            }
+
+        });
+
+    </script>
+
+    <script type="text/javascript">
+
+        $('#mainSearchBar').hide();
+        $('#mainSortByFilter').hide();
+        $('#locationContainer').hide();
+        $('#goToHomeContainer').show();
+
+        $(document).ready(function () {
+
+            productsSection_active();
+            $('#filtersClickableTag').addClass('active');
+
+        });
+
+        $('#paymentMethod').change(function () {
+
+            var paymentMethodID = $('#paymentMethod').find(":selected").val();
+
+            console.log('paymentMethodID = ' + paymentMethodID);
+            if (paymentMethodID == 'newCard') {
+                $('#newCardDetails').show();
+            } else {
+                $('#newCardDetails').hide();
+            }
+
+        });
+
+        $("input[type='checkbox']").change(function () {
+            if (this.checked) {
+                $('#totalAmount').text('$22');
+            }
+        });
+
+
+    </script>
+
+
+
+    <div class="row" style="height:50px; width:100%;">
+
+    </div>
+
+    <div class="row" id="messageFooter">
         <div id="messageFooterContainer">
             <div id="messageFooterContainerLeft">
                 <div style="width:100%; height:25px; padding-top:5px;">
-                    <span id="itemsInCartFooter" style="color:white; letter-spacing:5px;">0 ITEM</span>
+                    <span id="itemsInCartFooter" style="color:white; letter-spacing:5px;"></span>
                 </div>
                 <div style="width:100%; height:25px; padding-top:5px;">
                     <span id="costOfItemsInCartFooter" style="color:white; letter-spacing:5px;">LBP 8500</span>
@@ -346,75 +382,6 @@
             window.location = url;
         });
 
-        $(document).ready(function () {
-            $('.collapsible').collapsible();
-        });
-
-        $(document).ready(function () {
-
-            $('.filterTab').tabs();
-
-            $('.filterContainerTrigger, .sliderCloseApply, .sliderCloseCancel').click(function () {
-                $('.slider').toggleClass('close');
-            });
-
-            $(function () {
-                noUiSlider.create(document.getElementById('slider-range'), {
-                    start: [5000, 75000],
-                    step: 5000,
-                    connect: true,
-                    direction: 'rtl',
-                    orientation: 'vertical',
-                    tooltips: true,
-                    range: {
-                        'min': 5000,
-                        'max': 75000
-                    },
-                    pips: { // Show a scale with the slider
-                        mode: 'steps',
-                        stepped: true,
-                        density: 5000
-                    }
-                }).on('change', function (values) {
-                    console.log(values);
-                });
-            });
-
-        });
-
-        $(document).ready(function () {
-
-            productsSection_active();
-
-            $('.category').click(function () {
-                var category = $(this).data('data-category');
-                var url = '/Products/FilteredProducts';
-                window.location = url;
-            });
-
-        });
-
-        $(document).ready(function () {
-
-            $('.ratingFilter').click(function () {
-                var filterStar = parseInt($(this).attr('data-star'));
-
-                if (filterStar == 1) {
-                    $('#filterStarsFromTo').text('Any');
-                } else {
-                    $('#filterStarsFromTo').text(filterStar + '+');
-                }
-
-                $('.ratingFilter').each(function (i, el) {
-                    if (filterStar > parseInt($(el).attr('data-star'))) {
-                        $(el).find('.fa-star').removeClass('checked');
-                    } else {
-                        $(el).find('.fa-star').addClass('checked');
-                    }
-                });
-            });
-
-        });
 
     </script>
 </body>
