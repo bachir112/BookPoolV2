@@ -167,9 +167,11 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Controllers\AcademicController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CheckoutController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MagazinesController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -236,6 +238,7 @@
     <Content Include="Content\img\product\1\4.PNG" />
     <Content Include="Content\img\product\1\5.PNG" />
     <Content Include="Content\img\product\1\6.PNG" />
+    <Content Include="Content\js\dynamics.min.js" />
     <Content Include="Content\js\open_streets\OpenLayers.debug.js" />
     <Content Include="Content\js\open_streets\OpenLayers.js" />
     <Content Include="Content\js\open_streets\OpenLayers.light.debug.js" />
@@ -387,6 +390,12 @@
     <Content Include="Views\Shared\_Layout_Out.cshtml" />
     <Content Include="Views\Checkout\PlacedOrder.cshtml" />
     <Content Include="Views\Home\MyOrders.cshtml" />
+    <Content Include="Views\Home\FilteredProducts.cshtml" />
+    <Content Include="Views\Home\MyWishes.cshtml" />
+    <Content Include="Views\Home\MyBooks.cshtml" />
+    <Content Include="Views\Shared\_Filter.cshtml" />
+    <Content Include="Views\Magazines\Index.cshtml" />
+    <Content Include="Views\Academic\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

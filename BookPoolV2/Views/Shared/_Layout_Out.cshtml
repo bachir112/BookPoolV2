@@ -86,57 +86,25 @@
             </div>
         </li>
         <li>
-            <a href="/User/Wishes" class="waves-effect">
-                Wishes
+            <a href="@Url.Action("MyWishes","Home")" class="waves-effect">
+                My Wishes
                 <i class="material-icons float-right">arrow_right</i>
             </a>
         </li>
         <li>
-            <a href="/User/Notifications" class="waves-effect">
-                Notifications
+            <a href="@Url.Action("MyBooks","Home")" class="waves-effect">
+                My Books
                 <i class="material-icons float-right">arrow_right</i>
             </a>
         </li>
         <li>
-            <a href="/User/Payment" class="waves-effect">
-                Payment Options
+            <a href="@Url.Action("MyOrders","Home")" class="collapsible-header waves-effect">
+                My Orders
                 <i class="material-icons float-right">arrow_right</i>
             </a>
         </li>
         <li>
-            <ul class="collapsible collapsible-accordion">
-                <li>
-                    <a class="collapsible-header waves-effect">
-                        Orders
-                        <i class="material-icons float-right">arrow_drop_down</i>
-                    </a>
-                    <div class="collapsible-body">
-                        <ul>
-                            <li>
-                                <a href="/Order/MyOrders">
-                                    Your Orders
-                                    <i class="material-icons">card_giftcard</i>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="sidenav-trigger" data-target="side-form">
-                                    Address Book
-                                    <i class="material-icons">location_on</i>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/Order/MyReturns">
-                                    Your Returns
-                                    <i class="material-icons">assignment_return</i>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-            </ul>
-        </li>
-        <li>
-            <a href="/Home/About" class="waves-effect">
+            <a href="@Url.Action("About","Home")" class="waves-effect">
                 About
                 <i class="material-icons float-right">arrow_right</i>
             </a>
@@ -318,16 +286,19 @@
         </div>
     </div>
 
-    <div class="navbarFooter">
+    <div class="navbarFooter" style="box-shadow: 0px 0 10px rgba(0, 0, 0, 0.8);">
         <div id="innerFooterContainer" style="margin:auto;">
             <a href="/" class="active">
-                <i id="itemsPageFooter" class="material-icons-outlined" style="color: var(--primaryGrey);">shopping_basket</i>
+                <i id="itemsPageFooter" class="fa fa-book" aria-hidden="true" style="color: var(--primaryGrey);"></i>
+                @*<i id="itemsPageFooter" class="material-icons-outlined" style="color: var(--primaryGrey);">shopping_basket</i>*@
             </a>
             <a href="/Shops">
-                <i id="shopsPageFooter" class="material-icons-outlined" style="color: var(--primaryGrey);">store</i>
+                <i id="shopsPageFooter" class="fa fa-newspaper-o" aria-hidden="true" style="color: var(--primaryGrey);"></i>
+                @*<i id="shopsPageFooter" class="material-icons-outlined" style="color: var(--primaryGrey);">store</i>*@
             </a>
             <a href="/Maps">
-                <i id="mapsPageFooter" class="material-icons-outlined" style="color: var(--primaryGrey);">map</i>
+                <i id="mapsPageFooter" class="fa fa-university" aria-hidden="true" style="color: var(--primaryGrey);"></i>
+                @*<i id="mapsPageFooter" class="material-icons-outlined" style="color: var(--primaryGrey);">map</i>*@
             </a>
         </div>
     </div>
@@ -372,13 +343,13 @@
 
         $(document).on('click', '#messageFooterContainer', function () {
             var shopId = $(this).data('data-shopId');
-            var url = '/Checkout';
+            var url = '@Url.Action("Index","Checkout")';
             window.location = url;
         });
 
         $(document).on('click', '#placeOrder', function () {
             var shopId = $(this).data('data-shopId');
-            var url = '/Order/PlacedOrder';
+            var url = '@Url.Action("PlacedOrder","Checkout")';
             window.location = url;
         });
 

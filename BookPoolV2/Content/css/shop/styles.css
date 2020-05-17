@@ -571,6 +571,10 @@ html * {
         padding-bottom:50px;
     }
 
+.content{
+    margin-bottom:150px;
+}
+
 .stickySortByFilter {
     position: fixed;
     top: 50px;
@@ -591,7 +595,7 @@ html * {
     position: fixed;
     bottom: 0;
     width: 100%;
-    z-index: 2147483647 !important;
+    z-index: 2147483640 !important;
 }
 
     .navbarFooter a {

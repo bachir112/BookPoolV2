@@ -95,8 +95,8 @@
                             <span>Add to cart</span>
                         </div>
                         <hr>
-                        <div class="row gotoshop" style="text-align: center; color: var(--primaryGrey);">
-                            <i class="material-icons" style="font-size: 50px; width:100%;">store</i>
+                        <div class="row gotouserbooks" style="text-align: center; color: var(--primaryGrey);">
+                            <i class="material-icons" style="font-size: 50px; width:100%;">streetview</i>
                             <span>All books for sale by:</span>
                             <span style="font-weight:bold;">Bachir Nasser</span>
                         </div>
@@ -567,7 +567,7 @@
 
     });
 
-    $(document).on('click', '.gotoshop', function () {
+    $(document).on('click', '.gotouserbooks', function () {
 
         var highlightElement = $(this);
 
@@ -578,7 +578,7 @@
         }, 1000);
 
         var shopId = $(this).data('data-shopId');
-        var url = '/Shops/Shop';
+        var url = '@Url.Action("FilteredProducts","Home")';
         window.location = url;
 
     });

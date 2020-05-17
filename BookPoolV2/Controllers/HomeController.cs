@@ -13,7 +13,32 @@ namespace BookPoolV2.Controllers
             return View();
         }
 
+        public ActionResult About()
+        {
+            return View();
+        }
+
+        public ActionResult Contact()
+        {
+            return View();
+        }
+
+        public ActionResult MyWishes()
+        {
+            return View();
+        }
+
+        public ActionResult MyBooks()
+        {
+            return View();
+        }
+        
         public ActionResult Product()
+        {
+            return View();
+        }
+
+        public ActionResult FilteredProducts()
         {
             return View();
         }

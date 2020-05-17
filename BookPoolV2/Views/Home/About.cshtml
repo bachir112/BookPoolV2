@@ -1,7 +1,73 @@
-﻿@{
-    ViewBag.Title = "About";
+﻿
+@{
+    ViewBag.Title = "MyOrders";
+    Layout = "~/Views/Shared/_Layout_Out.cshtml";
 }
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
 
-<p>Use this area to provide additional information.</p>
+<div id="mainSearchBar" style="background: white; height: 55px; display: none;">
+    <div class="row searchBar">
+        <div class="col s12 m12 l12">
+            <div class="sectionnav">
+                <div class="nav-wrapper">
+                    <form>
+                        <div class="input-field" style="margin-top:5px;">
+                            <input id="search" type="search" required="" placeholder="What are you browsing for?">
+                            <label class="label-icon active" for="search">
+                                <i class="material-icons" style="color:var(--primaryGrey) !important">search</i>
+                            </label>
+                            <i class="material-icons" style="color:var(--primaryGrey) !important">close</i>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<hr />
+
+<div class="row container">
+    <div class="col s12 m12 l12">
+        <h5>
+            <i style="float: left;padding-right: 10px; line-height:0.8; color:var(--primaryRed);" class="material-icons">live_help</i>
+            About Us?
+        </h5>
+    </div>
+</div>
+
+<div class="row container">
+    <div class="col s12 m12 l12">
+        <p>
+            <i style="float: left;padding-right: 10px; line-height:0.8; color:var(--primaryRed); font-size:30px;" class="material-icons">location_searching</i>
+            We help customers find the best local shop to match their needs for the cheapest price there is.
+        </p>
+        <hr />
+        <p>
+            <i style="float: left;padding-right: 10px; line-height:0.8; color:var(--primaryRed); font-size:30px;" class="material-icons">motorcycle</i>
+            We receive your order, package it and deliver it to your door step in less than 3 hours.
+        </p>
+        <hr />
+        <p>
+            <i style="float: left;padding-right: 10px; line-height:0.8; color:var(--primaryRed); font-size:30px;" class="material-icons">compare_arrows</i>
+            We exchange your order if it didn't suit you.
+        </p>
+        <hr />
+        <p>
+            <i style="float: left;padding-right: 10px; line-height:0.8; color:var(--primaryRed); font-size:30px;" class="material-icons">monetization_on</i>
+            We reimburse your money if you didn't like your purchase.
+        </p>
+        <hr />
+        <p>
+            <img style="width:35px; float: left;padding-right: 10px;" src="@Url.Content("~/Content/img/flags/Lebanese.png")">
+            Most importantly, we help you buy from local Lebanese shops.
+        </p>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $('#mainSearchBar').hide();
+    $('#mainSortByFilter').hide();
+
+</script>

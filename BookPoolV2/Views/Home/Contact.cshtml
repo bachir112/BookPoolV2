@@ -1,17 +1,75 @@
-﻿@{
-    ViewBag.Title = "Contact";
+﻿
+@{
+    ViewBag.Title = "MyOrders";
+    Layout = "~/Views/Shared/_Layout_Out.cshtml";
 }
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
 
-<address>
-    One Microsoft Way<br />
-    Redmond, WA 98052-6399<br />
-    <abbr title="Phone">P:</abbr>
-    425.555.0100
-</address>
+<div id="mainSearchBar" style="background: white; height: 55px; display: none;">
+    <div class="row searchBar">
+        <div class="col s12 m12 l12">
+            <div class="sectionnav">
+                <div class="nav-wrapper">
+                    <form>
+                        <div class="input-field" style="margin-top:5px;">
+                            <input id="search" type="search" required="" placeholder="What are you browsing for?">
+                            <label class="label-icon active" for="search">
+                                <i class="material-icons" style="color:var(--primaryGrey) !important">search</i>
+                            </label>
+                            <i class="material-icons" style="color:var(--primaryGrey) !important">close</i>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<address>
-    <strong>Support:</strong>   <a href="mailto:Support@example.com">Support@example.com</a><br />
-    <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
-</address>
+</div>
+
+<hr />
+
+<div class="row container">
+    <div class="col s12 m12 l12">
+        <h5>
+            <i style="float: left;padding-right: 10px; line-height:0.8; color:var(--primaryRed);" class="material-icons">live_help</i>
+            Contact Us
+        </h5>
+    </div>
+</div>
+
+
+<div class="row container">
+    <div class="col s12 m12 l12" style="margin-top:20px; margin-bottom:20px;">
+        <p style="font-size:18px; font-weight:bold; max-width:300px; margin:auto;">
+            <i style="float: left;padding-right: 10px; line-height:0.8; color:var(--primaryBlue); font-size:30px;" class="material-icons">event_available</i>
+            We are available 24/7
+        </p>
+    </div>
+    <div class="col s12 m12 l12" style="margin-top:20px; margin-bottom:20px;">
+        <p style="max-width:300px; margin:auto;">
+            <i style="float: left;padding-right: 10px; line-height:0.8; color:var(--primaryRed);" class="material-icons">local_phone</i>
+            70 102 555
+        </p>
+    </div>
+    <div class="col s12 m12 l12" style="margin-top:20px; margin-bottom:20px;">
+        <p style="max-width:300px; margin:auto;">
+            <i style="float: left;padding-right: 10px; line-height:0.8; color:var(--primaryRed);" class="material-icons">local_phone</i>
+            70 102 554
+        </p>
+    </div>
+    <div class="col s12 m12 l12" style="margin-top:20px; margin-bottom:20px;">
+        <p style="max-width:300px; margin:auto;">
+            <i style="float: left;padding-right: 10px; line-height:0.8; color:var(--primaryRed);" class="material-icons">email</i>
+            bachir.nasser1@gmail.com
+        </p>
+    </div>
+</div>
+
+
+
+
+<script type="text/javascript">
+
+    $('#mainSearchBar').hide();
+    $('#mainSortByFilter').hide();
+
+</script>

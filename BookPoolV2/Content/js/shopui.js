@@ -92,14 +92,29 @@ $(document).ready(function () {
 });
 
 
-function productsSection_active() {
-    $('#itemsPageFooter').css('color', 'var(--secondaryRed)');
+//function productsSection_active() {
+//    $('#itemsPageFooter').css('color', 'var(--secondaryRed)');
+//}
+
+//function shopsSection_active() {
+//    $('#shopsPageFooter').css('color', 'var(--secondaryRed)');
+//}
+
+//function mapsSection_active() {
+//    $('#mapsPageFooter').css('color', 'var(--secondaryRed)');
+//}
+
+function booksSection_active() {
+    console.log('here');
+    $('#books-section-navigator i').css('color', 'var(--secondaryRed)');
 }
 
-function shopsSection_active() {
-    $('#shopsPageFooter').css('color', 'var(--secondaryRed)');
+function magazinesSection_active() {
+    console.log('here');
+    $('#magazines-section-navigator i').css('color', 'var(--secondaryRed)');
 }
 
-function mapsSection_active() {
-    $('#mapsPageFooter').css('color', 'var(--secondaryRed)');
+function academicSection_active() {
+    console.log('here');
+    $('#academic-section-navigator i').css('color', 'var(--secondaryRed)');
 }
