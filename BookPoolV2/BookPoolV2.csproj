@@ -397,6 +397,10 @@
     <Content Include="Views\Shared\_Filter.cshtml" />
     <Content Include="Views\Magazines\Index.cshtml" />
     <Content Include="Views\Academic\Index.cshtml" />
+    <Content Include="Views\Shared\_AvailableBook.cshtml" />
+    <Content Include="Views\Shared\_UnavailableBook.cshtml" />
+    <Content Include="Views\Shared\_AvailableMagazine.cshtml" />
+    <Content Include="Views\Shared\_UnavailableMagazine.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
