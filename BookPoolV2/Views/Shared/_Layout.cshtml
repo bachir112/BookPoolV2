@@ -99,35 +99,63 @@
 
 <body class="white lighten-4">
 
-    <nav id="locationMainHeader" class="z-depth-0 titlenav">
-        <div class="nav-wrapper container">
-            <div id="locationContainer">
-                <a class="sidenav-trigger" style="display:inherit; width:30px; color:var(--primaryRed); cursor:pointer;" data-target="side-form">
-                    <i class="material-icons">location_on</i>
-                </a>
-                <a class="sidenav-trigger" style="display:inherit; margin-left:0px; cursor:pointer;" data-target="side-form">
-                    <span style="font-family:AvenirNextBold;">Bachir's Home</span>
-                </a>
+    <div id="mainSearchBar" style="background:white;">
+        <nav id="locationMainHeader" class="z-depth-0 titlenav">
+            <div class="nav-wrapper container">
+                <div id="locationContainer">
+                    <a class="sidenav-trigger" style="display:inherit; width:30px; color:var(--primaryRed); cursor:pointer;" data-target="side-form">
+                        <i class="material-icons">location_on</i>
+                    </a>
+                    <a class="sidenav-trigger" style="display:inherit; margin-left:0px; cursor:pointer;" data-target="side-form">
+                        <span style="font-family:AvenirNextBold;">Bachir's Home</span>
+                    </a>
+                </div>
+                <div id="goToHomeContainer" style="display:none;">
+                    <a href="/" class="sidenav-trigger" style="display:inherit; width:30px; color:var(--primaryRed); cursor:pointer;">
+                        <i class="material-icons">keyboard_arrow_left</i>
+                    </a>
+                    <a href="/" class="sidenav-trigger" style="display:inherit; margin-left:0px; cursor:pointer;">
+                        <span style="font-family:AvenirNextBold;">Home</span>
+                    </a>
+                </div>
+                <span class="right" style="color: var(--primaryBlue); cursor:pointer;">
+                    <i style="font-size:30px;" class="material-icons sidenav-trigger" data-target="side-menu">account_circle</i>
+                </span>
+                <span class="right" style="cursor:pointer; margin-right:20px;">
+                    <a href="/Checkout">
+                        <span id="itemsincartbadge" class="badge itemsincart" style="display:none;">0</span>
+                        <i style="font-size:30px; color: var(--primaryGrey);" class="material-icons">shopping_cart</i>
+                    </a>
+                </span>
+
             </div>
-            <div id="goToHomeContainer" style="display:none;">
-                <a href="/" class="sidenav-trigger" style="display:inherit; width:30px; color:var(--primaryRed); cursor:pointer;">
-                    <i class="material-icons">keyboard_arrow_left</i>
-                </a>
-                <a href="/" class="sidenav-trigger" style="display:inherit; margin-left:0px; cursor:pointer;">
-                    <span style="font-family:AvenirNextBold;">Home</span>
-                </a>
+
+        </nav>
+        <nav class="z-depth-0 titlenav">
+            <div class="nav-wrapper container" style="background:white; height:55px; padding-top:5px;">
+                <div class="row searchBar">
+                    <div class="col s12 m12 l12">
+                        <div class="sectionnav">
+                            <div class="nav-wrapper">
+                                <form>
+                                    <div class="input-field" style="margin-top:5px;">
+                                        <input id="search" type="search" required placeholder="What are you browsing for?">
+                                        <label class="label-icon" for="search">
+                                            <i class="material-icons" style="color:var(--primaryGrey) !important">search</i>
+                                        </label>
+                                        <i class="material-icons" style="color:var(--primaryGrey) !important">close</i>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-            <span class="right" style="color: var(--primaryBlue); cursor:pointer;">
-                <i style="font-size:30px;" class="material-icons sidenav-trigger" data-target="side-menu">account_circle</i>
-            </span>
-            <span class="right" style="cursor:pointer; margin-right:20px;">
-                <a href="/Checkout">
-                    <span id="itemsincartbadge" class="badge itemsincart" style="display:none;">0</span>
-                    <i style="font-size:30px; color: var(--primaryGrey);" class="material-icons">shopping_cart</i>
-                </a>
-            </span>
-        </div>
-    </nav>
+        </nav>
+
+    </div>
+
 
     <ul id="side-menu" class="sidenav side-menu">
         <li>
@@ -220,7 +248,7 @@
         </form>
     </div>
 
-    <div id="mainSearchBar" style="background:white; height:55px; padding-top:5px;">
+    @*<div id="mainSearchBar" style="background:white; height:55px; padding-top:5px;">
         <div class="row searchBar">
             <div class="col s12 m12 l12">
                 <div class="sectionnav">
@@ -239,7 +267,7 @@
             </div>
         </div>
 
-    </div>
+    </div>*@
 
     <div class="content">
         @RenderBody()
@@ -304,8 +332,8 @@
         var searchHeader = document.getElementById("mainSearchBar");
         var stickySearch = searchHeader.offsetTop;
 
-        var sortFilterHeader = document.getElementById("mainSortByFilter");
-        var stickySortFilter = sortFilterHeader.offsetTop - stickySearch;
+        //var sortFilterHeader = document.getElementById("mainSortByFilter");
+        //var stickySortFilter = sortFilterHeader.offsetTop - stickySearch + 200;
 
         function stickSearchBars() {
 
@@ -315,11 +343,11 @@
                 searchHeader.classList.remove("stickySearchBar");
             }
 
-            if (window.pageYOffset > stickySortFilter) {
-                sortFilterHeader.classList.add("stickySortByFilter");
-            } else {
-                sortFilterHeader.classList.remove("stickySortByFilter");
-            }
+            //if (window.pageYOffset > stickySortFilter) {
+            //    sortFilterHeader.classList.add("stickySortByFilter");
+            //} else {
+            //    sortFilterHeader.classList.remove("stickySortByFilter");
+            //}
         }
 
         $(document).on('click', '.gotoproduct', function () {
