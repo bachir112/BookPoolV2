@@ -35,7 +35,7 @@
     <style>
         .modal {
             z-index: 2147483647 !important;
-            max-height:inherit!important;
+            max-height: inherit !important;
         }
 
             .modal .modal-footer .btn, .modal .modal-footer .btn-large, .modal .modal-footer .btn-small, .modal .modal-footer .btn-flat {
@@ -45,17 +45,17 @@
                 font-weight: bold;
             }
 
-            .slider {
-                position: fixed;
-                width: 100%;
-                height: 100%;
-                bottom: 0;
-                overflow: hidden;
-                background-color: var(--primary);
-                color: #FFF;
-                transition: all 0.5s;
-                z-index: 2147483647 !important;
-            }
+        .slider {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            bottom: 0;
+            overflow: hidden;
+            background-color: var(--primary);
+            color: #FFF;
+            transition: all 0.5s;
+            z-index: 2147483647 !important;
+        }
 
             .slider.close {
                 bottom: 0;
@@ -81,6 +81,11 @@
         .checked {
             color: orange;
         }
+
+        .side-menu {
+            z-index: 2147483646 !important;
+        }
+
     </style>
 
 
@@ -92,10 +97,27 @@
     <script src="/Content/js/quantity.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/classie/1.0.1/classie.min.js"></script>
     <script src="/Content/js/dynamics.min.js"></script>
-
-
-
 </head>
+
+
+
+<!-- Modal Structure -->
+<div id="search-for-my-book-modal" class="modal bottom-sheet">
+    <div class="modal-content">
+        <h4>Search for my book</h4>
+        <p>
+            Bookpool will search for copies of your book in local shops and social media platforms.
+            <br />
+            We will contact you by email/phone as soon as we find it.
+        </p>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat pull-left red" style="min-width:100px;">No</a>
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat green" style="min-width:100px;">Yes please</a>
+    </div>
+</div>
+
+
 
 <body class="white lighten-4">
 
@@ -139,11 +161,12 @@
                             <div class="nav-wrapper">
                                 <form>
                                     <div class="input-field" style="margin-top:5px;">
-                                        <input id="search" type="search" required placeholder="What are you browsing for?">
+                                        <input id="search" type="search" required placeholder="Search">
                                         <label class="label-icon" for="search">
                                             <i class="material-icons" style="color:var(--primaryGrey) !important">search</i>
                                         </label>
-                                        <i class="material-icons" style="color:var(--primaryGrey) !important">close</i>
+                                        <a href="#!" class="modal-close waves-effect btn-flat searchGoButton">Go</a>
+                                        @*<i class="material-icons" style="color:var(--primaryGrey) !important">close</i>*@
                                     </div>
                                 </form>
                             </div>
@@ -208,7 +231,8 @@
                                 Home
                                 <i class="material-icons" style="font-size:22px; line-height:12px; color:var(--primaryRed); float:right;">location_on</i>
                             </span>
-                            <p style="font-size:12px;">
+                            <p style="        font-size: 12px;
+">
                                 Furn el Chebbek, Tohwita, Malaab al baladi street, Raymond semaan building, 6th floor, Georges Nasser Appartment
                             </p>
                         </div>
@@ -249,25 +273,25 @@
     </div>
 
     @*<div id="mainSearchBar" style="background:white; height:55px; padding-top:5px;">
-        <div class="row searchBar">
-            <div class="col s12 m12 l12">
-                <div class="sectionnav">
-                    <div class="nav-wrapper">
-                        <form>
-                            <div class="input-field" style="margin-top:5px;">
-                                <input id="search" type="search" required placeholder="What are you browsing for?">
-                                <label class="label-icon" for="search">
-                                    <i class="material-icons" style="color:var(--primaryGrey) !important">search</i>
-                                </label>
-                                <i class="material-icons" style="color:var(--primaryGrey) !important">close</i>
-                            </div>
-                        </form>
+            <div class="row searchBar">
+                <div class="col s12 m12 l12">
+                    <div class="sectionnav">
+                        <div class="nav-wrapper">
+                            <form>
+                                <div class="input-field" style="margin-top:5px;">
+                                    <input id="search" type="search" required placeholder="What are you browsing for?">
+                                    <label class="label-icon" for="search">
+                                        <i class="material-icons" style="color:var(--primaryGrey) !important">search</i>
+                                    </label>
+                                    <i class="material-icons" style="color:var(--primaryGrey) !important">close</i>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-    </div>*@
+        </div>*@
 
     <div class="content">
         @RenderBody()
@@ -315,9 +339,9 @@
             <a id="books-section-navigator" href="@Url.Action("Index","Home")">
                 <i class="fa fa-book" aria-hidden="true" style="color: var(--primaryGrey);"></i>
             </a>
-            <a id="magazines-section-navigator" href="@Url.Action("Index","Magazines")">
-                <i class="fa fa-newspaper-o" aria-hidden="true" style="color: var(--primaryGrey);"></i>
-            </a>
+            @*<a id="magazines-section-navigator" href="@Url.Action("Index","Magazines")">
+                    <i class="fa fa-newspaper-o" aria-hidden="true" style="color: var(--primaryGrey);"></i>
+                </a>*@
             <a id="academic-section-navigator" href="@Url.Action("Index","Academic")">
                 <i class="fa fa-university" aria-hidden="true" style="color: var(--primaryGrey);"></i>
             </a>

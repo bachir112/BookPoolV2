@@ -606,7 +606,7 @@ html * {
         padding: 5px 16px;
         text-decoration: none;
         font-size: 17px;
-        width: 33%;
+        width: 50%;
     }
     .navbarFooter a i{
         font-size: 35px!important;
@@ -709,7 +709,7 @@ h5{
     height: 55px;
     background-color: #D0021B;
     position: fixed;
-    bottom: 52px;
+    bottom: 47px;
     margin: 0;
     width: 100%;
     z-index: 10;
@@ -852,12 +852,13 @@ table tr td{
     .selectedProduct .card .card-image .carousel-item {
         min-width: 100% !important;
         width: 100% !important;
+        margin-top:100px;
     }
 
     .selectedProduct .card .card-image .carousel-item img {
-        min-width: 200px !important;
+        /*min-width: 200px !important;*/
         border-radius:15px;
-        width: 200px !important;
+        width: 120px !important;
         margin: auto;
     }
 
@@ -868,3 +869,17 @@ table tr td{
 
 }
 
+
+
+.searchGoButton {
+    position: absolute;
+    top: 0;
+    right: 0;
+    transition: .3s color;
+    height: 100%;
+    border-radius: 0 15px 15px 0;
+    min-width: 50px;
+    color: white;
+    font-weight: bold;
+    background-color: rgb(255, 76, 76) !important;
+}

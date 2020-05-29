@@ -1,5 +1,5 @@
 ﻿<!-- Modal Structure -->
-<div id="search-for-my-book-modal" class="modal bottom-sheet">
+@*<div id="search-for-my-book-modal" class="modal bottom-sheet">
     <div class="modal-content">
         <h4>Search for my book</h4>
         <p>
@@ -12,7 +12,7 @@
         <a href="#!" class="modal-close waves-effect waves-green btn-flat pull-left red">No, I'll search for it</a>
         <a href="#!" class="modal-close waves-effect waves-green btn-flat green">Yes please</a>
     </div>
-</div>
+</div>*@
 
 <div class="row rowmargins">
     <div class="carousel">
@@ -24,62 +24,6 @@
     </div>
 </div>
 
-<form class="section filtercontainer" style="height:150px;padding-top:0px; overflow-x:auto; overflow-y:hidden;">
-
-    <table class="row">
-        <tr>
-            <td>
-                <div class="card smallfilter">
-                    <div class="card-content">
-                        <span class="card-title">
-                            <i class="material-icons red-text">local_offer</i>
-                        </span>
-                        <p style="font-size:12px;">
-                            Best Prices
-                        </p>
-                    </div>
-                </div>
-            </td>
-            <td>
-                <div class="card smallfilter">
-                    <div class="card-content">
-                        <span class="card-title">
-                            <i class="material-icons blue-text">trending_up</i>
-                        </span>
-                        <p style="font-size:12px;">
-                            Most Common
-                        </p>
-                    </div>
-                </div>
-            </td>
-            <td>
-                <div class="card smallfilter">
-                    <div class="card-content" style="padding:10px; text-align:center;">
-                        <span class="card-title">
-                            <i class="material-icons red-text">location_on</i>
-                        </span>
-                        <p style="font-size:12px;">
-                            Near Me
-                        </p>
-                    </div>
-                </div>
-            </td>
-            <td>
-                <div class="card smallfilter">
-                    <div class="card-content" style="padding:10px; text-align:center;">
-                        <span class="card-title">
-                            <i class="material-icons blue-text">streetview</i>
-                        </span>
-                        <p style="font-size:12px;">
-                            Editor's Pick
-                        </p>
-                    </div>
-                </div>
-            </td>
-        </tr>
-    </table>
-
-</form>
 
 <div class="section filtercontainer" style="width:100%; margin:0px;">
 
@@ -217,9 +161,6 @@
 @Html.Partial("_Filter")
 
 <div class="row itemslist">
-    <div class="col s12 m12 l12">
-        <h5>AVAILABLE BOOKS</h5>
-    </div>
 
     @Html.Partial("_AvailableBook")
 
@@ -245,181 +186,6 @@
 
     @Html.Partial("_UnavailableBook")
 
-</div>
-
-
-<div class="row">
-    <div class="col s12 m12 l12">
-        <h5>MAGAZINES</h5>
-        <table class="horizontalTableList" style="width:100%; overflow-x: auto; overflow-y:hidden; display:list-item;">
-            <tbody>
-                <tr>
-                    <td style="text-align:center;">
-                        <div class="card">
-                            <div class="card-image waves-effect waves-block waves-light">
-                                <img style="width:100px;" class="activator" src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg">
-                            </div>
-                            <div class="card-content">
-                                <span style="color: var(--primaryGrey)!important; font-size: 14px; line-height:18px;" class="card-title activator grey-text text-darken-4">Price: 19,000LL</span>
-                                <p>
-                                    <span>
-                                        <i class="material-icons" style="font-size:12px;">location_on</i> Beirut
-                                    </span>
-                                </p>
-                            </div>
-                        </div>
-                    </td>
-                    <td style="text-align:center;">
-                        <div class="card">
-                            <div class="card-image waves-effect waves-block waves-light">
-                                <img style="width:100px;" class="activator" src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg">
-                            </div>
-                            <div class="card-content">
-                                <span style="color: var(--primaryGrey)!important; font-size: 14px; line-height:18px;" class="card-title activator grey-text text-darken-4">Price: 19,000LL</span>
-
-                                <span>
-                                    <i class="material-icons" style="font-size:12px;">location_on</i> Beirut
-                                </span>
-                            </div>
-                        </div>
-                    </td>
-                    <td style="text-align:center;">
-                        <div class="card">
-                            <div class="card-image waves-effect waves-block waves-light">
-                                <img style="width:100px;" class="activator" src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg">
-                            </div>
-                            <div class="card-content">
-                                <span style="color: var(--primaryGrey)!important; font-size: 14px; line-height:18px;" class="card-title activator grey-text text-darken-4">Price: 19,000LL</span>
-
-                                <span>
-                                    <i class="material-icons" style="font-size:12px;">location_on</i> Beirut
-                                </span>
-                            </div>
-                        </div>
-                    </td>
-                    <td style="text-align:center;">
-                        <div class="card">
-                            <div class="card-image waves-effect waves-block waves-light">
-                                <img style="width:100px;" class="activator" src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg">
-                            </div>
-                            <div class="card-content">
-                                <span style="color: var(--primaryGrey)!important; font-size: 14px; line-height:18px;" class="card-title activator grey-text text-darken-4">Price: 19,000LL</span>
-
-                                <span>
-                                    <i class="material-icons" style="font-size:12px;">location_on</i> Beirut
-                                </span>
-                            </div>
-                        </div>
-                    </td>
-                    <td style="text-align:center;">
-                        <div class="card">
-                            <div class="card-image waves-effect waves-block waves-light">
-                                <img style="width:100px;" class="activator" src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg">
-                            </div>
-                            <div class="card-content">
-                                <span style="color: var(--primaryGrey)!important; font-size: 14px; line-height:18px;" class="card-title activator grey-text text-darken-4">Price: 19,000LL</span>
-
-                                <span>
-                                    <i class="material-icons" style="font-size:12px;">location_on</i> Beirut
-                                </span>
-                            </div>
-                        </div>
-                    </td>
-                    <td style="text-align:center;">
-                        <div class="card">
-                            <div class="card-image waves-effect waves-block waves-light">
-                                <img style="width:100px;" class="activator" src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg">
-                            </div>
-                            <div class="card-content">
-                                <span style="color: var(--primaryGrey)!important; font-size: 14px; line-height:18px;" class="card-title activator grey-text text-darken-4">Price: 19,000LL</span>
-
-                                <span>
-                                    <i class="material-icons" style="font-size:12px;">location_on</i> Beirut
-                                </span>
-                            </div>
-                        </div>
-                    </td>
-                    <td style="text-align:center;">
-                        <div class="card">
-                            <div class="card-image waves-effect waves-block waves-light">
-                                <img style="width:100px;" class="activator" src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg">
-                            </div>
-                            <div class="card-content">
-                                <span style="color: var(--primaryGrey)!important; font-size: 14px; line-height:18px;" class="card-title activator grey-text text-darken-4">Price: 19,000LL</span>
-
-                                <span>
-                                    <i class="material-icons" style="font-size:12px;">location_on</i> Beirut
-                                </span>
-                            </div>
-                        </div>
-                    </td>
-                    <td style="text-align:center;">
-                        <div class="card">
-                            <div class="card-image waves-effect waves-block waves-light">
-                                <img style="width:100px;" class="activator" src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg">
-                            </div>
-                            <div class="card-content">
-                                <span style="color: var(--primaryGrey)!important; font-size: 14px; line-height:18px;" class="card-title activator grey-text text-darken-4">Price: 19,000LL</span>
-
-                                <span>
-                                    <i class="material-icons" style="font-size:12px;">location_on</i> Beirut
-                                </span>
-                            </div>
-                        </div>
-                    </td>
-                    <td style="text-align:center;">
-                        <div class="card">
-                            <div class="card-image waves-effect waves-block waves-light">
-                                <img style="width:100px;" class="activator" src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg">
-                            </div>
-                            <div class="card-content">
-                                <span style="color: var(--primaryGrey)!important; font-size: 14px; line-height:18px;" class="card-title activator grey-text text-darken-4">Price: 19,000LL</span>
-
-                                <span>
-                                    <i class="material-icons" style="font-size:12px;">location_on</i> Beirut
-                                </span>
-                            </div>
-                        </div>
-                    </td>
-                    <td style="text-align:center;">
-                        <div class="card">
-                            <div class="card-image waves-effect waves-block waves-light">
-                                <img style="width:100px;" class="activator" src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg">
-                            </div>
-                            <div class="card-content">
-                                <span style="color: var(--primaryGrey)!important; font-size: 14px; line-height:18px;" class="card-title activator grey-text text-darken-4">Price: 19,000LL</span>
-
-                                <span>
-                                    <i class="material-icons" style="font-size:12px;">location_on</i> Beirut
-                                </span>
-                            </div>
-                        </div>
-                    </td>
-                    <td style="text-align:center;">
-                        <div class="card">
-                            <div class="card-image waves-effect waves-block waves-light">
-                                <img style="width:100px;" class="activator" src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg">
-                            </div>
-                            <div class="card-content">
-                                <span style="color: var(--primaryGrey)!important; font-size: 14px; line-height:18px;" class="card-title activator grey-text text-darken-4">Price: 19,000LL</span>
-
-                                <span>
-                                    <i class="material-icons" style="font-size:12px;">location_on</i> Beirut
-                                </span>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
-
-<div class="row itemslist">
-    <div class="col s12 m12 l12">
-        <h5>AVAILABLE BOOKS</h5>
-    </div>
-
     @Html.Partial("_AvailableBook")
 
     @Html.Partial("_UnavailableBook")
@@ -443,7 +209,6 @@
     @Html.Partial("_UnavailableBook")
 
     @Html.Partial("_UnavailableBook")
-
 </div>
 
 <script>
