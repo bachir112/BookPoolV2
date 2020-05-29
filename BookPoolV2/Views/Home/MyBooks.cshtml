@@ -1,4 +1,14 @@
-﻿<div id="mainSearchBar" style="background: white; height: 55px; display: none;" class="">
+﻿
+@{
+    ViewBag.Title = "MyOrders";
+    Layout = "~/Views/Shared/_Layout_Out.cshtml";
+}
+
+@*CHECK ME*@
+@* https://codepen.io/tarekraafat/pen/rQopdW *@
+@* https://codepen.io/kevinydhan/pen/bGVmMav *@
+
+<div id="mainSearchBar" style="background: white; height: 55px; display: none;" class="">
     <div class="row searchBar">
         <div class="col s12 m12 l12">
             <div class="sectionnav">
@@ -107,13 +117,6 @@
                 </div>
                 <div style="float:left;width: 100%;padding-right: 15px;">
                     <select>
-                        <option>Type</option>
-                        <option>Book</option>
-                        <option>Magazine</option>
-                    </select>
-                </div>
-                <div style="float:left;width: 100%;padding-right: 15px;">
-                    <select>
                         <option>Condition</option>
                         <option>New</option>
                         <option>Good</option>
@@ -123,7 +126,7 @@
                 </div>
                 <div style="float:left;width: 100%;padding-right: 15px;">
                     <select>
-                        <option>Type</option>
+                        <option>Is it a book you used at school or university?</option>
                         <option>Non Academic - Not a university or school book</option>
                         <option>Academic - A university or school book</option>
                     </select>
@@ -312,10 +315,10 @@
 
 <script type="text/javascript">
 
-    $('#mainSearchBar').hide();
-    $('#mainSortByFilter').hide();
-    $('#locationContainer').hide();
-    $('#goToHomeContainer').show();
+    //$('#mainSearchBar').hide();
+    //$('#mainSortByFilter').hide();
+    //$('#locationContainer').hide();
+    //$('#goToHomeContainer').show();
 
     $(document).ready(function () {
         productsSection_active();
