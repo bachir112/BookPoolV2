@@ -8,6 +8,7 @@ namespace BookPool.DataObjects.DTO
 {
     public class BookPoolResult
     {
+        public int ID { get; set; }
         public string BookName { get; set; }
         public decimal Price { get; set; }
         public int BookConditionID { get; set; }

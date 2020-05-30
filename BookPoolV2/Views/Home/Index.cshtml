@@ -1,33 +1,46 @@
 ﻿@using BookPool.DataObjects.DTO
 
-@{ 
+@{
     List<BookPoolResult> books = new List<BookPoolResult>();
-    if(ViewBag.Books != null)
+    if (ViewBag.Books != null)
     {
         books = ViewBag.Books as List<BookPoolResult>;
     }
 }
 
-<div class="row rowmargins">
-    <div class="carousel">
-        <a class="carousel-item" href="#one!">
-            <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg">
-        </a>
-        <a class="carousel-item" href="#two!">
-            <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg">
-        </a>
-        <a class="carousel-item" href="#three!">
-            <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg">
-        </a>
-        <a class="carousel-item" href="#four!">
-            <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg">
-        </a>
-        <a class="carousel-item" href="#five!">
-            <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg">
-        </a>
-    </div>
-</div>
-
+@{
+    if (ViewBag.Query == null)
+    {
+        <div class="row rowmargins">
+            <div class="carousel">
+                <a class="carousel-item" href="#one!">
+                    <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg">
+                </a>
+                <a class="carousel-item" href="#two!">
+                    <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg">
+                </a>
+                <a class="carousel-item" href="#three!">
+                    <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg">
+                </a>
+                <a class="carousel-item" href="#four!">
+                    <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg">
+                </a>
+                <a class="carousel-item" href="#five!">
+                    <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg">
+                </a>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row rowmargins">
+            <a href="@Url.Action("Index","Home")" class="sidenav-trigger" style="display: flex;color:var(--primaryRed);cursor:pointer;width:100%;">
+                <i class="material-icons">keyboard_arrow_left</i>
+                <span style="font-family:AvenirNextBold;">Clear Search</span>
+            </a>
+        </div>
+    }
+}
 
 <div class="section filtercontainer" style="width:100%; margin:0px;">
 
@@ -171,66 +184,19 @@
         {
             if (book.OwnerUserID == null)
             {
-                <div>
+                <div class="col s12 m6 l4" style="height:250px;">
                     @Html.Partial("_UnavailableBook", book)
                 </div>
             }
             else
             {
-                <div>
+                <div class="col s12 m6 l4">
                     @Html.Partial("_AvailableBook", book)
                 </div>
             }
         }
     }
 
-    @*@Html.Partial("_AvailableBook")
-
-        @Html.Partial("_UnavailableBook")
-
-        @Html.Partial("_UnavailableBook")
-
-        @Html.Partial("_UnavailableBook")
-
-        @Html.Partial("_UnavailableBook")
-
-        @Html.Partial("_UnavailableBook")
-
-        @Html.Partial("_UnavailableBook")
-
-        @Html.Partial("_UnavailableBook")
-
-        @Html.Partial("_UnavailableBook")
-
-        @Html.Partial("_UnavailableBook")
-
-        @Html.Partial("_UnavailableBook")
-
-        @Html.Partial("_UnavailableBook")
-
-        @Html.Partial("_AvailableBook")
-
-        @Html.Partial("_UnavailableBook")
-
-        @Html.Partial("_UnavailableBook")
-
-        @Html.Partial("_UnavailableBook")
-
-        @Html.Partial("_UnavailableBook")
-
-        @Html.Partial("_UnavailableBook")
-
-        @Html.Partial("_UnavailableBook")
-
-        @Html.Partial("_UnavailableBook")
-
-        @Html.Partial("_UnavailableBook")
-
-        @Html.Partial("_UnavailableBook")
-
-        @Html.Partial("_UnavailableBook")
-
-        @Html.Partial("_UnavailableBook")*@
 </div>
 
 <script>

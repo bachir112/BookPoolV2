@@ -15,8 +15,9 @@ namespace BookPoolV2.Controllers
     {
         public async Task<ActionResult> Index(string query = null)
         {
-            Dictionary<string, List<BookPoolResult>> apiResults = new Dictionary<string, List<BookPoolResult>>();
+            ViewBag.Query = query;
 
+            Dictionary<string, List<BookPoolResult>> apiResults = new Dictionary<string, List<BookPoolResult>>();
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(Global.Globals.baseURL);
@@ -59,8 +60,27 @@ namespace BookPoolV2.Controllers
             return View();
         }
         
-        public ActionResult Product()
+        public async Task<ActionResult> Product(int bookID, string query = null)
         {
+            Dictionary<string, List<BookPoolResult>> apiResults = new Dictionary<string, List<BookPoolResult>>();
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(Global.Globals.baseURL);
+                StringBuilder httpRoute = new StringBuilder();
+                httpRoute.Append("api/Books/GetBooks");
+                httpRoute.Append("?");
+                httpRoute.AppendFormat("query={0}", query);
+
+                var response = await client.GetAsync(httpRoute.ToString());
+                if (response.IsSuccessStatusCode)
+                {
+                    apiResults = await response.Content.ReadAsAsync<Dictionary<string, List<BookPoolResult>>>();
+                    ViewBag.AvailableBook = apiResults["results"].First(x => x.ID == bookID);
+                    ViewBag.SuggestedBooks = apiResults["results"].Where(x => x.ID != bookID).Select(x => x).ToList();
+                }
+            }
+
             return View();
         }
 

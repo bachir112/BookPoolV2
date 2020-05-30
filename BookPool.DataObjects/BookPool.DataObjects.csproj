@@ -54,6 +54,7 @@
     <Compile Include="DTO\GoogleBook.cs" />
     <Compile Include="DTO\GoogleBooksResult.cs" />
     <Compile Include="DTO\ImageLinks.cs" />
+    <Compile Include="DTO\IndustryIdentifiers.cs" />
     <Compile Include="DTO\VolumeInfo.cs" />
     <Compile Include="EDM\AspNetRole.cs">
       <DependentUpon>BookPool.tt</DependentUpon>

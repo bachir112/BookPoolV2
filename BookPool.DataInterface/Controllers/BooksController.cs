@@ -34,12 +34,15 @@ namespace BookPool.DataInterface.Controllers
                     StringBuilder httpRoute = new StringBuilder();
                     httpRoute.Append("?");
                     httpRoute.AppendFormat("q={0}", query);
+                    httpRoute.Append("&");
+                    httpRoute.Append("maxResults=40");
 
                     var response = await client.GetAsync(httpRoute.ToString());
                     if (response.IsSuccessStatusCode)
                     {
                         googleResult = await response.Content.ReadAsAsync<GoogleBooksResult>();
                         googleBooksResult = googleResult.items.ToList<GoogleBook>();
+                        //googleBooksResult = googleBooksResult.Where(x => x.volumeInfo.industryIdentifiers.type.ToLower() != "other").Select(x => x).ToList();
                     }
                 }
 
@@ -50,6 +53,7 @@ namespace BookPool.DataInterface.Controllers
 
                                 select new BookPoolResult
                                 {
+                                    ID = availableBooks.ID,
                                     Academic = availableBooks.Academic,
                                     BookConditionID = availableBooks.BookConditionID,
                                     BookLanguageID = availableBooks.BookLanguageID,

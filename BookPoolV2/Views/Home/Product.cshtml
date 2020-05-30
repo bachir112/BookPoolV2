@@ -1,39 +1,46 @@
-﻿
+﻿@using BookPool.DataObjects.DTO
+@using BookPool.DataObjects.DTO
+@using System;
+@using System.Globalization;
 
-<div class="row">
-    <div class="col s12 m12 l12">
-        <h5>PRODUCT NAME</h5>
-    </div>
-</div>
+@{
+    List<BookPoolResult> suggestedBooks = new List<BookPoolResult>();
+    if (ViewBag.SuggestedBooks != null)
+    {
+        suggestedBooks = ViewBag.SuggestedBooks as List<BookPoolResult>;
+    }
 
-<div class="row" style="margin-bottom:75px;">
+    BookPoolResult availableBook = ViewBag.AvailableBook as BookPoolResult;
+}
+
+<div class="row" style="margin-bottom:75px;margin-top:50px;">
     <div class="selectedProduct col s12 m12 l12">
         <div class="card">
             <div class="card-image col s12 m3 l3" style="padding:0px;">
 
                 <div class="carousel carousel-slider" style="overflow:hidden;">
                     <a class="carousel-item active" href="#one!">
-                        <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg">
+                        <img src="@availableBook.ImageURL">
                     </a>
                     <a class="carousel-item" href="#two!">
-                        <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg">
+                        <img src="@availableBook.ImageURL">
                     </a>
                     <a class="carousel-item" href="#three!">
-                        <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg">
+                        <img src="@availableBook.ImageURL">
                     </a>
                     <a class="carousel-item" href="#four!">
-                        <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg">
+                        <img src="@availableBook.ImageURL">
                     </a>
                     <a class="carousel-item" href="#four!">
-                        <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg">
+                        <img src="@availableBook.ImageURL">
                     </a>
                     <a class="carousel-item" href="#four!">
-                        <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg">
+                        <img src="@availableBook.ImageURL">
                     </a>
                 </div>
 
                 <a class="btn-floating waves-effect waves-light white" style="text-align: center;color: white;background-color: #60842D!important;">
-                    4.1
+                    @availableBook.AverageRating
                 </a>
 
                 <a class="btn-floating halfway-fab waves-effect waves-light white" style="bottom:-40px;">
@@ -47,8 +54,7 @@
                             <p style="margin-top:15px; font-size:18px;">
                                 <span style="display: flex;">
                                     <i class="fa fa-book" aria-hidden="true" style="padding-right:10px;padding-top:5px;"></i>
-                                    @*<i class="material-icons" style="padding-right:10px;">info_outline</i>*@
-                                    An economist walks into a brothel
+                                    @availableBook.BookName
                                 </span>
                             </p>
                         </div>
@@ -57,7 +63,7 @@
                                 <span style="display: flex;">
                                     <i class="fa fa-pencil-square" aria-hidden="true" style="padding-right:10px;padding-top:5px;"></i>
                                     @*<i class="material-icons" style="padding-right:10px;">info_outline</i>*@
-                                    Allison Schrager
+                                    @string.Join(",", availableBook.Authors)
                                 </span>
                             </p>
                         </div>
@@ -65,7 +71,7 @@
                             <p style="margin-top:15px; font-size:18px;">
                                 <span style="display: flex;">
                                     <i class="fa fa-money" aria-hidden="true" style="padding-right:10px;padding-top:5px;"></i>
-                                    30,000LL
+                                    @availableBook.Price.ToString("C0", CultureInfo.CurrentCulture) L.L.
                                 </span>
                             </p>
                         </div>
@@ -98,7 +104,7 @@
                         <div class="row gotouserbooks" style="text-align: center; color: var(--primaryGrey);">
                             <i class="material-icons" style="font-size: 50px; width:100%;">streetview</i>
                             <span>All books for sale by:</span>
-                            <span style="font-weight:bold;">Bachir Nasser</span>
+                            <span style="font-weight:bold;">@availableBook.OwnerUserID</span>
                         </div>
                         <hr style="display:none;" class="hiddenHR">
                     </div>
@@ -120,7 +126,7 @@
                         <div class="card-stacked" style="width:100%;">
                             <div class="card-content" style="padding:20px;">
                                 <span>
-                                    2019-04-02
+                                    @availableBook.PublishedDate
                                 </span>
                             </div>
                         </div>
@@ -138,7 +144,7 @@
                         <div class="card-stacked" style="width:100%;">
                             <div class="card-content" style="padding:20px;">
                                 <span>
-                                    Penguin
+                                    @availableBook.Publisher
                                 </span>
                             </div>
                         </div>
@@ -156,7 +162,7 @@
                         <div class="card-stacked" style="width:100%;">
                             <div class="card-content" style="padding:20px;">
                                 <span>
-                                    240
+                                    @availableBook.PageCount
                                 </span>
                             </div>
                         </div>
@@ -173,7 +179,7 @@
                     <div class="card horizontal" style="margin:auto;">
                         <div class="card-stacked" style="width:100%;">
                             <div class="card-content" style="padding:20px;">
-                                <a href="http://books.google.com.lb/books?id=lUBkDwAAQBAJ&printsec=frontcover&dq=an+economist+walks+into+a+brothel&hl=&cd=1&source=gbs_api" target="_blank">Click here</a>
+                                <a href="@availableBook.PreviewLink" target="_blank">Click here</a>
                             </div>
                         </div>
                     </div>
@@ -190,7 +196,7 @@
                         <div class="card-stacked" style="width:100%;">
                             <div class="card-content" style="padding:20px;">
                                 <span>
-                                    Business & Economics
+                                    @string.Join(",", availableBook.Categories)
                                 </span>
                             </div>
                         </div>
@@ -211,7 +217,7 @@
                         <div class="card-stacked" style="width:100%;">
                             <div class="card-content" style="padding:20px;">
                                 <span>
-                                    Is it worth swimming in shark-infested waters to surf a 50-foot, career-record wave? Is it riskier to make an action movie or a horror movie? Should sex workers forfeit 50 percent of their income for added security or take a chance and keep the extra money? Most people wouldn't expect an economist to have an answer to these questions--or to other questions of daily life, such as who to date or how early to leave for the airport. But those people haven't met Allison Schrager, an economist and award-winning journalist who has spent her career examining how people manage risk in their lives and careers. Whether we realize it or not, we all take risks large and small every day. Even the most cautious among us cannot opt out--the question is always which risks to take, not whether to take them at all. What most of us don't know is how to measure those risks and maximize the chances of getting what we want out of life. In An Economist Walks into a Brothel, Schrager equips readers with five principles for dealing with risk, principles used by some of the world's most interesting risk takers. For instance, she interviews a professional poker player about how to stay rational when the stakes are high, a paparazzo in Manhattan about how to spot different kinds of risk, horse breeders in Kentucky about how to diversify risk and minimize losses, and a war general who led troops in Iraq about how to prepare for what we don't see coming. When you start to look at risky decisions through Schrager's new framework, you can increase the upside to any situation and better mitigate the downside.
+                                    @availableBook.Description
                                 </span>
                             </div>
                         </div>
@@ -231,25 +237,23 @@
         </h5>
     </div>
 
-    @Html.Partial("_AvailableBook")
-
-    @Html.Partial("_UnavailableBook")
-
-    @Html.Partial("_UnavailableBook")
-
-    @Html.Partial("_UnavailableBook")
-
-    @Html.Partial("_UnavailableBook")
-
-    @Html.Partial("_UnavailableBook")
-
-    @Html.Partial("_UnavailableBook")
-
-    @Html.Partial("_UnavailableBook")
-
-    @Html.Partial("_UnavailableBook")
-
-    @Html.Partial("_UnavailableBook")
+    @{
+        foreach (var book in suggestedBooks)
+        {
+            if (book.OwnerUserID == null)
+            {
+                <div class="col s12 m6 l4" style="height:250px;">
+                    @Html.Partial("_UnavailableBook", book)
+                </div>
+            }
+            else
+            {
+                <div class="col s12 m6 l4">
+                    @Html.Partial("_AvailableBook", book)
+                </div>
+            }
+        }
+    }
 
 </div>
 

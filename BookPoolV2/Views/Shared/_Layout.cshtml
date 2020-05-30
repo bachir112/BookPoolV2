@@ -159,16 +159,13 @@
                     <div class="col s12 m12 l12">
                         <div class="sectionnav">
                             <div class="nav-wrapper">
-                                <form>
-                                    <div class="input-field" style="margin-top:5px;">
-                                        <input id="search" type="search" required placeholder="Search">
-                                        <label class="label-icon" for="search">
-                                            <i class="material-icons" style="color:var(--primaryGrey) !important">search</i>
-                                        </label>
-                                        <a href="#!" class="modal-close waves-effect btn-flat searchGoButton">Go</a>
-                                        @*<i class="material-icons" style="color:var(--primaryGrey) !important">close</i>*@
-                                    </div>
-                                </form>
+                                <div class="input-field" style="margin-top:5px;">
+                                    <input id="searchInput" type="search" required placeholder="Search">
+                                    <label class="label-icon" for="search">
+                                        <i class="material-icons" style="color:var(--primaryGrey) !important">search</i>
+                                    </label>
+                                    <a href="#!" class="modal-close waves-effect btn-flat searchGoButton">Go</a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -275,27 +272,6 @@
         </form>
     </div>
 
-    @*<div id="mainSearchBar" style="background:white; height:55px; padding-top:5px;">
-            <div class="row searchBar">
-                <div class="col s12 m12 l12">
-                    <div class="sectionnav">
-                        <div class="nav-wrapper">
-                            <form>
-                                <div class="input-field" style="margin-top:5px;">
-                                    <input id="search" type="search" required placeholder="What are you browsing for?">
-                                    <label class="label-icon" for="search">
-                                        <i class="material-icons" style="color:var(--primaryGrey) !important">search</i>
-                                    </label>
-                                    <i class="material-icons" style="color:var(--primaryGrey) !important">close</i>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>*@
-
     <div class="content">
         @RenderBody()
     </div>
@@ -378,8 +354,8 @@
         }
 
         $(document).on('click', '.gotoproduct', function () {
-            var category = $(this).data('data-productId');
-            var url = '@Url.Action("Product","Home")';
+            var bookID = $(this).attr('data-BookID');
+            var url = '@Url.Action("Product","Home")?query=@ViewBag.Query' + '&bookID=' + bookID;
             window.location = url;
         });
 
@@ -465,6 +441,22 @@
             });
 
         });
+
+        $('#searchInput').keyup(function (e) {
+            if (e.keyCode == 13) {
+                searchForBook();
+            }
+        });
+
+        $(document).on('click', '.searchGoButton', function () {
+            searchForBook();
+        });
+
+        function searchForBook() {
+            var query = $('#searchInput').val();
+            var url = '@Url.Action("Index","Home")?query=' + query;
+            window.location = url;
+        }
 
     </script>
 

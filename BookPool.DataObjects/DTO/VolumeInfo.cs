@@ -14,6 +14,7 @@ namespace BookPool.DataObjects.DTO
         public string publisher { get; set; }
         public string publishedDate { get; set; }
         public string description { get; set; }
+        //public IndustryIdentifiers industryIdentifiers { get; set; }
         public int pageCount { get; set; }
         public string printType { get; set; }
         public List<string> categories { get; set; }

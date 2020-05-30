@@ -1,32 +1,41 @@
 ﻿@using BookPool.DataObjects.DTO
+@using System;
+@using System.Globalization;
 
 @model BookPoolResult
 
-<div class="col s12 m6 l4" style="overflow-x:auto; overflow-y:hidden;margin:10px 0;">
-    <div class="card gotoproduct" style="box-shadow:none; -webkit-box-shadow:none; max-width:400px;">
-        <div class="card-horizontal" style="height:150px;overflow: hidden;">
-            <div class="img-square-wrapper" style="width: 100px;">
-                <img class="smallImage" src="@Model.ImageURL" alt="@Model.BookName">
-            </div>
-            <div class="card-body">
-                <div style="width:100%;">
-                    <div style="float:left;height: 100px;width: 100%;padding-right: 15px;">
-                        <h5 class="card-title" style="padding-top:0px;margin-top:0px;margin-bottom:0px;color: black;font-size: 16px;">
-                            @Model.BookName
-                        </h5>
-                        <p class="card-text" style="margin-bottom:6px;margin-top:6px;color:var(--primaryGrey);">
-                            Price: @Model.Price L.L.
-                        </p>
-                        <p class="card-text" style="margin-bottom:6px;margin-top:6px; font-size:12px; color:forestgreen;">
-                            Someone wants to sell this book
-                        </p>
-                        <p class="card-text" style="margin-bottom: 0px;margin-top:6px;color:black;font-size:13px;font-weight:bold;">
-                            <i class="material-icons" style="font-size:12px;">location_on</i> Beirut
-                        </p>
-                    </div>
-                    <div style="float:right;position: absolute;right: 0;">
-                        <span class="badge" style="color:white; background-color:#82AD3A;">@Model.AverageRating</span>
-                    </div>
+<div class="card gotoproduct" style="box-shadow:none; -webkit-box-shadow:none;" data-BookID="@Model.ID">
+    <div class="card-horizontal" style="overflow: hidden;">
+        <div class="img-square-wrapper">
+            @{
+                if (Model.ImageURL == null)
+                {
+                    <img class="smallImage" src="@Url.Content("~/img/no_preview.jpg")" alt="@Model.BookName">
+                }
+                else
+                {
+                    <img class="smallImage" src="@Model.ImageURL" alt="@Model.BookName">
+                }
+            }
+        </div>
+        <div class="card-body">
+            <div style="width:100%;">
+                <div style="float:left;width: 100%;padding-right: 15px;">
+                    <h5 class="card-title" style="padding-top:0px;margin-top:0px;margin-bottom:0px;color: black;font-size: 16px;">
+                        @Model.BookName
+                    </h5>
+                    <p class="card-text" style="margin-bottom:6px;margin-top:6px;color:var(--primaryGrey);">
+                        Price: @Model.Price.ToString("C0", CultureInfo.CurrentCulture) L.L.
+                    </p>
+                    <p class="card-text" style="margin-bottom:6px;margin-top:6px; font-size:12px; color:forestgreen;">
+                        Someone wants to sell this book
+                    </p>
+                    <p class="card-text" style="margin-bottom: 0px;margin-top:6px;color:black;font-size:13px;font-weight:bold;">
+                        <i class="material-icons" style="font-size:12px;">location_on</i> Beirut
+                    </p>
+                </div>
+                <div style="float:right;position: absolute;right: 0;">
+                    <span class="badge" style="color:white; background-color:#82AD3A;">@Model.AverageRating</span>
                 </div>
             </div>
         </div>
