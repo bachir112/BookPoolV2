@@ -1,26 +1,30 @@
-﻿<!-- Modal Structure -->
-@*<div id="search-for-my-book-modal" class="modal bottom-sheet">
-    <div class="modal-content">
-        <h4>Search for my book</h4>
-        <p>
-            Bookpool will search for copies of your book in local shops and social media platforms.
-            <br />
-            We will contact you by email/phone as soon as we find it.
-        </p>
-    </div>
-    <div class="modal-footer">
-        <a href="#!" class="modal-close waves-effect waves-green btn-flat pull-left red">No, I'll search for it</a>
-        <a href="#!" class="modal-close waves-effect waves-green btn-flat green">Yes please</a>
-    </div>
-</div>*@
+﻿@using BookPool.DataObjects.DTO
+
+@{ 
+    List<BookPoolResult> books = new List<BookPoolResult>();
+    if(ViewBag.Books != null)
+    {
+        books = ViewBag.Books as List<BookPoolResult>;
+    }
+}
 
 <div class="row rowmargins">
     <div class="carousel">
-        <a class="carousel-item" href="#one!"><img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg"></a>
-        <a class="carousel-item" href="#two!"><img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg"></a>
-        <a class="carousel-item" href="#three!"><img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg"></a>
-        <a class="carousel-item" href="#four!"><img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg"></a>
-        <a class="carousel-item" href="#five!"><img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg"></a>
+        <a class="carousel-item" href="#one!">
+            <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg">
+        </a>
+        <a class="carousel-item" href="#two!">
+            <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg">
+        </a>
+        <a class="carousel-item" href="#three!">
+            <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg">
+        </a>
+        <a class="carousel-item" href="#four!">
+            <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg">
+        </a>
+        <a class="carousel-item" href="#five!">
+            <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg">
+        </a>
     </div>
 </div>
 
@@ -162,53 +166,71 @@
 
 <div class="row itemslist">
 
-    @Html.Partial("_AvailableBook")
+    @{
+        foreach (var book in books)
+        {
+            if (book.OwnerUserID == null)
+            {
+                <div>
+                    @Html.Partial("_UnavailableBook", book)
+                </div>
+            }
+            else
+            {
+                <div>
+                    @Html.Partial("_AvailableBook", book)
+                </div>
+            }
+        }
+    }
 
-    @Html.Partial("_UnavailableBook")
+    @*@Html.Partial("_AvailableBook")
 
-    @Html.Partial("_UnavailableBook")
+        @Html.Partial("_UnavailableBook")
 
-    @Html.Partial("_UnavailableBook")
+        @Html.Partial("_UnavailableBook")
 
-    @Html.Partial("_UnavailableBook")
+        @Html.Partial("_UnavailableBook")
 
-    @Html.Partial("_UnavailableBook")
+        @Html.Partial("_UnavailableBook")
 
-    @Html.Partial("_UnavailableBook")
+        @Html.Partial("_UnavailableBook")
 
-    @Html.Partial("_UnavailableBook")
+        @Html.Partial("_UnavailableBook")
 
-    @Html.Partial("_UnavailableBook")
+        @Html.Partial("_UnavailableBook")
 
-    @Html.Partial("_UnavailableBook")
+        @Html.Partial("_UnavailableBook")
 
-    @Html.Partial("_UnavailableBook")
+        @Html.Partial("_UnavailableBook")
 
-    @Html.Partial("_UnavailableBook")
+        @Html.Partial("_UnavailableBook")
 
-    @Html.Partial("_AvailableBook")
+        @Html.Partial("_UnavailableBook")
 
-    @Html.Partial("_UnavailableBook")
+        @Html.Partial("_AvailableBook")
 
-    @Html.Partial("_UnavailableBook")
+        @Html.Partial("_UnavailableBook")
 
-    @Html.Partial("_UnavailableBook")
+        @Html.Partial("_UnavailableBook")
 
-    @Html.Partial("_UnavailableBook")
+        @Html.Partial("_UnavailableBook")
 
-    @Html.Partial("_UnavailableBook")
+        @Html.Partial("_UnavailableBook")
 
-    @Html.Partial("_UnavailableBook")
+        @Html.Partial("_UnavailableBook")
 
-    @Html.Partial("_UnavailableBook")
+        @Html.Partial("_UnavailableBook")
 
-    @Html.Partial("_UnavailableBook")
+        @Html.Partial("_UnavailableBook")
 
-    @Html.Partial("_UnavailableBook")
+        @Html.Partial("_UnavailableBook")
 
-    @Html.Partial("_UnavailableBook")
+        @Html.Partial("_UnavailableBook")
 
-    @Html.Partial("_UnavailableBook")
+        @Html.Partial("_UnavailableBook")
+
+        @Html.Partial("_UnavailableBook")*@
 </div>
 
 <script>

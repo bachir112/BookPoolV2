@@ -1,15 +1,19 @@
-﻿
+﻿@using BookPool.DataObjects.DTO
+
+@model BookPoolResult
+
+
 <div class="col s12 m6 l4" style="overflow-x:auto; overflow-y:hidden;margin:10px 0;">
     <div class="card" style="box-shadow:none; -webkit-box-shadow:none; max-width:400px;">
         <div class="card-horizontal" style="height:150px;overflow: hidden;">
             <div class="img-square-wrapper" style="width: 100px;">
-                <img class="smallImage" src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg" alt="Card image cap">
+                <img class="smallImage" src="@Model.ImageURL" alt="Card image cap">
             </div>
             <div class="card-body">
                 <div style="width:100%;">
                     <div style="float:left;height: 100px;width: 100%;padding-right: 15px;">
                         <h5 class="card-title" style="padding-top:0px;margin-top:0px;margin-bottom:0px;color: black;font-size: 16px;">
-                            An economist walks into a brothel
+                            @Model.BookName
                         </h5>
                         <p class="card-text" style="margin-bottom:6px;margin-top:6px;color:var(--primaryGrey);">
                             Price: N/A
@@ -25,7 +29,7 @@
                         </p>
                     </div>
                     <div style="float:right;position: absolute;right: 0;">
-                        <span class="badge" style="color:white; background-color:#60842D;">4.1</span>
+                        <span class="badge" style="color:white; background-color:#60842D;">@Model.AverageRating</span>
                     </div>
                 </div>
             </div>
