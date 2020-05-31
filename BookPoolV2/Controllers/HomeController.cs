@@ -1,4 +1,5 @@
 ﻿using BookPool.DataObjects.DTO;
+using BookPool.DataObjects.EDM;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
@@ -37,6 +38,22 @@ namespace BookPoolV2.Controllers
                 }
             }
 
+            Dictionary<string, List<Category>> apiCategoriesResults = new Dictionary<string, List<Category>>();
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(Global.Globals.baseURL);
+                StringBuilder httpRoute = new StringBuilder();
+                httpRoute.Append("api/Values/GetCategories");
+
+                var response = await client.GetAsync(httpRoute.ToString());
+                if (response.IsSuccessStatusCode)
+                {
+                    apiCategoriesResults = await response.Content.ReadAsAsync<Dictionary<string, List<Category>>>();
+                    ViewBag.Categories = apiCategoriesResults["results"];
+                }
+            }
+
+
             return View();
         }
 
@@ -72,6 +89,51 @@ namespace BookPoolV2.Controllers
                 {
                     apiResults = await response.Content.ReadAsAsync<Dictionary<string, List<BookPoolResult>>>();
                     ViewBag.MyBooks = apiResults["results"];
+                }
+            }
+
+            Dictionary<string, List<Category>> apiCategoriesResults = new Dictionary<string, List<Category>>();
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(Global.Globals.baseURL);
+                StringBuilder httpRoute = new StringBuilder();
+                httpRoute.Append("api/Values/GetCategories");
+
+                var response = await client.GetAsync(httpRoute.ToString());
+                if (response.IsSuccessStatusCode)
+                {
+                    apiCategoriesResults = await response.Content.ReadAsAsync<Dictionary<string, List<Category>>>();
+                    ViewBag.Categories = apiCategoriesResults["results"];
+                }
+            }
+
+            Dictionary<string, List<Language>> apiLanguagesResults = new Dictionary<string, List<Language>>();
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(Global.Globals.baseURL);
+                StringBuilder httpRoute = new StringBuilder();
+                httpRoute.Append("api/Values/GetLanguages");
+
+                var response = await client.GetAsync(httpRoute.ToString());
+                if (response.IsSuccessStatusCode)
+                {
+                    apiLanguagesResults = await response.Content.ReadAsAsync<Dictionary<string, List<Language>>>();
+                    ViewBag.Languages = apiLanguagesResults["results"];
+                }
+            }
+
+            Dictionary<string, List<Condition>> apiConditionsResults = new Dictionary<string, List<Condition>>();
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(Global.Globals.baseURL);
+                StringBuilder httpRoute = new StringBuilder();
+                httpRoute.Append("api/Values/GetConditions");
+
+                var response = await client.GetAsync(httpRoute.ToString());
+                if (response.IsSuccessStatusCode)
+                {
+                    apiConditionsResults = await response.Content.ReadAsAsync<Dictionary<string, List<Condition>>>();
+                    ViewBag.Conditions = apiConditionsResults["results"];
                 }
             }
 
@@ -180,5 +242,35 @@ namespace BookPoolV2.Controllers
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+
+
+
+        [HttpPost]
+        public async Task<ActionResult> DeleteMyBook(int MyBookID)
+        {
+            Dictionary<string, bool> apiResults = new Dictionary<string, bool>();
+            bool result = false;
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(Global.Globals.baseURL);
+                StringBuilder httpRoute = new StringBuilder();
+                httpRoute.Append("api/Books/DeleteMyBook");
+                httpRoute.Append("?");
+                httpRoute.AppendFormat("UserID={0}", User.Identity.GetUserId());
+                httpRoute.Append("&");
+                httpRoute.AppendFormat("MyBookID={0}", MyBookID);
+
+                var response = await client.GetAsync(httpRoute.ToString());
+                if (response.IsSuccessStatusCode)
+                {
+                    apiResults = await response.Content.ReadAsAsync<Dictionary<string, bool>>();
+                    result = apiResults["results"];
+                }
+            }
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

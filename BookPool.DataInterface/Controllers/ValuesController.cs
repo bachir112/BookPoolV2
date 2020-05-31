@@ -1,39 +1,87 @@
-﻿using System;
+﻿using BookPool.DataObjects.EDM;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Results;
 
 namespace BookPool.DataInterface.Controllers
 {
     public class ValuesController : ApiController
     {
-        // GET api/values
-        public IEnumerable<string> Get()
+        [System.Web.Http.Route("api/Values/GetCategories")]
+        [System.Web.Http.HttpGet]
+        public JsonResult<Object> GetCategories()
         {
-            return new string[] { "value1", "value2" };
+            List<object> results = new List<object>();
+            List<Category> categories = new List<Category>();
+
+            try
+            {
+                using(var db = new BookPoolEntities())
+                {
+                    categories = db.Categories.ToList();
+                }
+
+                results.AddRange(categories);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+
+            return Json((object)new { results });
         }
 
-        // GET api/values/5
-        public string Get(int id)
+        [System.Web.Http.Route("api/Values/GetLanguages")]
+        [System.Web.Http.HttpGet]
+        public JsonResult<Object> GetLanguages()
         {
-            return "value";
+            List<object> results = new List<object>();
+            List<Language> languages = new List<Language>();
+
+            try
+            {
+                using (var db = new BookPoolEntities())
+                {
+                    languages = db.Languages.ToList();
+                }
+
+                results.AddRange(languages);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+
+            return Json((object)new { results });
         }
 
-        // POST api/values
-        public void Post([FromBody]string value)
+        [System.Web.Http.Route("api/Values/GetConditions")]
+        [System.Web.Http.HttpGet]
+        public JsonResult<Object> GetConditions()
         {
+            List<object> results = new List<object>();
+            List<Condition> conditions = new List<Condition>();
+
+            try
+            {
+                using (var db = new BookPoolEntities())
+                {
+                    conditions = db.Conditions.ToList();
+                }
+
+                results.AddRange(conditions);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+
+            return Json((object)new { results });
         }
 
-        // PUT api/values/5
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/values/5
-        public void Delete(int id)
-        {
-        }
     }
 }

@@ -355,7 +355,9 @@
 
         $(document).on('click', '.gotoproduct', function () {
             var bookID = $(this).attr('data-BookID');
-            var url = '@Url.Action("Product","Home")?query=@ViewBag.Query' + '&bookID=' + bookID;
+            var bookName = $(this).attr('data-BookName');
+
+            var url = '@Url.Action("Product","Home")?query=' + bookName + '&bookID=' + bookID;
             window.location = url;
         });
 

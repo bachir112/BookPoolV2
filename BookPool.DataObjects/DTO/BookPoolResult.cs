@@ -20,6 +20,7 @@ namespace BookPool.DataObjects.DTO
         public string Category { get; set; }
         public string GoogleID { get; set; }
         public string OwnerUserID { get; set; }
+        public string OwnerUser { get; set; }
         public string Subtitle { get; set; }
         public List<string> Authors { get; set; }
         public string Publisher { get; set; }

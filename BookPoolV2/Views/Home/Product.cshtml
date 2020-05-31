@@ -77,17 +77,17 @@
                         </div>
                         <div class="row">
                             <div style="margin-top:15px;" class="quantity buttons_added">
-                                <input type="button" value="-" class="minus"><input type="number" step="1" min="1" max="" name="quantity" value="1" title="Qty" class="input-text qty text" size="4" pattern="" inputmode=""><input type="button" value="+" class="plus">
+                                @*<input type="button" value="-" class="minus"><input type="number" step="1" min="1" max="" name="quantity" value="1" title="Qty" class="input-text qty text" size="4" pattern="" inputmode=""><input type="button" value="+" class="plus">*@
                             </div>
                         </div>
                         <div class="row" style="margin-top:15px;">
                             <div>
-                                <div class="card-panel productInfoSize" style="float:left;text-align: center;margin-right: 10px; padding:10px;">
+                                @*<div class="card-panel productInfoSize" style="float:left;text-align: center;margin-right: 10px; padding:10px;">
                                     <span>
                                         Ebook
                                     </span>
-                                </div>
-                                <div class="card-panel productInfoSize" style="float:left;text-align: center;margin-right: 10px; padding:10px;">
+                                </div>*@
+                                <div class="card-panel productInfoSize productInfoactive" style="float:left;text-align: center;margin-right: 10px; padding:10px;">
                                     <span>
                                         Hard Copy
                                     </span>
@@ -104,7 +104,7 @@
                         <div class="row gotouserbooks" style="text-align: center; color: var(--primaryGrey);">
                             <i class="material-icons" style="font-size: 50px; width:100%;">streetview</i>
                             <span>All books for sale by:</span>
-                            <span style="font-weight:bold;">@availableBook.OwnerUserID</span>
+                            <span style="font-weight:bold;">@availableBook.OwnerUser</span>
                         </div>
                         <hr style="display:none;" class="hiddenHR">
                     </div>
@@ -196,7 +196,8 @@
                         <div class="card-stacked" style="width:100%;">
                             <div class="card-content" style="padding:20px;">
                                 <span>
-                                    @string.Join(",", availableBook.Categories)
+                                    @availableBook.Category
+                                    @*@string.Join(",", availableBook.Categories)*@
                                 </span>
                             </div>
                         </div>

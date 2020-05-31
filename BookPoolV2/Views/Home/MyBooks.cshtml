@@ -1,5 +1,5 @@
 ﻿@using BookPool.DataObjects.DTO
-@using BookPool.DataObjects.DTO
+@using BookPool.DataObjects.EDM
 @using System;
 @using System.Globalization;
 
@@ -12,11 +12,29 @@
     {
         myBooks = ViewBag.MyBooks as List<BookPoolResult>;
     }
+
+    List<Category> categories = new List<Category>();
+    if (ViewBag.Categories != null)
+    {
+        categories = ViewBag.Categories as List<Category>;
+    }
+
+    List<Condition> conditions = new List<Condition>();
+    if (ViewBag.Conditions != null)
+    {
+        conditions = ViewBag.Conditions as List<Condition>;
+    }
+
+    List<Language> languages = new List<Language>();
+    if (ViewBag.Languages != null)
+    {
+        languages = ViewBag.Languages as List<Language>;
+    }
 }
 
 <style>
     .tabs .tab a:hover, .tabs .tab a.active {
-        border-left:0px;
+        border-left: 0px;
     }
 
     .carousel {
@@ -195,7 +213,7 @@
             <ul id="sellMyBookTabs" class="tabs">
                 <li class="tab col s3" style="padding:0!important;">
                     <a href="#chooseBook" style="padding:0!important;">
-                        Book?
+                        Book
                     </a>
                 </li>
                 <li class="tab col s3" style="padding:0!important;">
@@ -227,9 +245,12 @@
                     <div style="float:left;width: 100%;padding-right: 15px;">
                         <select id="bookLanguage">
                             <option>Language</option>
-                            <option value="1">English</option>
-                            <option value="2">Arabic</option>
-                            <option value="3">French</option>
+                            @{
+                                foreach (var language in languages)
+                                {
+                                    <option value="@language.ID">@language.LanguageName</option>
+                                }
+                            }
                         </select>
                     </div>
                     <div style="float:left;width: 100%;padding-right: 15px;">
@@ -242,12 +263,12 @@
                     <div style="float:left;width: 100%;padding-right: 15px;">
                         <select id="bookCategory">
                             <option>Category</option>
-                            <option value="1">Litterature</option>
-                            <option value="2">Engineering</option>
-                            <option value="3">Math</option>
-                            <option value="4">Sciences</option>
-                            <option value="5">Exam Preperation</option>
-                            <option value="6">Self-Help</option>
+                            @{
+                                foreach (var category in categories)
+                                {
+                                    <option value="@category.ID">@category.CategoryName</option>
+                                }
+                            }
                         </select>
                     </div>
                 </div>
@@ -255,6 +276,12 @@
                     <div style="float:left;width: 100%;padding-right: 15px;">
                         <select id="bookCondition">
                             <option value="">Condition</option>
+                            @{
+                                foreach (var condition in conditions)
+                                {
+                                    <option value="@condition.ID">@condition.ConditionName</option>
+                                }
+                            }
                             <option value="1">New</option>
                             <option value="2">Good</option>
                             <option value="3">Normal</option>
@@ -287,7 +314,7 @@
 
 
     @{
-        if(myBooks.Count() == 0)
+        if (myBooks.Count() == 0)
         {
             <h6>
                 You still haven't added any book to sell, please add books that you have finished reading.
@@ -331,6 +358,26 @@
         $(this).prop('checked', true);
     });
 
+    $(document).on('click', '.deleteMyBook', function () {
+
+        var myBookID = $(this).attr('data-BookID');
+
+        $.ajax({
+            url: '@Url.Action("DeleteMyBook","Home")',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                MyBookID: myBookID
+            },
+            success: function (data) {
+                location.reload();
+            },
+            error: function (request, error) {
+                location.reload();
+            }
+        });
+    });
+
     $(document).on('click', '#createAvailableBook', function () {
         var googleID = $('.booksCheckbox:checked').val();
         var bookName = $('.booksCheckbox:checked').attr('data-BookName');
@@ -339,14 +386,6 @@
         var category = $('#bookCategory').val();
         var language = $('#bookLanguage').val();
         var academic = $('#academic').val();
-
-        //console.log('googleID = ' + googleID);
-        //console.log('bookName = ' + bookName);
-        //console.log('price = ' + price);
-        //console.log('condition = ' + condition);
-        //console.log('category = ' + category);
-        //console.log('language = ' + language);
-        //console.log('academic = ' + academic);
 
         $.ajax({
             url: '@Url.Action("SellMyBook","Home")',

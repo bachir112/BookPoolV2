@@ -50,7 +50,10 @@ namespace BookPool.DataInterface.Controllers
                 {
                     dbResult = (from googleBooks in googleBooksResult
                                 join availableBooks in db.AvailableBooks on googleBooks.id equals availableBooks.GoogleID
-
+                                join categories in db.Categories on availableBooks.CategoryID equals categories.ID
+                                join conditions in db.Conditions on availableBooks.BookConditionID equals conditions.ID
+                                join languages in db.Languages on availableBooks.BookLanguageID equals languages.ID
+                                join users in db.AspNetUsers on availableBooks.OwnerUserID equals users.Id
                                 select new BookPoolResult
                                 {
                                     ID = availableBooks.ID,
@@ -61,6 +64,7 @@ namespace BookPool.DataInterface.Controllers
                                     CategoryID = availableBooks.CategoryID,
                                     GoogleID = availableBooks.GoogleID,
                                     OwnerUserID = availableBooks.OwnerUserID,
+                                    OwnerUser = users.UserName,
                                     Price = availableBooks.Price,
                                     Authors = googleBooks.volumeInfo.authors,
                                     AverageRating = googleBooks.volumeInfo.averageRating,
@@ -72,7 +76,10 @@ namespace BookPool.DataInterface.Controllers
                                     PrintType = googleBooks.volumeInfo.printType,
                                     PublishedDate = googleBooks.volumeInfo.publishedDate,
                                     Publisher = googleBooks.volumeInfo.publisher,
-                                    Subtitle = googleBooks.volumeInfo.subtitle
+                                    Subtitle = googleBooks.volumeInfo.subtitle,
+                                    BookCondition = conditions.ConditionName,
+                                    BookLanguage = languages.LanguageName,
+                                    Category = categories.CategoryName
                                 }).ToList();
                 }
 
@@ -237,6 +244,32 @@ namespace BookPool.DataInterface.Controllers
                 using(var db = new BookPoolEntities())
                 {
                     db.AvailableBooks.Add(availableBook);
+                    db.SaveChanges();
+                }
+
+                result = true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+
+            return Json((object)new { result });
+        }
+
+
+        [System.Web.Http.Route("api/Books/DeleteMyBook")]
+        [System.Web.Http.HttpGet]
+        public JsonResult<Object> DeleteMyBook(string UserID, int MyBookID)
+        {
+            bool result = false;
+
+            try
+            {
+                using (var db = new BookPoolEntities())
+                {
+                    AvailableBook availableBook = db.AvailableBooks.First(x => x.OwnerUserID == UserID && x.ID == MyBookID);
+                    db.AvailableBooks.Remove(availableBook);
                     db.SaveChanges();
                 }
 
