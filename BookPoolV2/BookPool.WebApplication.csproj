@@ -452,6 +452,7 @@
     <Content Include="Views\Shared\_UnavailableBook.cshtml" />
     <Content Include="Views\Shared\_AvailableMagazine.cshtml" />
     <Content Include="Views\Shared\_UnavailableMagazine.cshtml" />
+    <Content Include="Views\Shared\_MyBook.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

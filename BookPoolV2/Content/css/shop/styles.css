@@ -52,7 +52,7 @@ body{
 }
 
 span.badge {
-    line-height: 16px;
+    line-height: 14px;
     padding: 4px;
     min-width: 0px;
     border-radius: 5px;
@@ -60,7 +60,7 @@ span.badge {
 
 .itemslist .card .card-body {
     margin-left: 10px;
-    height: 100px;
+    /*height: 100px;*/
     width: 100%;
     padding-right: 30px;
 }

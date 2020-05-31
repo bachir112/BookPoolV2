@@ -55,8 +55,26 @@ namespace BookPoolV2.Controllers
             return View();
         }
 
-        public ActionResult MyBooks()
+        public async Task<ActionResult> MyBooks()
         {
+            Dictionary<string, List<BookPoolResult>> apiResults = new Dictionary<string, List<BookPoolResult>>();
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(Global.Globals.baseURL);
+                StringBuilder httpRoute = new StringBuilder();
+                httpRoute.Append("api/Books/GetMyBooks");
+                httpRoute.Append("?");
+                httpRoute.AppendFormat("UserID={0}", User.Identity.GetUserId());
+
+                var response = await client.GetAsync(httpRoute.ToString());
+                if (response.IsSuccessStatusCode)
+                {
+                    apiResults = await response.Content.ReadAsAsync<Dictionary<string, List<BookPoolResult>>>();
+                    ViewBag.MyBooks = apiResults["results"];
+                }
+            }
+
             return View();
         }
         
@@ -92,6 +110,75 @@ namespace BookPoolV2.Controllers
         public ActionResult MyOrders()
         {
             return View();
+        }
+
+        public async Task<ActionResult> FindMyBook(string query = null)
+        {
+            Dictionary<string, List<BookPoolResult>> apiResults = new Dictionary<string, List<BookPoolResult>>();
+            List<BookPoolResult> result = new List<BookPoolResult>();
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(Global.Globals.baseURL);
+                StringBuilder httpRoute = new StringBuilder();
+                httpRoute.Append("api/Books/GetBooks");
+                httpRoute.Append("?");
+                httpRoute.AppendFormat("query={0}", query);
+
+                var response = await client.GetAsync(httpRoute.ToString());
+                if (response.IsSuccessStatusCode)
+                {
+                    apiResults = await response.Content.ReadAsAsync<Dictionary<string, List<BookPoolResult>>>();
+                    result = apiResults["results"];
+                }
+            }
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> SellMyBook(string googleID, 
+                                                   string bookName, 
+                                                   string price, 
+                                                   string condition, 
+                                                   string category,
+                                                   string language, 
+                                                   string academic)
+        {
+            Dictionary<string, List<BookPoolResult>> apiResults = new Dictionary<string, List<BookPoolResult>>();
+            List<BookPoolResult> result = new List<BookPoolResult>();
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(Global.Globals.baseURL);
+                StringBuilder httpRoute = new StringBuilder();
+                httpRoute.Append("api/Books/SellMyBook");
+                httpRoute.Append("?");
+                httpRoute.AppendFormat("UserID={0}", User.Identity.GetUserId());
+                httpRoute.Append("&");
+                httpRoute.AppendFormat("GoogleID={0}", googleID);
+                httpRoute.Append("&");
+                httpRoute.AppendFormat("BookName={0}", bookName);
+                httpRoute.Append("&");
+                httpRoute.AppendFormat("Price={0}", price);
+                httpRoute.Append("&");
+                httpRoute.AppendFormat("Condition={0}", condition);
+                httpRoute.Append("&");
+                httpRoute.AppendFormat("Category={0}", category);
+                httpRoute.Append("&");
+                httpRoute.AppendFormat("Language={0}", language);
+                httpRoute.Append("&");
+                httpRoute.AppendFormat("Academic={0}", academic);
+
+                var response = await client.GetAsync(httpRoute.ToString());
+                if (response.IsSuccessStatusCode)
+                {
+                    apiResults = await response.Content.ReadAsAsync<Dictionary<string, List<BookPoolResult>>>();
+                    result = apiResults["results"];
+                }
+            }
+
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
     }
 }

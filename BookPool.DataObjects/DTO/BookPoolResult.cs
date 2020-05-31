@@ -12,9 +12,12 @@ namespace BookPool.DataObjects.DTO
         public string BookName { get; set; }
         public decimal Price { get; set; }
         public int BookConditionID { get; set; }
+        public string BookCondition { get; set; }
         public int BookLanguageID { get; set; }
+        public string BookLanguage { get; set; }
         public bool Academic { get; set; }
         public int CategoryID { get; set; }
+        public string Category { get; set; }
         public string GoogleID { get; set; }
         public string OwnerUserID { get; set; }
         public string Subtitle { get; set; }

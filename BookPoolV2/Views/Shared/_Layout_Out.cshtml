@@ -18,7 +18,7 @@
     <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp" rel="stylesheet">
     <link type="text/css" href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
     <link type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="manifest" href="/manifest.json">
+    @*<link rel="manifest" href="/manifest.json">*@
     <!-- ios support -->
     <link rel="apple-touch-icon" href="/img/icons/icon-96x96.png">
     <meta name="apple-mobile-web-app-status-bar" content="#FFE1C4">
@@ -41,7 +41,7 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600&display=swap" rel="stylesheet">
     <meta name="theme-color" content="#FFE1C4" />
-    <link rel="manifest" href="/manifest.webmanifest" />
+    @*<link rel="manifest" href="/manifest.webmanifest" />*@
 </head>
 
 <body class="white lighten-4">
@@ -206,28 +206,6 @@
 
     <script type="text/javascript">
 
-        $(document).ready(function () {
-
-            window.onscroll = function () { stickTotalBars() };
-
-            var totalhHeader = document.getElementById("totalAmountContainer");
-            var stickyTotal = totalhHeader.offsetTop;
-
-            function stickTotalBars() {
-                console.log(stickyTotal);
-                if (window.pageYOffset > stickyTotal) {
-                    totalhHeader.classList.add("stickySearchBar");
-                } else {
-                    totalhHeader.classList.remove("stickySearchBar");
-                }
-            }
-
-        });
-
-    </script>
-
-    <script type="text/javascript">
-
         $('#mainSearchBar').hide();
         $('#mainSortByFilter').hide();
         $('#locationContainer').hide();
@@ -235,7 +213,7 @@
 
         $(document).ready(function () {
 
-            productsSection_active();
+            //productsSection_active();
             $('#filtersClickableTag').addClass('active');
 
         });
@@ -288,17 +266,11 @@
 
     <div class="navbarFooter" style="box-shadow: 0px 0 10px rgba(0, 0, 0, 0.8);">
         <div id="innerFooterContainer" style="margin:auto;">
-            <a href="/" class="active">
-                <i id="itemsPageFooter" class="fa fa-book" aria-hidden="true" style="color: var(--primaryGrey);"></i>
-                @*<i id="itemsPageFooter" class="material-icons-outlined" style="color: var(--primaryGrey);">shopping_basket</i>*@
+            <a id="books-section-navigator" href="@Url.Action("Index","Home")">
+                <i class="fa fa-book" aria-hidden="true" style="color: var(--primaryGrey);"></i>
             </a>
-            <a href="/Shops">
-                <i id="shopsPageFooter" class="fa fa-newspaper-o" aria-hidden="true" style="color: var(--primaryGrey);"></i>
-                @*<i id="shopsPageFooter" class="material-icons-outlined" style="color: var(--primaryGrey);">store</i>*@
-            </a>
-            <a href="/Maps">
-                <i id="mapsPageFooter" class="fa fa-university" aria-hidden="true" style="color: var(--primaryGrey);"></i>
-                @*<i id="mapsPageFooter" class="material-icons-outlined" style="color: var(--primaryGrey);">map</i>*@
+            <a id="academic-section-navigator" href="@Url.Action("Index","Academic")">
+                <i class="fa fa-university" aria-hidden="true" style="color: var(--primaryGrey);"></i>
             </a>
         </div>
     </div>
@@ -330,14 +302,15 @@
         }
 
         $(document).on('click', '.gotoproduct', function () {
-            var category = $(this).data('data-productId');
-            var url = '/Products/Product';
+            var bookID = $(this).attr('data-BookID');
+            var url = '@Url.Action("Product","Home")?query=@ViewBag.Query' + '&bookID=' + bookID;
             window.location = url;
         });
 
-        $(document).on('click', '.gotoshop', function () {
+        $(document).on('click', '.gotouserbooks', function () {
+            console.log('Here');
             var shopId = $(this).data('data-shopId');
-            var url = '/Shops/Shop';
+            var url = '@Url.Action("FilteredProducts","Home")';
             window.location = url;
         });
 
