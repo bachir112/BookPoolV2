@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using BookPoolV2.Models
+@using Microsoft.AspNet.Identity
+
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -21,6 +24,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/11.1.0/nouislider.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/11.1.0/nouislider.min.css" />
+    <script src="https://kit.fontawesome.com/1afc59ddd6.js" crossorigin="anonymous"></script>
 
     <!--fonts-->
     <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed&display=swap" rel="stylesheet">
@@ -33,6 +37,29 @@
     <link rel="manifest" href="/manifest.webmanifest" />
 
     <style>
+        #side-form {
+            z-index: 2147483647 !important
+        }
+
+        .media-buttons .btn:hover {
+            background-color: #445c8e;
+        }
+
+        .media-buttons .btn {
+            margin: 0;
+            display: inline-block;
+            font-size: 11px;
+            width: 100%;
+        }
+
+        .media-buttons button i {
+            padding-right: 15px;
+        }
+
+        button.facebook {
+            background-color: #445c8e;
+        }
+
         .modal {
             z-index: 2147483647 !important;
             max-height: inherit !important;
@@ -85,7 +112,6 @@
         .side-menu {
             z-index: 2147483646 !important;
         }
-
     </style>
 
 
@@ -124,14 +150,30 @@
     <div id="mainSearchBar" style="background:white;">
         <nav id="locationMainHeader" class="z-depth-0 titlenav">
             <div class="nav-wrapper container">
-                <div id="locationContainer">
-                    <a class="sidenav-trigger" style="display:inherit; width:30px; color:var(--primaryRed); cursor:pointer;" data-target="side-form">
-                        <i class="material-icons">location_on</i>
-                    </a>
-                    <a class="sidenav-trigger" style="display:inherit; margin-left:0px; cursor:pointer;" data-target="side-form">
-                        <span style="font-family:AvenirNextBold;">Bachir's Home</span>
-                    </a>
-                </div>
+                @{
+                    if (Request.IsAuthenticated)
+                    {
+                        <div id="locationContainer">
+                            <a class="sidenav-trigger" style="display:inherit; width:30px; color:var(--primaryRed); cursor:pointer;" data-target="side-form">
+                                <i class="material-icons">location_on</i>
+                            </a>
+                            <a class="sidenav-trigger" style="display:inherit; margin-left:0px; cursor:pointer;" data-target="side-form">
+                                <span style=" font-family: AvenirNextBold;">Bachir's Home</span>
+                            </a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div>
+                            <a class="sidenav-trigger" style="display:inherit; width:30px; color:var(--primaryRed); cursor:pointer;" data-target="side-menu">
+                                <i class="material-icons">location_on</i>
+                            </a>
+                            <a class="sidenav-trigger" style="display:inherit; margin-left:0px; cursor:pointer;" data-target="side-menu">
+                                <span style=" font-family: AvenirNextBold;">Delivering to</span>
+                            </a>
+                        </div>
+                    }
+                }
                 <div id="goToHomeContainer" style="display:none;">
                     <a href="/" class="sidenav-trigger" style="display:inherit; width:30px; color:var(--primaryRed); cursor:pointer;">
                         <i class="material-icons">keyboard_arrow_left</i>
@@ -153,7 +195,7 @@
             </div>
 
         </nav>
-        <nav class="z-depth-0 titlenav">
+        <nav id="searchBooksContainer" class="z-depth-0 titlenav">
             <div class="nav-wrapper container" style="background:white; height:55px; padding-top:5px;">
                 <div class="row searchBar">
                     <div class="col s12 m12 l12">
@@ -176,101 +218,9 @@
 
     </div>
 
+    @Html.Partial("_UsersMenu")
 
-    <ul id="side-menu" class="sidenav side-menu">
-        <li>
-            <div class="user-view">
-                <a style="">
-                    <img class="circle" style="margin:auto;" src="img/icons/user_icon.png">
-                </a>
-                <a style="text-align:center;">
-                    <span class="black-text name">@User.Identity.Name</span>
-                </a>
-            </div>
-        </li>
-        <li>
-            <a href="@Url.Action("MyWishes","Home")" class="waves-effect">
-                My Wishes
-                <i class="material-icons float-right">arrow_right</i>
-            </a>
-        </li>
-        <li>
-            <a href="@Url.Action("MyBooks","Home")" class="waves-effect">
-                My Books
-                <i class="material-icons float-right">arrow_right</i>
-            </a>
-        </li>
-        <li>
-            <a href="@Url.Action("MyOrders","Home")" class="collapsible-header waves-effect">
-                My Orders
-                <i class="material-icons float-right">arrow_right</i>
-            </a>
-        </li>
-        <li>
-            <a href="@Url.Action("About","Home")" class="waves-effect">
-                About
-                <i class="material-icons float-right">arrow_right</i>
-            </a>
-        </li>
-        <li><div class="divider"></div></li>
-        <li>
-            <a href="/Home/Contact" class="waves-effect">
-                <i class="material-icons">mail_outline</i>Contact Us
-            </a>
-        </li>
-    </ul>
-
-    <div id="side-form" class="sidenav side-form">
-        <form class="add-recipe container section">
-            <h6>Saved Addresses</h6>
-            <div class="row">
-                <div class="col s12 m12" style="padding:0!important;">
-                    <div class="card">
-                        <div class="card-content" style="padding:10px;">
-                            <span class="card-title" style="line-height:10px; font-size:15px; font-weight:500;">
-                                Home
-                                <i class="material-icons" style="font-size:22px; line-height:12px; color:var(--primaryRed); float:right;">location_on</i>
-                            </span>
-                            <p style="        font-size: 12px;
-">
-                                Furn el Chebbek, Tohwita, Malaab al baladi street, Raymond semaan building, 6th floor, Georges Nasser Appartment
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col s12 m12" style="padding:0!important;">
-                    <div class="card">
-                        <div class="card-content" style="padding:10px;">
-                            <span class="card-title" style="line-height:10px; font-size:15px; font-weight:500;">
-                                Sarah's
-                                <i class="material-icons" style="font-size:22px; line-height:12px; color:var(--title); float:right;">location_on</i>
-                            </span>
-                            <p style="font-size:12px;">
-                                Adma, Blue street, Next to old LBC, 536 Bulding, 6th floor.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="divider"></div>
-
-            <h6>New Address</h6>
-            <div class="input-field">
-                <input id="address_name" placeholder="e.g. Home, Work" type="text" class="validate" data-length="50">
-                <label for="address_name">Address Name</label>
-            </div>
-            <div class="input-field">
-                <input id="address_full" placeholder="e.g. Town, Street, Building" type="text" class="validate" data-length="250">
-                <label for="address_full">Full Address</label>
-            </div>
-            <div class="input-field center">
-                <button class="btn-small">Add</button>
-            </div>
-        </form>
-    </div>
+    @Html.Partial("_PartialUsersLocation")
 
     <div class="content">
         @RenderBody()
@@ -459,6 +409,10 @@
             var url = '@Url.Action("Index","Home")?query=' + query;
             window.location = url;
         }
+
+        $(document).on('click', '#addUserAddress', function () {
+
+        });
 
     </script>
 

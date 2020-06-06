@@ -8,6 +8,25 @@ namespace BookPoolV2.Models
         [Required]
         [Display(Name = "Email")]
         public string Email { get; set; }
+
+        [Required]
+        [Display(Name = "Phone Number")]
+        public string PhoneNumber { get; set; }
+
+        [Display(Name = "FirstName")]
+        public string FirstName { get; set; }
+
+        [Display(Name = "LastName")]
+        public string LastName { get; set; }
+
+        [Display(Name = "Birthday")]
+        public string Birthday { get; set; }
+
+        [Display(Name = "Gender")]
+        public string Gender { get; set; }
+
+        [Display(Name = "Picture")]
+        public string Picture { get; set; }
     }
 
     public class ExternalLoginListViewModel

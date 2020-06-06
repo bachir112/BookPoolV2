@@ -9,6 +9,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using BookPoolV2.Models;
+using BookPoolV2.Global;
+using BookPoolV2.Classes;
 
 namespace BookPoolV2.Controllers
 {
@@ -330,6 +332,15 @@ namespace BookPoolV2.Controllers
 
             // Sign in the user with this external login provider if the user already has a login
             var result = await SignInManager.ExternalSignInAsync(loginInfo, isPersistent: false);
+
+            var claim = (loginInfo.ExternalIdentity as ClaimsIdentity).FindFirst("urn:facebook:access_token");
+            string accessToken = string.Empty;
+            if (claim != null)
+                accessToken = claim.Value;
+
+            FacebookGraphAPI fga = new FacebookGraphAPI(accessToken, Global.Globals.FacebookGraphAPIBaseUrl, "me", Global.Globals.DefaultFacebookFields);
+            FacebookAccount facebookAccountInfo = await fga.GetUserInfo(fga);
+
             switch (result)
             {
                 case SignInStatus.Success:
@@ -343,7 +354,7 @@ namespace BookPoolV2.Controllers
                     // If the user does not have an account, then prompt the user to create an account
                     ViewBag.ReturnUrl = returnUrl;
                     ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
-                    return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
+                    return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email, Birthday = facebookAccountInfo.Birthday, FirstName = facebookAccountInfo.First_Name, LastName = facebookAccountInfo.Last_Name, Gender = facebookAccountInfo.Gender, Picture = facebookAccountInfo.Picture });
             }
         }
 

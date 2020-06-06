@@ -170,6 +170,7 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Classes\FacebookAccount.cs" />
     <Compile Include="Controllers\AcademicController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CheckoutController.cs" />
@@ -179,6 +180,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Global\FacebookGraphAPI.cs" />
     <Compile Include="Global\Globals.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -453,6 +455,8 @@
     <Content Include="Views\Shared\_AvailableMagazine.cshtml" />
     <Content Include="Views\Shared\_UnavailableMagazine.cshtml" />
     <Content Include="Views\Shared\_MyBook.cshtml" />
+    <Content Include="Views\Shared\_PartialUsersLocation.cshtml" />
+    <Content Include="Views\Shared\_UsersMenu.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -6,6 +6,7 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Owin;
 using BookPoolV2.Models;
+using System.Threading.Tasks;
 
 namespace BookPoolV2
 {
@@ -53,6 +54,27 @@ namespace BookPoolV2
             //app.UseTwitterAuthentication(
             //   consumerKey: "",
             //   consumerSecret: "");
+
+            var facebookOptions = new Microsoft.Owin.Security.Facebook.FacebookAuthenticationOptions()
+            {
+                AppId = "571875340131395",
+                AppSecret = "279cbbfcf505ab7eb0566936796007cb",
+                Provider = new Microsoft.Owin.Security.Facebook.FacebookAuthenticationProvider()
+                {
+                    OnAuthenticated = (context) =>
+                    {
+                        context.Identity.AddClaim(new System.Security.Claims.Claim("urn:facebook:access_token", context.AccessToken, "Facebook"));
+                        context.Identity.AddClaim(new System.Security.Claims.Claim("urn:facebook:email", context.Email, "Facebook"));
+                        context.Identity.AddClaim(new System.Security.Claims.Claim("urn:facebook:email", context.Email, "Facebook"));
+                        return Task.FromResult(0);
+                    }
+                }
+
+            };
+
+            facebookOptions.Scope.Add("email");
+
+            app.UseFacebookAuthentication(facebookOptions);
 
             //app.UseFacebookAuthentication(
             //   appId: "",

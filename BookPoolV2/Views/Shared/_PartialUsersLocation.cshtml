@@ -1,0 +1,64 @@
+﻿@using BookPool.DataObjects.EDM
+
+@{ 
+    List<UsersAddress> userAddresses = ViewBag.UserAddresses as List<UsersAddress>;
+}
+
+
+<div id="side-form" class="sidenav side-form">
+    <form class="add-recipe container section">
+        <h6>Saved Addresses</h6>
+        @{
+            foreach (var address in userAddresses)
+            {
+                string selected = address.DeliveringTo == true ? "var(--primaryRed)" : "var(--title)";
+                <div class="row">
+                    <div class="col s12 m12" style="padding:0!important;">
+                        <div class="card">
+                            <div class="card-content" style="padding:10px;">
+                                <span class="card-title" style="line-height:10px; font-size:15px; font-weight:500;">
+                                    @address.AddressTitle
+                                    <i class="material-icons" style="font-size:22px; line-height:12px; color:@selected; float:right;">location_on</i>
+                                </span>
+                                <p style="font-size: 12px;">
+                                    @address.Address
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        @*<div class="row">
+            <div class="col s12 m12" style="padding:0!important;">
+                <div class="card">
+                    <div class="card-content" style="padding:10px;">
+                        <span class="card-title" style="line-height:10px; font-size:15px; font-weight:500;">
+                            Sarah's
+                            <i class="material-icons" style="font-size:22px; line-height:12px; color:var(--title); float:right;">location_on</i>
+                        </span>
+                        <p style="font-size:12px;">
+                            Adma, Blue street, Next to old LBC, 536 Bulding, 6th floor.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+
+        <div class="divider"></div>
+
+        <h6>New Address</h6>
+        <div class="input-field">
+            <input id="address_name" placeholder="e.g. Home, Work" type="text" class="validate" data-length="50">
+            <label for="address_name">Address Name</label>
+        </div>
+        <div class="input-field">
+            <input id="address_full" placeholder="e.g. Town, Street, Building" type="text" class="validate" data-length="250">
+            <label for="address_full">Full Address</label>
+        </div>
+        <div class="input-field center">
+            <button class="btn-small">Add</button>
+        </div>
+    </form>
+</div>
+
