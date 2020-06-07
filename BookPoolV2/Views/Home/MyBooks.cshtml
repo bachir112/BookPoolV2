@@ -137,70 +137,35 @@
 
 </div>
 
-<div id="mainSortByFilter" style="background: white; height: 50px; display: none;" class="">
-    <div class="row">
-        <div class="col s12 m12 l12 noscroll" style="overflow:auto;">
-            <div style="min-width: 800px;">
-                <div id="filtersClickableTag" class="card horizontal filterContainerTrigger smallfilter">
-                    <div class="card-image" style="padding:0;">
-                        <i class="material-icons">filter_list</i>
-                    </div>
-                    <div class="card-stacked">
-                        <div class="card-content" style="padding: 2px 10px;">
-                            <p>Filters</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="card horizontal smallfilter">
-                    <div class="card-stacked">
-                        <div class="card-content" style="padding: 2px 10px;">
-                            <p>Rating: 4.0+</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="card horizontal smallfilter">
-                    <div class="card-image" style="padding:0;">
-                        <i class="material-icons">motorcycle</i>
-                    </div>
-                    <div class="card-stacked">
-                        <div class="card-content" style="padding: 2px 10px;">
-                            <p>Express Delivery</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="card horizontal smallfilter filterContainerTrigger">
-                    <div class="card-stacked">
-                        <div class="card-content" style="padding: 2px 10px;">
-                            <p>Sort by</p>
-                        </div>
-                    </div>
-                    <div class="card-image" style="padding:0; float:right;">
-                        <i class="material-icons">arrow_drop_down</i>
-                    </div>
-                </div>
-                <div class="card horizontal smallfilter">
-                    <div class="card-stacked">
-                        <div class="card-content" style="padding: 2px 10px;">
-                            <p>Great Offers</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="card horizontal smallfilter filterContainerTrigger">
-                    <div class="card-stacked">
-                        <div class="card-content" style="padding: 2px 10px;">
-                            <p>Rating</p>
-                        </div>
-                    </div>
-                    <div class="card-image" style="padding:0; float:right;">
-                        <i class="material-icons">arrow_drop_down</i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+@Html.Partial("_Filter")
 
 <div class="row itemslist container">
+
+    <div class="col s12 m12 l12" style="margin-top:30px;">
+        <h5>
+            MY BOOKS - Books i want to sell
+            <i class="material-icons" style="color: red;">library_books</i>
+        </h5>
+        <hr />
+    </div>
+
+    <div class="col s12 m12 l12" style="margin-bottom:30px;">
+        @{
+            if (myBooks.Count() == 0)
+            {
+                <h6>
+                    You still haven't added any book to sell, please add books that you have finished reading.
+                </h6>
+            }
+            foreach (var book in myBooks)
+            {
+                <div class="col s12 m12 l12">
+                    @Html.Partial("_MyBook", book)
+                    <hr />
+                </div>
+            }
+        }
+    </div>
 
     <div class="col s12 m12 l12" style="margin-bottom:30px;">
         <h5 id="sellABookHeader" style="cursor:pointer;" data-IsVisible="True">
@@ -304,30 +269,6 @@
 
     </div>
 
-    <div class="col s12 m12 l12" style="margin-top:30px;">
-        <h5>
-            MY BOOKS - Books i want to sell
-            <i class="material-icons" style="color: red;">library_books</i>
-        </h5>
-        <hr />
-    </div>
-
-
-    @{
-        if (myBooks.Count() == 0)
-        {
-            <h6>
-                You still haven't added any book to sell, please add books that you have finished reading.
-            </h6>
-        }
-        foreach (var book in myBooks)
-        {
-            <div class="col s12 m12 l12">
-                @Html.Partial("_MyBook", book)
-                <hr />
-            </div>
-        }
-    }
 
 </div>
 
@@ -351,6 +292,10 @@
             $('#sellABookContainer').fadeIn("slow");
             $(this).attr('data-IsVisible', 'True');
         }
+    });
+
+    $(document).on('click', '.booksCheckbox', function () {
+        $('ul.tabs').tabs('select', 'bookInfo');
     });
 
     $(document).on('change', '.booksCheckbox', function () {

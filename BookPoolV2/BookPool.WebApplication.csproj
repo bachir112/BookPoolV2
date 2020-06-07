@@ -444,7 +444,7 @@
     <Content Include="Views\Shared\_Layout_Out.cshtml" />
     <Content Include="Views\Checkout\PlacedOrder.cshtml" />
     <Content Include="Views\Home\MyOrders.cshtml" />
-    <Content Include="Views\Home\FilteredProducts.cshtml" />
+    <Content Include="Views\Home\FilteredByCategory.cshtml" />
     <Content Include="Views\Home\MyWishes.cshtml" />
     <Content Include="Views\Home\MyBooks.cshtml" />
     <Content Include="Views\Shared\_Filter.cshtml" />
@@ -457,6 +457,7 @@
     <Content Include="Views\Shared\_MyBook.cshtml" />
     <Content Include="Views\Shared\_PartialUsersLocation.cshtml" />
     <Content Include="Views\Shared\_UsersMenu.cshtml" />
+    <Content Include="Views\Shared\_SearchForBook.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

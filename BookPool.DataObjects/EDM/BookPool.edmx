@@ -102,6 +102,14 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="LanguageName" Type="nvarchar" MaxLength="150" Nullable="false" />
         </EntityType>
+        <EntityType Name="SearchForBook">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GoogleID" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="AspNetUserID" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
         <EntityType Name="UsersAddresses">
           <Key>
             <PropertyRef Name="ID" />
@@ -179,6 +187,7 @@
           <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Conditions" EntityType="Self.Conditions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Languages" EntityType="Self.Languages" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SearchForBook" EntityType="Self.SearchForBook" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UsersAddresses" EntityType="Self.UsersAddresses" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
@@ -211,6 +220,7 @@
           <EntitySet Name="Categories" EntityType="BookPoolModel.Category" />
           <EntitySet Name="Conditions" EntityType="BookPoolModel.Condition" />
           <EntitySet Name="Languages" EntityType="BookPoolModel.Language" />
+          <EntitySet Name="SearchForBooks" EntityType="BookPoolModel.SearchForBook" />
           <EntitySet Name="UsersAddresses" EntityType="BookPoolModel.UsersAddress" />
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="BookPoolModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
@@ -319,6 +329,14 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="LanguageName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="SearchForBook">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GoogleID" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="AspNetUserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="UsersAddress">
           <Key>
@@ -459,6 +477,15 @@
             <EntityTypeMapping TypeName="BookPoolModel.Language">
               <MappingFragment StoreEntitySet="Languages">
                 <ScalarProperty Name="LanguageName" ColumnName="LanguageName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SearchForBooks">
+            <EntityTypeMapping TypeName="BookPoolModel.SearchForBook">
+              <MappingFragment StoreEntitySet="SearchForBook">
+                <ScalarProperty Name="AspNetUserID" ColumnName="AspNetUserID" />
+                <ScalarProperty Name="GoogleID" ColumnName="GoogleID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

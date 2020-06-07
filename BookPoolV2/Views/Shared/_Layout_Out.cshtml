@@ -256,7 +256,7 @@
         $(document).on('click', '.gotouserbooks', function () {
             console.log('Here');
             var shopId = $(this).data('data-shopId');
-            var url = '@Url.Action("FilteredProducts","Home")';
+            var url = '@Url.Action("FilteredByCategory", "Home")';
             window.location = url;
         });
 

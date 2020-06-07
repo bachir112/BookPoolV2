@@ -1,5 +1,10 @@
 ﻿@using BookPoolV2.Models
 @using Microsoft.AspNet.Identity
+@using BookPool.DataObjects.EDM
+
+@{ 
+    List<UsersAddress> userAddresses = ViewBag.UserAddresses as List<UsersAddress>;
+}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -139,7 +144,7 @@
     </div>
     <div class="modal-footer">
         <a href="#!" class="modal-close waves-effect waves-green btn-flat pull-left red" style="min-width:100px;">No</a>
-        <a href="#!" class="modal-close waves-effect waves-green btn-flat green" style="min-width:100px;">Yes please</a>
+        <a id="findMyBook" href="#!" class="modal-close waves-effect waves-green btn-flat green" style="min-width:100px;" data-GoogleBookID="">Yes please</a>
     </div>
 </div>
 
@@ -153,12 +158,18 @@
                 @{
                     if (Request.IsAuthenticated)
                     {
+                        string addressTitle = "Set address";
+                        if (userAddresses != null)
+                        {
+                            addressTitle = userAddresses.FirstOrDefault(x => x.DeliveringTo == true)?.AddressTitle;
+                        }
                         <div id="locationContainer">
                             <a class="sidenav-trigger" style="display:inherit; width:30px; color:var(--primaryRed); cursor:pointer;" data-target="side-form">
                                 <i class="material-icons">location_on</i>
                             </a>
+
                             <a class="sidenav-trigger" style="display:inherit; margin-left:0px; cursor:pointer;" data-target="side-form">
-                                <span style=" font-family: AvenirNextBold;">Bachir's Home</span>
+                                <span style=" font-family: AvenirNextBold;">@addressTitle</span>
                             </a>
                         </div>
                     }
@@ -314,7 +325,7 @@
         $(document).on('click', '.gotouserbooks', function () {
             console.log('Here');
             var shopId = $(this).data('data-shopId');
-            var url = '@Url.Action("FilteredProducts","Home")';
+            var url = '@Url.Action("FilteredByCategory", "Home")';
             window.location = url;
         });
 
@@ -369,8 +380,8 @@
         $(document).ready(function () {
 
             $('.category').click(function () {
-                var category = $(this).data('data-category');
-                var url = '@Url.Action("FilteredProducts", "Home")';
+                var categoryID = $(this).attr('data-CategoryID');
+                var url = '@Url.Action("FilteredByCategory", "Home")?CategoryID=' + categoryID;
                 window.location = url;
             });
 
@@ -410,10 +421,33 @@
             window.location = url;
         }
 
-        $(document).on('click', '#addUserAddress', function () {
-
+        $(document).ready(function () {
+            $('.modal-trigger').leanModal();
         });
 
+        $(document).on('click', '.findThisBookForMe', function () {
+            var bookID = $(this).attr('data-GoogleBookID');
+            $('#findMyBook').attr('data-GoogleBookID', bookID);
+        });
+
+        $(document).on('click', '#findMyBook', function () {
+            var bookID = $(this).attr('data-GoogleBookID');
+
+            $.ajax({
+                url: '@Url.Action("SearchForThisBook","Home")',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    BookID: bookID
+                },
+                success: function (data) {
+                    location.reload();
+                },
+                error: function (request, error) {
+                    location.reload();
+                }
+            });
+        });
     </script>
 
 </body>

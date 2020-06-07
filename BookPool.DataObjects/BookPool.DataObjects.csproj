@@ -98,6 +98,9 @@
     <Compile Include="EDM\Language.cs">
       <DependentUpon>BookPool.tt</DependentUpon>
     </Compile>
+    <Compile Include="EDM\SearchForBook.cs">
+      <DependentUpon>BookPool.tt</DependentUpon>
+    </Compile>
     <Compile Include="EDM\UsersAddress.cs">
       <DependentUpon>BookPool.tt</DependentUpon>
     </Compile>

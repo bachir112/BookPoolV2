@@ -1,4 +1,5 @@
 ﻿using BookPool.DataObjects.EDM;
+using Microsoft.Ajax.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace BookPool.DataInterface.Controllers
     {
         [System.Web.Http.Route("api/Users/AddUserAddress")]
         [System.Web.Http.HttpGet]
-        public JsonResult<Object> SellMyBook(string UserID, string AddressTitle, string Address)
+        public JsonResult<Object> AddUserAddress(string UserID, string AddressTitle, string Address)
         {
             bool result = false;
 
@@ -23,9 +24,11 @@ namespace BookPool.DataInterface.Controllers
                 userAddress.AspNetUserID = UserID;
                 userAddress.AddressTitle = AddressTitle;
                 userAddress.Address = Address;
+                userAddress.DeliveringTo = true;
 
                 using (var db = new BookPoolEntities())
                 {
+                    db.UsersAddresses.Where(x => x.AspNetUserID == UserID).Select(x => x).ForEach(x => x.DeliveringTo = false);
                     db.UsersAddresses.Add(userAddress);
                     db.SaveChanges();
                 }
@@ -44,13 +47,13 @@ namespace BookPool.DataInterface.Controllers
         [System.Web.Http.HttpGet]
         public JsonResult<Object> GetUserAddresses(string UserID)
         {
-            List<UsersAddress> userAddress = new List<UsersAddress>();
+            List<UsersAddress> results = new List<UsersAddress>();
 
             try
             {
                 using (var db = new BookPoolEntities())
                 {
-                    userAddress = db.UsersAddresses.Where(x => x.AspNetUserID == UserID).Select(x => x).ToList();
+                    results = db.UsersAddresses.Where(x => x.AspNetUserID == UserID).Select(x => x).ToList();
                 }
             }
             catch (Exception ex)
@@ -58,7 +61,34 @@ namespace BookPool.DataInterface.Controllers
                 Console.WriteLine(ex);
             }
 
-            return Json((object)new { userAddress });
+            return Json((object)new { results });
+        }
+
+
+        [System.Web.Http.Route("api/Users/DeliveringToUserAddress")]
+        [System.Web.Http.HttpGet]
+        public JsonResult<Object> DeliveringToUserAddress(string UserID, int AddressID)
+        {
+            bool result = false;
+
+            try
+            {
+                using (var db = new BookPoolEntities())
+                {
+                    db.UsersAddresses.Where(x => x.AspNetUserID == UserID).Select(x => x).ForEach(x => x.DeliveringTo = false);
+                    UsersAddress usersAddress = db.UsersAddresses.First(x => x.ID == AddressID);
+                    usersAddress.DeliveringTo = true;
+                    db.SaveChanges();
+                }
+
+                result = true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+
+            return Json((object)new { result });
         }
     }
 }

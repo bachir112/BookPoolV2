@@ -58,6 +58,10 @@ span.badge {
     border-radius: 5px;
 }
 
+.itemslist{
+    margin-bottom:200px;
+}
+
 .itemslist .card .card-body {
     margin-left: 10px;
     /*height: 100px;*/
