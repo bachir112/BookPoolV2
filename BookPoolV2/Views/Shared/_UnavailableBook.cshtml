@@ -3,7 +3,7 @@
 @model BookPoolResult
 
 
-<div class="card" style="box-shadow:none; -webkit-box-shadow:none;">
+<div class="card" style="box-shadow:none; -webkit-box-shadow:none; opacity:0.8;">
     <div class="card-horizontal" style="overflow: hidden;">
         <div class="img-square-wrapper">
             @{
@@ -38,7 +38,7 @@
                         No one has offered to sell this book
                     </p>
                     <p class="card-text" style="margin-bottom:6px;margin-top:6px; font-size:12px; color:var(--secondaryOrange)">
-                        <button type="button" class="waves-effect waves-light btn-small modal-trigger findThisBookForMe" data-GoogleBookID="@Model.GoogleID" data-target="search-for-my-book-modal">
+                        <button type="button" class="waves-effect waves-light btn-small modal-trigger findThisBookForMe red" data-GoogleBookID="@Model.GoogleID" data-target="search-for-my-book-modal">
                             <i class="material-icons left" style="margin-right: 0;">search</i>
                             Find it for me
                         </button>

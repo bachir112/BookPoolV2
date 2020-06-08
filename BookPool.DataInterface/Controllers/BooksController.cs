@@ -540,5 +540,74 @@ namespace BookPool.DataInterface.Controllers
             return Json((object)new { results });
         }
 
+
+        [System.Web.Http.Route("api/Books/AddBookToCart")]
+        [System.Web.Http.HttpGet]
+        public JsonResult<Object> AddBookToCart(string UserID, int BookID)
+        {
+            bool results = false;
+
+            try
+            {
+                using (var db = new BookPoolEntities())
+                {
+                    UserCart userCart = db.UserCarts.FirstOrDefault(x => x.UserID == UserID);
+
+                    if (userCart != null)
+                    {
+                        List<int> booksIDsInCart = userCart.BooksIDsCSV.Split(',').Select(int.Parse).ToList();
+                        if (!booksIDsInCart.Contains(BookID))
+                        {
+                            booksIDsInCart.Add(BookID);
+
+                            userCart.BooksIDsCSV = string.Join(",", booksIDsInCart);
+                            db.SaveChanges();
+                        }
+                    }
+                    else
+                    {
+                        userCart = new UserCart();
+                        userCart.UserID = UserID;
+                        userCart.BooksIDsCSV = BookID.ToString();
+
+                        db.UserCarts.Add(userCart);
+                        db.SaveChanges();
+                    }
+                }
+
+                results = true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+
+            return Json((object)new { results });
+        }
+
+
+        [System.Web.Http.Route("api/Books/GetBooksInCart")]
+        [System.Web.Http.HttpGet]
+        public JsonResult<Object> GetBooksInCart(string UserID)
+        {
+            List<UserCart> results = new List<UserCart>();
+
+            try
+            {
+                using (var db = new BookPoolEntities())
+                {
+                    List<UserCart> userCart = db.UserCarts.Where(x => x.UserID == UserID).Select(x => x).ToList();
+                    results.AddRange(userCart);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+
+            return Json((object)new { results });
+        }
+
+
     }
 }

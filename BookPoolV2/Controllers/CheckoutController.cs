@@ -14,6 +14,9 @@ namespace BookPoolV2.Controllers
         public async Task<ActionResult> Index()
         {
             ViewBag.UserAddresses = await Global.Globals.GetUserAddresses(User.Identity.GetUserId());
+
+
+
             return View();
         }
 

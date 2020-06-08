@@ -18,6 +18,7 @@ namespace BookPoolV2.Controllers
         {
             ViewBag.Query = query;
             ViewBag.UserAddresses = await Global.Globals.GetUserAddresses(User.Identity.GetUserId());
+            ViewBag.BooksInCart = await Global.Globals.GetBooksInCart(User.Identity.GetUserId());
 
             Dictionary<string, List<BookPoolResult>> apiResults = new Dictionary<string, List<BookPoolResult>>();
             using (var client = new HttpClient())
@@ -380,6 +381,34 @@ namespace BookPoolV2.Controllers
                 httpRoute.AppendFormat("UserID={0}", User.Identity.GetUserId());
                 httpRoute.Append("&");
                 httpRoute.AppendFormat("GoogleID={0}", BookID);
+
+                var response = await client.GetAsync(httpRoute.ToString());
+                if (response.IsSuccessStatusCode)
+                {
+                    apiResults = await response.Content.ReadAsAsync<Dictionary<string, bool>>();
+                    result = apiResults["results"];
+                }
+            }
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+
+        [HttpPost]
+        public async Task<ActionResult> AddBookToCart(string BookID)
+        {
+            Dictionary<string, bool> apiResults = new Dictionary<string, bool>();
+            bool result = false;
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(Global.Globals.baseURL);
+                StringBuilder httpRoute = new StringBuilder();
+                httpRoute.Append("api/Books/AddBookToCart");
+                httpRoute.Append("?");
+                httpRoute.AppendFormat("UserID={0}", User.Identity.GetUserId());
+                httpRoute.Append("&");
+                httpRoute.AppendFormat("BookID={0}", BookID);
 
                 var response = await client.GetAsync(httpRoute.ToString());
                 if (response.IsSuccessStatusCode)

@@ -15,7 +15,8 @@
         <EntityTypeShape EntityType="BookPoolModel.Condition" Width="1.5" PointX="6.75" PointY="6.75" />
         <EntityTypeShape EntityType="BookPoolModel.Language" Width="1.5" PointX="7.75" PointY="0.75" />
         <EntityTypeShape EntityType="BookPoolModel.SearchForBook" Width="1.5" PointX="7.75" PointY="3.75" />
-        <EntityTypeShape EntityType="BookPoolModel.UsersAddress" Width="1.5" PointX="8.75" PointY="6.75" />
+        <EntityTypeShape EntityType="BookPoolModel.UserCart" Width="1.5" PointX="8.75" PointY="6.75" />
+        <EntityTypeShape EntityType="BookPoolModel.UsersAddress" Width="1.5" PointX="9.75" PointY="0.75" />
         <AssociationConnector Association="BookPoolModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
         <AssociationConnector Association="BookPoolModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
         <AssociationConnector Association="BookPoolModel.AspNetUserRoles" />

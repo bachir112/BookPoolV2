@@ -101,6 +101,9 @@
     <Compile Include="EDM\SearchForBook.cs">
       <DependentUpon>BookPool.tt</DependentUpon>
     </Compile>
+    <Compile Include="EDM\UserCart.cs">
+      <DependentUpon>BookPool.tt</DependentUpon>
+    </Compile>
     <Compile Include="EDM\UsersAddress.cs">
       <DependentUpon>BookPool.tt</DependentUpon>
     </Compile>
