@@ -586,18 +586,34 @@ namespace BookPool.DataInterface.Controllers
         }
 
 
-        [System.Web.Http.Route("api/Books/GetBooksInCart")]
+        [System.Web.Http.Route("api/Books/GetCart")]
         [System.Web.Http.HttpGet]
-        public JsonResult<Object> GetBooksInCart(string UserID)
+        public JsonResult<Object> GetCart(string UserID)
         {
-            List<UserCart> results = new List<UserCart>();
-
+            List<Dictionary<string, string>> results = new List<Dictionary<string, string>>();
+            List<Dictionary<string, string>> userCookieCart = new List<Dictionary<string, string>>();
             try
             {
                 using (var db = new BookPoolEntities())
                 {
-                    List<UserCart> userCart = db.UserCarts.Where(x => x.UserID == UserID).Select(x => x).ToList();
-                    results.AddRange(userCart);
+                    UserCart userCart = db.UserCarts.FirstOrDefault(x => x.UserID == UserID);
+                    if(userCart != null)
+                    {
+                        List<int> booksIDsInCart = userCart.BooksIDsCSV.Split(',').Select(int.Parse).ToList();
+                        foreach (var bookID in booksIDsInCart)
+                        {
+                            AvailableBook availableBook = db.AvailableBooks.FirstOrDefault(x => x.ID == bookID);
+                            if (availableBook != null)
+                            {
+                                Dictionary<string, string> bookInCookie = new Dictionary<string, string>();
+                                bookInCookie.Add("BookID", bookID.ToString());
+                                bookInCookie.Add("Price", availableBook.Price.ToString());
+
+                                userCookieCart.Add(bookInCookie);
+                            }
+                        }
+                    }
+                    results.AddRange(userCookieCart);
                 }
             }
             catch (Exception ex)
@@ -608,6 +624,111 @@ namespace BookPool.DataInterface.Controllers
             return Json((object)new { results });
         }
 
+
+
+        [System.Web.Http.Route("api/Books/GetBooksInCart")]
+        [System.Web.Http.HttpGet]
+        public async Task<JsonResult<Object>> GetBooksInCart(string UserID)
+        {
+            List<object> results = new List<object>();
+
+            GoogleBook googleResult = new GoogleBook();
+            List<GoogleBook> googleBooksResult = new List<GoogleBook>();
+
+            List<BookPoolResult> dbResult = new List<BookPoolResult>();
+
+            try
+            {
+                List<string> myGoogleBooksIDs = new List<string>();
+                using (var db = new BookPoolEntities())
+                {
+                    string booksCSV = db.UserCarts.FirstOrDefault(x => x.UserID == UserID)?.BooksIDsCSV;
+                    List<int> booksIDsInCart = booksCSV.Split(',').Select(int.Parse).ToList();
+                    myGoogleBooksIDs = db.AvailableBooks.Where(x => booksIDsInCart.Contains(x.ID)).Select(x => x.GoogleID).ToList();
+                }
+
+                foreach (var googleID in myGoogleBooksIDs)
+                {
+                    using (var client = new HttpClient())
+                    {
+                        client.BaseAddress = new Uri(DataObjects.Global.Globals.googleBaseAPI_SearchByID);
+                        StringBuilder httpRoute = new StringBuilder();
+                        httpRoute.Append(googleID);
+
+                        var response = await client.GetAsync(httpRoute.ToString());
+                        if (response.IsSuccessStatusCode)
+                        {
+                            googleResult = await response.Content.ReadAsAsync<GoogleBook>();
+                            googleBooksResult.Add(googleResult);
+                        }
+                    }
+                }
+
+                using (var db = new BookPoolEntities())
+                {
+                    dbResult = (from googleBooks in googleBooksResult
+                                join availableBooks in db.AvailableBooks on googleBooks.id equals availableBooks.GoogleID
+
+                                select new BookPoolResult
+                                {
+                                    ID = availableBooks.ID,
+                                    Academic = availableBooks.Academic,
+                                    BookConditionID = availableBooks.BookConditionID,
+                                    BookLanguageID = availableBooks.BookLanguageID,
+                                    BookName = availableBooks.BookName,
+                                    CategoryID = availableBooks.CategoryID,
+                                    GoogleID = availableBooks.GoogleID,
+                                    OwnerUserID = availableBooks.OwnerUserID,
+                                    Price = availableBooks.Price,
+                                    Authors = googleBooks.volumeInfo.authors,
+                                    AverageRating = googleBooks.volumeInfo.averageRating,
+                                    Categories = googleBooks.volumeInfo.categories,
+                                    Description = googleBooks.volumeInfo.description,
+                                    ImageURL = googleBooks.volumeInfo.imageLinks.thumbnail,
+                                    PageCount = googleBooks.volumeInfo.pageCount,
+                                    PreviewLink = googleBooks.volumeInfo.previewLink,
+                                    PrintType = googleBooks.volumeInfo.printType,
+                                    PublishedDate = googleBooks.volumeInfo.publishedDate,
+                                    Publisher = googleBooks.volumeInfo.publisher,
+                                    Subtitle = googleBooks.volumeInfo.subtitle
+                                }).ToList();
+                }
+
+                var unavailableBooks = googleBooksResult.Where(x => !dbResult.Select(r => r.GoogleID).Contains(x.id)).Select(x => x).ToList();
+
+                List<BookPoolResult> googleUnavailableBooks = unavailableBooks.Select(x => new BookPoolResult
+                {
+                    Academic = false,
+                    BookConditionID = -1,
+                    BookLanguageID = -1,
+                    BookName = x.volumeInfo.title,
+                    CategoryID = -1,
+                    GoogleID = x.id,
+                    OwnerUserID = null,
+                    Price = -1,
+                    Authors = x.volumeInfo.authors,
+                    AverageRating = x.volumeInfo.averageRating,
+                    Categories = x.volumeInfo.categories,
+                    Description = x.volumeInfo.description,
+                    ImageURL = x.volumeInfo.imageLinks == null ? null : x.volumeInfo.imageLinks.thumbnail,
+                    PageCount = x.volumeInfo.pageCount,
+                    PreviewLink = x.volumeInfo.previewLink,
+                    PrintType = x.volumeInfo.printType,
+                    PublishedDate = x.volumeInfo.publishedDate,
+                    Publisher = x.volumeInfo.publisher,
+                    Subtitle = x.volumeInfo.subtitle
+                }).ToList();
+
+                results.AddRange(dbResult);
+                results.AddRange(googleUnavailableBooks);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+
+            return Json((object)new { results });
+        }
 
     }
 }

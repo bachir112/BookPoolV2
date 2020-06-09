@@ -80,7 +80,7 @@
                             <p style="margin-top:15px; font-size:18px;">
                                 <span style="display: flex;">
                                     <i class="fa fa-money" aria-hidden="true" style="padding-right:10px;padding-top:5px;"></i>
-                                    @availableBook.Price.ToString("C0", CultureInfo.CurrentCulture) L.L.
+                                    @availableBook.Price.ToString("C0", CultureInfo.CurrentCulture).Replace("$", string.Empty)L.L.
                                 </span>
                             </p>
                         </div>

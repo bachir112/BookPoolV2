@@ -18,7 +18,7 @@ namespace BookPoolV2.Controllers
         {
             ViewBag.Query = query;
             ViewBag.UserAddresses = await Global.Globals.GetUserAddresses(User.Identity.GetUserId());
-            ViewBag.BooksInCart = await Global.Globals.GetBooksInCart(User.Identity.GetUserId());
+            ViewBag.UserCartCookie = await Global.Globals.GetCart(User.Identity.GetUserId());
 
             Dictionary<string, List<BookPoolResult>> apiResults = new Dictionary<string, List<BookPoolResult>>();
             using (var client = new HttpClient())
@@ -169,6 +169,8 @@ namespace BookPoolV2.Controllers
         public async Task<ActionResult> Product(int bookID, string query = null)
         {
             ViewBag.UserAddresses = await Global.Globals.GetUserAddresses(User.Identity.GetUserId());
+            ViewBag.UserCartCookie = await Global.Globals.GetCart(User.Identity.GetUserId());
+
             Dictionary<string, List<BookPoolResult>> apiResults = new Dictionary<string, List<BookPoolResult>>();
 
             using (var client = new HttpClient())
@@ -194,6 +196,7 @@ namespace BookPoolV2.Controllers
         public async Task<ActionResult> FilteredByCategory(int categoryID)
         {
             ViewBag.UserAddresses = await Global.Globals.GetUserAddresses(User.Identity.GetUserId());
+            ViewBag.UserCartCookie = await Global.Globals.GetCart(User.Identity.GetUserId());
 
             Dictionary<string, List<BookPoolResult>> apiResults = new Dictionary<string, List<BookPoolResult>>();
             using (var client = new HttpClient())
@@ -239,7 +242,8 @@ namespace BookPoolV2.Controllers
 
         public async Task<ActionResult> FindMyBook(string query = null)
         {
-            ViewBag.UserAddresses = await Global.Globals.GetUserAddresses(User.Identity.GetUserId());
+            //ViewBag.UserAddresses = await Global.Globals.GetUserAddresses(User.Identity.GetUserId());
+
             Dictionary<string, List<BookPoolResult>> apiResults = new Dictionary<string, List<BookPoolResult>>();
             List<BookPoolResult> result = new List<BookPoolResult>();
 

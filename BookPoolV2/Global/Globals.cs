@@ -40,23 +40,23 @@ namespace BookPoolV2.Global
             return result;
         }
 
-        public static async Task<List<UserCart>> GetBooksInCart(string UserID)
+        public static async Task<List<Dictionary<string, string>>> GetCart(string UserID)
         {
-            Dictionary<string, List<UserCart>> apiResults = new Dictionary<string, List<UserCart>>();
-            List<UserCart> result = new List<UserCart>();
+            Dictionary<string, List<Dictionary<string, string>>> apiResults = new Dictionary<string, List<Dictionary<string, string>>>();
+            List<Dictionary<string, string>> result = new List<Dictionary<string, string>>();
 
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(Global.Globals.baseURL);
                 StringBuilder httpRoute = new StringBuilder();
-                httpRoute.Append("api/Books/GetBooksInCart");
+                httpRoute.Append("api/Books/GetCart");
                 httpRoute.Append("?");
                 httpRoute.AppendFormat("UserID={0}", UserID);
 
                 var response = await client.GetAsync(httpRoute.ToString());
                 if (response.IsSuccessStatusCode)
                 {
-                    apiResults = await response.Content.ReadAsAsync<Dictionary<string, List<UserCart>>>();
+                    apiResults = await response.Content.ReadAsAsync<Dictionary<string, List<Dictionary<string, string>>>>();
                     result = apiResults["results"];
                 }
             }

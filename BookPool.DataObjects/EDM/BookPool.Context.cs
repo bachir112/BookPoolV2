@@ -34,6 +34,8 @@ namespace BookPool.DataObjects.EDM
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Condition> Conditions { get; set; }
         public virtual DbSet<Language> Languages { get; set; }
+        public virtual DbSet<OrderDetail> OrderDetails { get; set; }
+        public virtual DbSet<OrderHeader> OrderHeaders { get; set; }
         public virtual DbSet<SearchForBook> SearchForBooks { get; set; }
         public virtual DbSet<UserCart> UserCarts { get; set; }
         public virtual DbSet<UsersAddress> UsersAddresses { get; set; }

@@ -1,4 +1,5 @@
-﻿@using BookPool.DataObjects.DTO
+﻿
+@using BookPool.DataObjects.DTO
 @using System;
 @using System.Globalization;
 
@@ -33,45 +34,16 @@
                         }
                     }
                     <p class="card-text" style="margin-bottom:6px;margin-top:6px;color:var(--primaryGrey);">
-                        Price: @Model.Price.ToString("C0", CultureInfo.CurrentCulture).Replace("$",string.Empty)L.L.
-                    </p>
-                    <p class="card-text" style="margin-bottom:6px;margin-top:6px; font-size:12px; color:forestgreen;">
-                        Someone wants to sell this book
+                        Price: @Model.Price.ToString("C0", CultureInfo.CurrentCulture).Replace("$", string.Empty)L.L.
                     </p>
                     <p class="card-text" style="margin-bottom: 0px; margin-top: 6px; color: black; font-size: 13px; font-weight: bold;">
                         @Model.BookCondition
                     </p>
                 </div>
-                <div style="float:right;position: absolute;right: 0;">
-                    @{
-                        string averageRating = Model.AverageRating.ToString();
-                        string backgroundColor = "transparent";
 
-                        if (Model.AverageRating == 0)
-                        {
-                            averageRating = "N/A";
-                            backgroundColor = "grey";
-                        }
-                        else if (Model.AverageRating < 2)
-                        {
-                            backgroundColor = "yellow";
-                        }
-                        else if (Model.AverageRating < 3)
-                        {
-                            backgroundColor = "orange";
-                        }
-                        else if (Model.AverageRating < 4)
-                        {
-                            backgroundColor = "green";
-                        }
-                        else if (Model.AverageRating < 5)
-                        {
-                            backgroundColor = "forestgreen";
-                        }
-
-                        <span class="badge" style="color:white; background-color:@backgroundColor;">@averageRating</span>
-                    }
-                </div>
+                <button type="button" class="waves-effect waves-light btn-small modal-trigger removeFromBasket red" data-BookID="@Model.ID">
+                    Remove
+                </button>
             </div>
         </div>
     </div>

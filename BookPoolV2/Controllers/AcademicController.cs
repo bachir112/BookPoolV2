@@ -14,6 +14,8 @@ namespace BookPoolV2.Controllers
         public async Task<ActionResult> Index()
         {
             ViewBag.UserAddresses = await Global.Globals.GetUserAddresses(User.Identity.GetUserId());
+            ViewBag.UserCartCookie = await Global.Globals.GetCart(User.Identity.GetUserId());
+
             return View();
         }
     }

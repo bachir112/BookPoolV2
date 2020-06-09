@@ -102,6 +102,28 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="LanguageName" Type="nvarchar" MaxLength="150" Nullable="false" />
         </EntityType>
+        <EntityType Name="OrderDetails">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrderHeaderID" Type="int" Nullable="false" />
+          <Property Name="BookName" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="BookImage" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="BookPrice" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="Status" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="SellerUserID" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="OrderHeader">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ClientUserID" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="OrderedOn" Type="datetime" Nullable="false" />
+          <Property Name="TotalPrice" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="Status" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="SearchForBook">
           <Key>
             <PropertyRef Name="ID" />
@@ -195,6 +217,8 @@
           <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Conditions" EntityType="Self.Conditions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Languages" EntityType="Self.Languages" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderDetails" EntityType="Self.OrderDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderHeader" EntityType="Self.OrderHeader" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SearchForBook" EntityType="Self.SearchForBook" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserCart" EntityType="Self.UserCart" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UsersAddresses" EntityType="Self.UsersAddresses" Schema="dbo" store:Type="Tables" />
@@ -229,6 +253,8 @@
           <EntitySet Name="Categories" EntityType="BookPoolModel.Category" />
           <EntitySet Name="Conditions" EntityType="BookPoolModel.Condition" />
           <EntitySet Name="Languages" EntityType="BookPoolModel.Language" />
+          <EntitySet Name="OrderDetails" EntityType="BookPoolModel.OrderDetail" />
+          <EntitySet Name="OrderHeaders" EntityType="BookPoolModel.OrderHeader" />
           <EntitySet Name="SearchForBooks" EntityType="BookPoolModel.SearchForBook" />
           <EntitySet Name="UserCarts" EntityType="BookPoolModel.UserCart" />
           <EntitySet Name="UsersAddresses" EntityType="BookPoolModel.UsersAddress" />
@@ -339,6 +365,28 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="LanguageName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="OrderDetail">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderHeaderID" Type="Int32" Nullable="false" />
+          <Property Name="BookName" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="BookImage" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="BookPrice" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SellerUserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="OrderHeader">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClientUserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="OrderedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TotalPrice" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="SearchForBook">
           <Key>
@@ -495,6 +543,30 @@
             <EntityTypeMapping TypeName="BookPoolModel.Language">
               <MappingFragment StoreEntitySet="Languages">
                 <ScalarProperty Name="LanguageName" ColumnName="LanguageName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderDetails">
+            <EntityTypeMapping TypeName="BookPoolModel.OrderDetail">
+              <MappingFragment StoreEntitySet="OrderDetails">
+                <ScalarProperty Name="SellerUserID" ColumnName="SellerUserID" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="BookPrice" ColumnName="BookPrice" />
+                <ScalarProperty Name="BookImage" ColumnName="BookImage" />
+                <ScalarProperty Name="BookName" ColumnName="BookName" />
+                <ScalarProperty Name="OrderHeaderID" ColumnName="OrderHeaderID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderHeaders">
+            <EntityTypeMapping TypeName="BookPoolModel.OrderHeader">
+              <MappingFragment StoreEntitySet="OrderHeader">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="TotalPrice" ColumnName="TotalPrice" />
+                <ScalarProperty Name="OrderedOn" ColumnName="OrderedOn" />
+                <ScalarProperty Name="ClientUserID" ColumnName="ClientUserID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

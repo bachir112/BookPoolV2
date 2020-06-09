@@ -71,6 +71,10 @@
         button.facebook {
             background-color: #445c8e;
         }
+
+        .itemslist{
+            margin-bottom:0px;
+        }
     </style>
 
 </head>
@@ -175,12 +179,6 @@
 
         });
 
-        $("input[type='checkbox']").change(function () {
-            if (this.checked) {
-                $('#totalAmount').text('$22');
-            }
-        });
-
 
     </script>
 
@@ -214,7 +212,7 @@
                 <i class="fa fa-book" aria-hidden="true" style="color: var(--primaryGrey);"></i>
             </a>
             <a id="academic-section-navigator" href="@Url.Action("Index","Academic")">
-                <i class="fa fa-university" aria-hidden="true" style="color: var(--primaryGrey);"></i>
+                <i class="fa fa-university" aria-hidden="true" style="        color: var(--primaryGrey);"></i>
             </a>
         </div>
     </div>
@@ -261,12 +259,6 @@
         $(document).on('click', '#messageFooterContainer', function () {
             var shopId = $(this).data('data-shopId');
             var url = '@Url.Action("Index","Checkout")';
-            window.location = url;
-        });
-
-        $(document).on('click', '#placeOrder', function () {
-            var shopId = $(this).data('data-shopId');
-            var url = '@Url.Action("PlacedOrder","Checkout")';
             window.location = url;
         });
 

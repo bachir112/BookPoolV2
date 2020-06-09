@@ -1,6 +1,20 @@
-﻿
+﻿@using BookPool.DataObjects.DTO;
+@using BookPool.DataObjects.EDM;
+
 @{
     Layout = "~/Views/Shared/_Layout_Out.cshtml";
+
+    List<UsersAddress> userAddresses = ViewBag.UserAddresses as List<UsersAddress>;
+    string addressTitle = string.Empty;
+    string address = string.Empty;
+    if (userAddresses.Count() > 0)
+    {
+        addressTitle = userAddresses.FirstOrDefault(x => x.DeliveringTo)?.AddressTitle;
+        address = userAddresses.FirstOrDefault(x => x.DeliveringTo)?.Address;
+    }
+
+
+    List<BookPoolResult> booksInCart = ViewBag.BooksInCart as List<BookPoolResult>;
 }
 
 <div class="row container">
@@ -93,75 +107,26 @@
         </div>
     </div>
 
-    <div class="col s12 m12 l12" style="overflow-x:auto;overflow-y:hidden;margin-top: 20px;margin-bottom: 20px;">
-        <form action="#">
-            <p>
-                <label>
-                    <input type="checkbox">
-                    <span>Add to checkout</span>
-                </label>
-            </p>
-        </form>
-        <div class="card" style="box-shadow:none;-webkit-box-shadow:none;max-width:400px;">
-            <div class="card-horizontal" style="overflow: hidden;">
-                <div class="img-square-wrapper" style="width: 100px;">
-                    <img class="smallImage" src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg" alt="Card image cap">
-                </div>
-                <div class="card-body">
-
-                    <div style="float:left;height: 100px;width: 100%;padding-right: 15px;padding-left: 10px;">
-                        <h5 class="card-title" style="padding-top:0px;margin-top:0px;margin-bottom:0px;color: black;font-size: 16px;">
-                            An economist walks into a brothel
-                        </h5>
-                        <p class="card-text" style="margin-bottom:6px;margin-top:6px;color:var(--primaryGrey);">
-                            Price: 20,000LL
-                        </p>
-                        <p class="card-text" style="margin-bottom:6px;margin-top:6px; font-size:12px; color:var(--secondaryOrange)">
-                            Is it worth swimming in shark-infested waters to surf a 50-foot, career-record wav...
-                        </p>
-                        <p class="card-text" style="margin-bottom: 0px;margin-top:6px;color:black;font-size:13px;font-weight:bold;bottom: 0;position: absolute;">
-                            <i class="material-icons" style="font-size:12px;">location_on</i> Beirut
-                        </p>
+    @{
+        foreach (var book in booksInCart)
+        {
+            <div class="col s12 m12 l12" style="overflow-x:auto;overflow-y:hidden;">
+                <form action="#">
+                    <p>
+                        <label>
+                            <input class="addToCheckout" value="@book.ID" data-Price="@book.Price" type="checkbox">
+                            <span>Add to checkout</span>
+                        </label>
+                    </p>
+                </form>
+                <div class="row itemslist">
+                    <div class="col s12 m6 l4" style="height:250px;overflow:hidden;margin-bottom:15px;">
+                        @Html.Partial("_CartBooks", book)
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <div class="col s12 m12 l12" style="overflow-x:auto;overflow-y:hidden;margin-top: 20px;margin-bottom: 20px;">
-        <form action="#">
-            <p>
-                <label>
-                    <input type="checkbox">
-                    <span>Add to checkout</span>
-                </label>
-            </p>
-        </form>
-        <div class="card" style="box-shadow:none;-webkit-box-shadow:none;max-width:400px;">
-            <div class="card-horizontal" style="overflow: hidden;">
-                <div class="img-square-wrapper" style="width: 100px;">
-                    <img class="smallImage" src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg" alt="Card image cap">
-                </div>
-                <div class="card-body">
-
-                    <div style="float:left;height: 100px;width: 100%;padding-right: 15px;padding-left: 10px;">
-                        <h5 class="card-title" style="padding-top:0px;margin-top:0px;margin-bottom:0px;color: black;font-size: 16px;">
-                            An economist walks into a brothel
-                        </h5>
-                        <p class="card-text" style="margin-bottom:6px;margin-top:6px;color:var(--primaryGrey);">
-                            Price: 20,000LL
-                        </p>
-                        <p class="card-text" style="margin-bottom:6px;margin-top:6px; font-size:12px; color:var(--secondaryOrange)">
-                            Is it worth swimming in shark-infested waters to surf a 50-foot, career-record wav...
-                        </p>
-                        <p class="card-text" style="margin-bottom: 0px;margin-top:6px;color:black;font-size:13px;font-weight:bold;bottom: 0;position: absolute;">
-                            <i class="material-icons" style="font-size:12px;">location_on</i> Beirut
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+        }
+    }
 
 
 </div>
@@ -181,17 +146,26 @@
 
     <div class="row">
         <div class="col s12 m6 l6">
-            <div class="card">
-                <div class="card-content">
-                    <span class="card-title" style="line-height:10px;font-weight: bold;">
-                        Home
-                    </span>
-                    <p>
-                        Furn el Chebbek, Tohwita, Malaab al baladi street, Raymond semaan building, 6th floor, Georges Nasser Appartment
-                    </p>
-                </div>
-            </div>
-            <a class="sidenav-trigger" style="cursor:pointer;" data-target="side-form">Change Delivery Address</a>
+            @{
+                if (userAddresses.Count() > 0)
+                {
+                    <div class="card">
+                        <div class="card-content">
+                            <span class="card-title" style="line-height:10px;font-weight: bold;">
+                                @addressTitle
+                            </span>
+                            <p>
+                                @address
+                            </p>
+                        </div>
+                    </div>
+                    <a class="sidenav-trigger" style="cursor:pointer;" data-target="side-form">Change Delivery Address</a>
+                }
+                else
+                {
+                    <a class="sidenav-trigger" style="cursor:pointer;" data-target="side-form">Add Delivery Address</a>
+                }
+            }
         </div>
     </div>
 
@@ -292,22 +266,79 @@
 
 <script type="text/javascript">
 
-        $(document).ready(function () {
+    $(document).ready(function () {
 
-            window.onscroll = function () { stickTotalBars() };
+        window.onscroll = function () { stickTotalBars() };
 
-            var totalhHeader = document.getElementById("totalAmountContainer");
-            var stickyTotal = totalhHeader.offsetTop;
+        var totalhHeader = document.getElementById("totalAmountContainer");
+        var stickyTotal = totalhHeader.offsetTop;
 
-            function stickTotalBars() {
-                console.log(stickyTotal);
-                if (window.pageYOffset > stickyTotal) {
-                    totalhHeader.classList.add("stickySearchBar");
-                } else {
-                    totalhHeader.classList.remove("stickySearchBar");
-                }
+        function stickTotalBars() {
+            if (window.pageYOffset > stickyTotal) {
+                totalhHeader.classList.add("stickySearchBar");
+            } else {
+                totalhHeader.classList.remove("stickySearchBar");
             }
+        }
 
+    });
+
+    $(document).on('change', '.addToCheckout', function () {
+        calculateTotal();
+    });
+
+    function calculateTotal() {
+        var checkedBooks = 0;
+        var totalPrice = 0;
+        $('.addToCheckout').each(function () {
+            if (this.checked) {
+                totalPrice += parseInt($(this).attr('data-Price'));
+                checkedBooks += 1;
+            }
+            $('#totalAmount').text(totalPrice + ' L.L.');
         });
+        console.log('checkedBooks = ' + checkedBooks);
+        if (checkedBooks == 0) {
+            $('#placeOrder').prop('disabled', true);
+        } else {
+            $('#placeOrder').prop('disabled', false);
+        }
+    }
+
+    $(document).ready(function () {
+        $('#placeOrder').prop('disabled', true);
+    });
+
+    $(document).on('click', '#placeOrder', function () {
+        var booksIDs = [];
+        $('.addToCheckout').each(function () {
+            if (this.checked) {
+                var bookID = $(this).val();
+                booksIDs.push(bookID);
+            }
+        });
+
+        var url = '@Url.Action("PlacedOrder","Checkout")?books=' + booksIDs.toString();
+        window.location = url;
+    });
+
+    $(document).on('click', '.removeFromBasket', function () {
+        var bookID = $(this).attr('data-BookID');
+
+        $.ajax({
+            url: '@Url.Action("RemoveBookFromBasket","Checkout")',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                BookID: bookID
+            },
+            success: function (data) {
+                location.reload();
+            },
+            error: function (request, error) {
+                location.reload();
+            }
+        });
+    });
 
 </script>
