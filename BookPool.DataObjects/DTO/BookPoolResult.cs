@@ -32,5 +32,6 @@ namespace BookPool.DataObjects.DTO
         public decimal AverageRating { get; set; }
         public string ImageURL { get; set; }
         public string PreviewLink { get; set; }
+        public string SellingStatus { get; set; }
     }
 }

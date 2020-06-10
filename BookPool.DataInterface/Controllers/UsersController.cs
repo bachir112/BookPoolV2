@@ -115,7 +115,7 @@ namespace BookPool.DataInterface.Controllers
 
                     db.SaveChanges();
 
-                    results = orderHeader.ID.ToString() + orderHeader.OrderedOn.ToString("ddmmyy");
+                    results = orderHeader.ID.ToString() + orderHeader.OrderedOn.ToString("ddMMyy");
 
                     List<int> booksIDsInCart = BooksIDs.Split(',').Select(int.Parse).ToList();
                     foreach(var bookID in booksIDsInCart)
@@ -123,6 +123,8 @@ namespace BookPool.DataInterface.Controllers
                         AvailableBook availableBook = db.AvailableBooks.FirstOrDefault(x => x.ID == bookID);
                         if(availableBook != null)
                         {
+                            availableBook.SellingStatus = Global.Globals.BookSellingStatus_NotAvailable;
+
                             OrderDetail orderDetail = new OrderDetail();
                             orderDetail.BookName = availableBook.BookName;
                             orderDetail.BookPrice = availableBook.Price;

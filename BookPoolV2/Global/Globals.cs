@@ -16,6 +16,9 @@ namespace BookPoolV2.Global
         static public string FacebookGraphAPIBaseUrl = "https://graph.facebook.com/";
         public const string DefaultFacebookFields = "id,name,email,gender,birthday,location,friends,first_name,last_name";
 
+        public static string BookSellingStatus_Available = "Available";
+        public static string BookSellingStatus_NotAvailable = "NotAvailable";
+
         public static async Task<List<UsersAddress>> GetUserAddresses(string userID)
         {
             Dictionary<string, List<UsersAddress>> apiResults = new Dictionary<string, List<UsersAddress>>();

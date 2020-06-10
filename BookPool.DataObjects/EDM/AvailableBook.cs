@@ -23,5 +23,6 @@ namespace BookPool.DataObjects.EDM
         public int CategoryID { get; set; }
         public string GoogleID { get; set; }
         public string OwnerUserID { get; set; }
+        public string SellingStatus { get; set; }
     }
 }

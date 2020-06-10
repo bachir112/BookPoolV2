@@ -79,7 +79,8 @@ namespace BookPool.DataInterface.Controllers
                                     Subtitle = googleBooks.volumeInfo.subtitle,
                                     BookCondition = conditions.ConditionName,
                                     BookLanguage = languages.LanguageName,
-                                    Category = categories.CategoryName
+                                    Category = categories.CategoryName,
+                                    SellingStatus = availableBooks.SellingStatus
                                 }).ToList();
                 }
 
@@ -184,7 +185,8 @@ namespace BookPool.DataInterface.Controllers
                                     PrintType = googleBooks.volumeInfo.printType,
                                     PublishedDate = googleBooks.volumeInfo.publishedDate,
                                     Publisher = googleBooks.volumeInfo.publisher,
-                                    Subtitle = googleBooks.volumeInfo.subtitle
+                                    Subtitle = googleBooks.volumeInfo.subtitle,
+                                    SellingStatus = availableBooks.SellingStatus
                                 }).ToList();
                 }
 
@@ -318,7 +320,8 @@ namespace BookPool.DataInterface.Controllers
                                     PrintType = googleBooks.volumeInfo.printType,
                                     PublishedDate = googleBooks.volumeInfo.publishedDate,
                                     Publisher = googleBooks.volumeInfo.publisher,
-                                    Subtitle = googleBooks.volumeInfo.subtitle
+                                    Subtitle = googleBooks.volumeInfo.subtitle,
+                                    SellingStatus = availableBooks.SellingStatus
                                 }).ToList();
                 }
 
@@ -376,6 +379,7 @@ namespace BookPool.DataInterface.Controllers
                 availableBook.BookConditionID = Condition;
                 availableBook.BookLanguageID = Language;
                 availableBook.Academic = Academic;
+                availableBook.SellingStatus = Global.Globals.BookSellingStatus_Available;
 
                 using(var db = new BookPoolEntities())
                 {
@@ -529,7 +533,7 @@ namespace BookPool.DataInterface.Controllers
                                    PublishedDate = googleBooks.volumeInfo.publishedDate,
                                    Publisher = googleBooks.volumeInfo.publisher,
                                    Subtitle = googleBooks.volumeInfo.subtitle
-                                }).DistinctBy(x => x.BookName).ToList();
+                               }).DistinctBy(x => x.BookName).ToList();
                 }
             }
             catch (Exception ex)
@@ -602,7 +606,7 @@ namespace BookPool.DataInterface.Controllers
                         List<int> booksIDsInCart = userCart.BooksIDsCSV.Split(',').Select(int.Parse).ToList();
                         foreach (var bookID in booksIDsInCart)
                         {
-                            AvailableBook availableBook = db.AvailableBooks.FirstOrDefault(x => x.ID == bookID);
+                            AvailableBook availableBook = db.AvailableBooks.FirstOrDefault(x => x.ID == bookID && x.SellingStatus == Global.Globals.BookSellingStatus_Available);
                             if (availableBook != null)
                             {
                                 Dictionary<string, string> bookInCookie = new Dictionary<string, string>();
@@ -643,8 +647,11 @@ namespace BookPool.DataInterface.Controllers
                 using (var db = new BookPoolEntities())
                 {
                     string booksCSV = db.UserCarts.FirstOrDefault(x => x.UserID == UserID)?.BooksIDsCSV;
-                    List<int> booksIDsInCart = booksCSV.Split(',').Select(int.Parse).ToList();
-                    myGoogleBooksIDs = db.AvailableBooks.Where(x => booksIDsInCart.Contains(x.ID)).Select(x => x.GoogleID).ToList();
+                    if(booksCSV != null)
+                    {
+                        List<int> booksIDsInCart = booksCSV.Split(',').Select(int.Parse).ToList();
+                        myGoogleBooksIDs = db.AvailableBooks.Where(x => booksIDsInCart.Contains(x.ID)).Select(x => x.GoogleID).ToList();
+                    }
                 }
 
                 foreach (var googleID in myGoogleBooksIDs)
@@ -668,7 +675,7 @@ namespace BookPool.DataInterface.Controllers
                 {
                     dbResult = (from googleBooks in googleBooksResult
                                 join availableBooks in db.AvailableBooks on googleBooks.id equals availableBooks.GoogleID
-
+                                where availableBooks.SellingStatus == Global.Globals.BookSellingStatus_Available
                                 select new BookPoolResult
                                 {
                                     ID = availableBooks.ID,

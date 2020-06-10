@@ -1,6 +1,7 @@
 ﻿@using BookPool.DataObjects.DTO
 @using System;
 @using System.Globalization;
+@using BookPoolV2.Global;
 
 @model BookPoolResult
 
@@ -33,16 +34,28 @@
                         }
                     }
                     <p class="card-text" style="margin-bottom:6px;margin-top:6px;color:var(--primaryGrey);">
-                        Price: @Model.Price.ToString("C0", CultureInfo.CurrentCulture).Replace("$",string.Empty)L.L.
+                        Price: @Model.Price.ToString("C0", CultureInfo.CurrentCulture).Replace("$", string.Empty)L.L.
                     </p>
                     <p class="card-text" style="margin-bottom:6px;margin-top:6px; color:var(--secondaryOrange)">
                         @Model.BookCondition
                     </p>
-                    <p class="card-text" style="">
-                        <button class="btn waves-effect waves-light red lighten-2 deleteMyBook" data-BookID="@Model.ID">
-                            Delete
-                        </button>
-                    </p>
+                    @{
+                        if (Model.SellingStatus == Globals.BookSellingStatus_Available)
+                        {
+                            <p class="card-text" style="">
+                                <button class="btn waves-effect waves-light red lighten-2 deleteMyBook" data-BookID="@Model.ID">
+                                    Delete
+                                </button>
+                            </p>
+                        }
+
+                        if (Model.SellingStatus == Globals.BookSellingStatus_NotAvailable)
+                        {
+                            <p class="card-text" style="color:green;">
+                                This book has been sold
+                            </p>
+                        }
+                    }
                 </div>
                 <div style="float:right;position: absolute;right: 0;">
                     @{

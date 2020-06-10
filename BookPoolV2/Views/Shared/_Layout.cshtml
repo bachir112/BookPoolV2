@@ -566,9 +566,24 @@
             }
         }
 
-        function getCookieFromDatabase() {
-            var userCookie = JSON.parse('@Html.Raw(Json.Encode(userCookieCart))');
-            $.cookie("Books", JSON.stringify(userCookie), { path: '/' });
+        @{
+            if (userCookieCart.Count()>0)
+            {
+                <text>
+                    function getCookieFromDatabase() {
+                        var userCookie = JSON.parse('@Html.Raw(Json.Encode(userCookieCart))');
+                        $.cookie("Books", JSON.stringify(userCookie), { path: '/' });
+                    }
+                </text>
+            }
+            else
+            {
+                <text>
+                    function getCookieFromDatabase() {
+
+                    }
+                </text>
+            }
         }
 
     </script>

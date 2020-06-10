@@ -79,6 +79,7 @@
           <Property Name="CategoryID" Type="int" Nullable="false" />
           <Property Name="GoogleID" Type="nvarchar" MaxLength="200" />
           <Property Name="OwnerUserID" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="SellingStatus" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Categories">
           <Key>
@@ -343,6 +344,7 @@
           <Property Name="CategoryID" Type="Int32" Nullable="false" />
           <Property Name="GoogleID" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="OwnerUserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="SellingStatus" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Category">
           <Key>
@@ -510,6 +512,7 @@
           <EntitySetMapping Name="AvailableBooks">
             <EntityTypeMapping TypeName="BookPoolModel.AvailableBook">
               <MappingFragment StoreEntitySet="AvailableBooks">
+                <ScalarProperty Name="SellingStatus" ColumnName="SellingStatus" />
                 <ScalarProperty Name="OwnerUserID" ColumnName="OwnerUserID" />
                 <ScalarProperty Name="GoogleID" ColumnName="GoogleID" />
                 <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
