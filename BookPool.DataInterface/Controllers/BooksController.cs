@@ -17,100 +17,280 @@ namespace BookPool.DataInterface.Controllers
     {
         [System.Web.Http.Route("api/Books/GetBooks")]
         [System.Web.Http.HttpGet]
-        public async Task<JsonResult<Object>> GetBooks(string query = "an economist walks into")
+        public async Task<JsonResult<Object>> GetBooks(string query = null, 
+            string language = null, 
+            bool sortByPrice = false, 
+            bool AvailableOnly = false, 
+            bool sortByPopularity = false)
         {
             List<object> results = new List<object>();
 
             GoogleBooksResult googleResult = new GoogleBooksResult();
             List<GoogleBook> googleBooksResult = new List<GoogleBook>();
+            List<GoogleBook> googleBooksNotAvailableResult = new List<GoogleBook>();
 
             List<BookPoolResult> dbResult = new List<BookPoolResult>();
 
             try
             {
-                using (var client = new HttpClient())
+                if (!string.IsNullOrEmpty(query))
                 {
-                    client.BaseAddress = new Uri(DataObjects.Global.Globals.googleBaseAPI);
-                    StringBuilder httpRoute = new StringBuilder();
-                    httpRoute.Append("?");
-                    httpRoute.AppendFormat("q={0}", query);
-                    httpRoute.Append("&");
-                    httpRoute.Append("maxResults=40");
-
-                    var response = await client.GetAsync(httpRoute.ToString());
-                    if (response.IsSuccessStatusCode)
+                    using (var client = new HttpClient())
                     {
-                        googleResult = await response.Content.ReadAsAsync<GoogleBooksResult>();
-                        googleBooksResult = googleResult.items.ToList<GoogleBook>();
-                        googleBooksResult = googleBooksResult.Where(x => x.volumeInfo.authors != null).Select(x => x).ToList();
+                        client.BaseAddress = new Uri(DataObjects.Global.Globals.googleBaseAPI);
+                        StringBuilder httpRoute = new StringBuilder();
+                        httpRoute.Append("?");
+                        httpRoute.AppendFormat("q={0}", query);
+                        httpRoute.Append("&");
+                        httpRoute.Append("maxResults=40");
+                        if(language != null)
+                        {
+                            string lan = "en";
+                            switch (language)
+                            {
+                                case "english":
+                                    lan = "en";
+                                    break;
+                                case "french":
+                                    lan = "fr";
+                                    break;
+                                case "arabic":
+                                    lan = "ar";
+                                    break;
+                                default:
+                                    break;
+                            }
+                            httpRoute.Append("&");
+                            httpRoute.AppendFormat("langRestrict={}", lan);
+                        }
+
+                        var response = await client.GetAsync(httpRoute.ToString());
+                        if (response.IsSuccessStatusCode)
+                        {
+                            googleResult = await response.Content.ReadAsAsync<GoogleBooksResult>();
+                            googleBooksResult = googleResult.items.ToList<GoogleBook>();
+                            googleBooksResult = googleBooksResult.Where(x => x.volumeInfo.authors != null).Select(x => x).ToList();
+                        }
                     }
+
+                    using (var db = new BookPoolEntities())
+                    {
+                        dbResult = (from googleBooks in googleBooksResult
+                                    join availableBooks in db.AvailableBooks on googleBooks.id equals availableBooks.GoogleID
+                                    join categories in db.Categories on availableBooks.CategoryID equals categories.ID
+                                    join conditions in db.Conditions on availableBooks.BookConditionID equals conditions.ID
+                                    join languages in db.Languages on availableBooks.BookLanguageID equals languages.ID
+                                    join users in db.AspNetUsers on availableBooks.OwnerUserID equals users.Id
+                                    where availableBooks.SellingStatus == Global.Globals.BookSellingStatus_Available
+                                    && languages == null ? true : (languages.LanguageName.ToLower() == language)
+                                    select new BookPoolResult
+                                    {
+                                        ID = availableBooks.ID,
+                                        Academic = availableBooks.Academic,
+                                        BookConditionID = availableBooks.BookConditionID,
+                                        BookLanguageID = availableBooks.BookLanguageID,
+                                        BookName = availableBooks.BookName,
+                                        CategoryID = availableBooks.CategoryID,
+                                        GoogleID = availableBooks.GoogleID,
+                                        OwnerUserID = availableBooks.OwnerUserID,
+                                        OwnerUser = users.UserName,
+                                        Price = availableBooks.Price,
+                                        Authors = googleBooks.volumeInfo.authors,
+                                        AverageRating = googleBooks.volumeInfo.averageRating,
+                                        Categories = googleBooks.volumeInfo.categories,
+                                        Description = googleBooks.volumeInfo.description,
+                                        ImageURL = googleBooks.volumeInfo.imageLinks.thumbnail,
+                                        PageCount = googleBooks.volumeInfo.pageCount,
+                                        PreviewLink = googleBooks.volumeInfo.previewLink,
+                                        PrintType = googleBooks.volumeInfo.printType,
+                                        PublishedDate = googleBooks.volumeInfo.publishedDate,
+                                        Publisher = googleBooks.volumeInfo.publisher,
+                                        Subtitle = googleBooks.volumeInfo.subtitle,
+                                        BookCondition = conditions.ConditionName,
+                                        BookLanguage = languages.LanguageName,
+                                        Category = categories.CategoryName,
+                                        SellingStatus = availableBooks.SellingStatus
+                                    }).ToList();
+                    }
+
+                    var unavailableBooks = googleBooksResult.Where(x => !dbResult.Select(r => r.GoogleID).Contains(x.id)).Select(x => x).ToList();
+
+                    List<BookPoolResult> googleUnavailableBooks = unavailableBooks.Select(x => new BookPoolResult
+                    {
+                        Academic = false,
+                        BookConditionID = -1,
+                        BookLanguageID = -1,
+                        BookName = x.volumeInfo.title,
+                        CategoryID = -1,
+                        GoogleID = x.id,
+                        OwnerUserID = null,
+                        Price = -1,
+                        Authors = x.volumeInfo.authors,
+                        AverageRating = x.volumeInfo.averageRating,
+                        Categories = x.volumeInfo.categories,
+                        Description = x.volumeInfo.description,
+                        ImageURL = x.volumeInfo.imageLinks == null ? null : x.volumeInfo.imageLinks.thumbnail,
+                        PageCount = x.volumeInfo.pageCount,
+                        PreviewLink = x.volumeInfo.previewLink,
+                        PrintType = x.volumeInfo.printType,
+                        PublishedDate = x.volumeInfo.publishedDate,
+                        Publisher = x.volumeInfo.publisher,
+                        Subtitle = x.volumeInfo.subtitle
+                    }).ToList();
+
+                    results.AddRange(dbResult);
+                    results.AddRange(googleUnavailableBooks);
                 }
 
-                using (var db = new BookPoolEntities())
+                if (string.IsNullOrEmpty(query))
                 {
-                    dbResult = (from googleBooks in googleBooksResult
-                                join availableBooks in db.AvailableBooks on googleBooks.id equals availableBooks.GoogleID
-                                join categories in db.Categories on availableBooks.CategoryID equals categories.ID
-                                join conditions in db.Conditions on availableBooks.BookConditionID equals conditions.ID
-                                join languages in db.Languages on availableBooks.BookLanguageID equals languages.ID
-                                join users in db.AspNetUsers on availableBooks.OwnerUserID equals users.Id
-                                select new BookPoolResult
+                    List<string> bookNames = new List<string>();
+                    List<string> myGoogleBooksIDs = new List<string>();
+                    using (var db = new BookPoolEntities())
+                    {
+                        myGoogleBooksIDs = db.AvailableBooks.OrderByDescending(x => x.ID).Select(x => x.GoogleID).ToList();
+                        bookNames = db.AvailableBooks.OrderByDescending(x => x.ID).Select(x => x.BookName).ToList();
+                    }
+
+                    foreach (var googleID in myGoogleBooksIDs)
+                    {
+                        using (var client = new HttpClient())
+                        {
+                            client.BaseAddress = new Uri(DataObjects.Global.Globals.googleBaseAPI_SearchByID);
+                            StringBuilder httpRoute = new StringBuilder();
+                            httpRoute.Append(googleID);
+
+                            var response = await client.GetAsync(httpRoute.ToString());
+                            if (response.IsSuccessStatusCode)
+                            {
+                                var googleBookResult = await response.Content.ReadAsAsync<GoogleBook>();
+                                googleBooksResult.Add(googleBookResult);
+                            }
+                        }
+                    }
+
+                    foreach (var bookName in bookNames)
+                    {
+                        using (var client = new HttpClient())
+                        {
+                            client.BaseAddress = new Uri(DataObjects.Global.Globals.googleBaseAPI);
+                            StringBuilder httpRoute = new StringBuilder();
+                            httpRoute.Append("?");
+                            httpRoute.AppendFormat("q={0}", bookName);
+                            httpRoute.Append("&");
+                            httpRoute.Append("maxResults=40");
+                            if (language != null)
+                            {
+                                string lan = "en";
+                                switch (language)
                                 {
-                                    ID = availableBooks.ID,
-                                    Academic = availableBooks.Academic,
-                                    BookConditionID = availableBooks.BookConditionID,
-                                    BookLanguageID = availableBooks.BookLanguageID,
-                                    BookName = availableBooks.BookName,
-                                    CategoryID = availableBooks.CategoryID,
-                                    GoogleID = availableBooks.GoogleID,
-                                    OwnerUserID = availableBooks.OwnerUserID,
-                                    OwnerUser = users.UserName,
-                                    Price = availableBooks.Price,
-                                    Authors = googleBooks.volumeInfo.authors,
-                                    AverageRating = googleBooks.volumeInfo.averageRating,
-                                    Categories = googleBooks.volumeInfo.categories,
-                                    Description = googleBooks.volumeInfo.description,
-                                    ImageURL = googleBooks.volumeInfo.imageLinks.thumbnail,
-                                    PageCount = googleBooks.volumeInfo.pageCount,
-                                    PreviewLink = googleBooks.volumeInfo.previewLink,
-                                    PrintType = googleBooks.volumeInfo.printType,
-                                    PublishedDate = googleBooks.volumeInfo.publishedDate,
-                                    Publisher = googleBooks.volumeInfo.publisher,
-                                    Subtitle = googleBooks.volumeInfo.subtitle,
-                                    BookCondition = conditions.ConditionName,
-                                    BookLanguage = languages.LanguageName,
-                                    Category = categories.CategoryName,
-                                    SellingStatus = availableBooks.SellingStatus
-                                }).ToList();
+                                    case "english":
+                                        lan = "en";
+                                        break;
+                                    case "french":
+                                        lan = "fr";
+                                        break;
+                                    case "arabic":
+                                        lan = "ar";
+                                        break;
+                                    default:
+                                        break;
+                                }
+                                httpRoute.Append("&");
+                                httpRoute.AppendFormat("langRestrict={0}", lan);
+                            }
+
+                            var response = await client.GetAsync(httpRoute.ToString());
+                            if (response.IsSuccessStatusCode)
+                            {
+                                googleResult = await response.Content.ReadAsAsync<GoogleBooksResult>();
+                                googleBooksNotAvailableResult.AddRange(googleResult.items.ToList<GoogleBook>());
+                                googleBooksNotAvailableResult = googleBooksNotAvailableResult.Where(x => x.volumeInfo.authors != null).Select(x => x).ToList();
+                            }
+                        }
+                    }
+
+                    using (var db = new BookPoolEntities())
+                    {
+                        dbResult = (from googleBooks in googleBooksResult
+                                    join availableBooks in db.AvailableBooks on googleBooks.id equals availableBooks.GoogleID
+                                    join categories in db.Categories on availableBooks.CategoryID equals categories.ID
+                                    join conditions in db.Conditions on availableBooks.BookConditionID equals conditions.ID
+                                    join languages in db.Languages on availableBooks.BookLanguageID equals languages.ID
+                                    join users in db.AspNetUsers on availableBooks.OwnerUserID equals users.Id
+
+                                    select new BookPoolResult
+                                    {
+                                        ID = availableBooks.ID,
+                                        Academic = availableBooks.Academic,
+                                        BookConditionID = availableBooks.BookConditionID,
+                                        BookLanguageID = availableBooks.BookLanguageID,
+                                        BookName = availableBooks.BookName,
+                                        CategoryID = availableBooks.CategoryID,
+                                        GoogleID = availableBooks.GoogleID,
+                                        OwnerUserID = availableBooks.OwnerUserID,
+                                        Price = availableBooks.Price,
+                                        Authors = googleBooks.volumeInfo.authors,
+                                        AverageRating = googleBooks.volumeInfo.averageRating,
+                                        Categories = googleBooks.volumeInfo.categories,
+                                        Description = googleBooks.volumeInfo.description,
+                                        ImageURL = googleBooks.volumeInfo.imageLinks.thumbnail,
+                                        PageCount = googleBooks.volumeInfo.pageCount,
+                                        PreviewLink = googleBooks.volumeInfo.previewLink,
+                                        PrintType = googleBooks.volumeInfo.printType,
+                                        PublishedDate = googleBooks.volumeInfo.publishedDate,
+                                        Publisher = googleBooks.volumeInfo.publisher,
+                                        Subtitle = googleBooks.volumeInfo.subtitle,
+                                        SellingStatus = availableBooks.SellingStatus,
+                                        BookLanguage = languages.LanguageName
+                                    }).ToList();
+
+                        if (language != null)
+                        {
+                            dbResult = dbResult.Where(x => x.BookLanguage.ToLower() == language.ToLower()).Select(x => x).ToList();
+                        }
+
+                        if (sortByPrice == true)
+                        {
+                            dbResult = dbResult.OrderBy(x => x.Price).Select(x => x).ToList();
+                        }
+
+                        if (sortByPopularity == true)
+                        {
+                            dbResult = dbResult.OrderByDescending(x => x.AverageRating).Select(x => x).ToList();
+                        }
+                    }
+
+                    var unavailableBooks = googleBooksNotAvailableResult.Where(x => !dbResult.Select(r => r.GoogleID).Contains(x.id)).Select(x => x).ToList();
+
+                    List<BookPoolResult> googleUnavailableBooks = unavailableBooks.Select(x => new BookPoolResult
+                    {
+                        Academic = false,
+                        BookConditionID = -1,
+                        BookLanguageID = -1,
+                        BookName = x.volumeInfo.title,
+                        CategoryID = -1,
+                        GoogleID = x.id,
+                        OwnerUserID = null,
+                        Price = -1,
+                        Authors = x.volumeInfo.authors,
+                        AverageRating = x.volumeInfo.averageRating,
+                        Categories = x.volumeInfo.categories,
+                        Description = x.volumeInfo.description,
+                        ImageURL = x.volumeInfo.imageLinks == null ? null : x.volumeInfo.imageLinks.thumbnail,
+                        PageCount = x.volumeInfo.pageCount,
+                        PreviewLink = x.volumeInfo.previewLink,
+                        PrintType = x.volumeInfo.printType,
+                        PublishedDate = x.volumeInfo.publishedDate,
+                        Publisher = x.volumeInfo.publisher,
+                        Subtitle = x.volumeInfo.subtitle
+                    }).ToList();
+
+                    results.AddRange(dbResult);
+                    results.AddRange(googleUnavailableBooks);
+
                 }
 
-                var unavailableBooks = googleBooksResult.Where(x => !dbResult.Select(r => r.GoogleID).Contains(x.id)).Select(x => x).ToList();
-
-                List<BookPoolResult> googleUnavailableBooks = unavailableBooks.Select(x => new BookPoolResult
-                {
-                    Academic = false,
-                    BookConditionID = -1,
-                    BookLanguageID = -1,
-                    BookName = x.volumeInfo.title,
-                    CategoryID = -1,
-                    GoogleID = x.id,
-                    OwnerUserID = null,
-                    Price = -1,
-                    Authors = x.volumeInfo.authors,
-                    AverageRating = x.volumeInfo.averageRating,
-                    Categories = x.volumeInfo.categories,
-                    Description = x.volumeInfo.description,
-                    ImageURL = x.volumeInfo.imageLinks == null ? null : x.volumeInfo.imageLinks.thumbnail,
-                    PageCount = x.volumeInfo.pageCount,
-                    PreviewLink = x.volumeInfo.previewLink,
-                    PrintType = x.volumeInfo.printType,
-                    PublishedDate = x.volumeInfo.publishedDate,
-                    Publisher = x.volumeInfo.publisher,
-                    Subtitle = x.volumeInfo.subtitle
-                }).ToList();
-
-                results.AddRange(dbResult);
-                results.AddRange(googleUnavailableBooks);
             }
             catch (Exception ex)
             {
@@ -675,7 +855,7 @@ namespace BookPool.DataInterface.Controllers
                 {
                     dbResult = (from googleBooks in googleBooksResult
                                 join availableBooks in db.AvailableBooks on googleBooks.id equals availableBooks.GoogleID
-                                where availableBooks.SellingStatus == Global.Globals.BookSellingStatus_Available
+                                //where availableBooks.SellingStatus == Global.Globals.BookSellingStatus_Available
                                 select new BookPoolResult
                                 {
                                     ID = availableBooks.ID,
@@ -697,37 +877,88 @@ namespace BookPool.DataInterface.Controllers
                                     PrintType = googleBooks.volumeInfo.printType,
                                     PublishedDate = googleBooks.volumeInfo.publishedDate,
                                     Publisher = googleBooks.volumeInfo.publisher,
-                                    Subtitle = googleBooks.volumeInfo.subtitle
+                                    Subtitle = googleBooks.volumeInfo.subtitle,
+                                    SellingStatus = availableBooks.SellingStatus
                                 }).ToList();
                 }
 
-                var unavailableBooks = googleBooksResult.Where(x => !dbResult.Select(r => r.GoogleID).Contains(x.id)).Select(x => x).ToList();
+                //var unavailableBooks = googleBooksResult.Where(x => !dbResult.Select(r => r.GoogleID).Contains(x.id)).Select(x => x).ToList();
 
-                List<BookPoolResult> googleUnavailableBooks = unavailableBooks.Select(x => new BookPoolResult
-                {
-                    Academic = false,
-                    BookConditionID = -1,
-                    BookLanguageID = -1,
-                    BookName = x.volumeInfo.title,
-                    CategoryID = -1,
-                    GoogleID = x.id,
-                    OwnerUserID = null,
-                    Price = -1,
-                    Authors = x.volumeInfo.authors,
-                    AverageRating = x.volumeInfo.averageRating,
-                    Categories = x.volumeInfo.categories,
-                    Description = x.volumeInfo.description,
-                    ImageURL = x.volumeInfo.imageLinks == null ? null : x.volumeInfo.imageLinks.thumbnail,
-                    PageCount = x.volumeInfo.pageCount,
-                    PreviewLink = x.volumeInfo.previewLink,
-                    PrintType = x.volumeInfo.printType,
-                    PublishedDate = x.volumeInfo.publishedDate,
-                    Publisher = x.volumeInfo.publisher,
-                    Subtitle = x.volumeInfo.subtitle
-                }).ToList();
+                //List<BookPoolResult> googleUnavailableBooks = unavailableBooks.Select(x => new BookPoolResult
+                //{
+                //    Academic = false,
+                //    BookConditionID = -1,
+                //    BookLanguageID = -1,
+                //    BookName = x.volumeInfo.title,
+                //    CategoryID = -1,
+                //    GoogleID = x.id,
+                //    OwnerUserID = null,
+                //    Price = 0,
+                //    Authors = x.volumeInfo.authors,
+                //    AverageRating = x.volumeInfo.averageRating,
+                //    Categories = x.volumeInfo.categories,
+                //    Description = x.volumeInfo.description,
+                //    ImageURL = x.volumeInfo.imageLinks == null ? null : x.volumeInfo.imageLinks.thumbnail,
+                //    PageCount = x.volumeInfo.pageCount,
+                //    PreviewLink = x.volumeInfo.previewLink,
+                //    PrintType = x.volumeInfo.printType,
+                //    PublishedDate = x.volumeInfo.publishedDate,
+                //    Publisher = x.volumeInfo.publisher,
+                //    Subtitle = x.volumeInfo.subtitle,
+                //    SellingStatus = Global.Globals.BookSellingStatus_NotAvailable
+                //}).ToList();
 
                 results.AddRange(dbResult);
-                results.AddRange(googleUnavailableBooks);
+                //results.AddRange(googleUnavailableBooks);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+
+            return Json((object)new { results });
+        }
+
+
+        [System.Web.Http.Route("api/Books/GetMyOrdersHeaders")]
+        [System.Web.Http.HttpGet]
+        public JsonResult<Object> GetMyOrdersHeaders(string UserID)
+        {
+            List<object> results = new List<object>();
+            List<OrderHeader> orderHeader = new List<OrderHeader>();
+
+            try
+            {
+                using (var db = new BookPoolEntities())
+                {
+                    orderHeader = db.OrderHeaders.Where(x => x.ClientUserID == UserID).Select(x => x).ToList();
+                    results.AddRange(orderHeader);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+
+            return Json((object)new { results });
+        }
+
+
+        [System.Web.Http.Route("api/Books/GetMyOrdersDetails")]
+        [System.Web.Http.HttpGet]
+        public JsonResult<Object> GetMyOrdersDetails(string OrderHeadersCSV)
+        {
+            List<object> results = new List<object>();
+            List<OrderDetail> orderDetails = new List<OrderDetail>();
+
+            try
+            {
+                using (var db = new BookPoolEntities())
+                {
+                    List<int> ordersHeaders = OrderHeadersCSV.Split(',').Select(int.Parse).ToList();
+                    orderDetails = db.OrderDetails.Where(x => ordersHeaders.Contains(x.OrderHeaderID)).Select(x => x).ToList();
+                    results.AddRange(orderDetails);
+                }
             }
             catch (Exception ex)
             {

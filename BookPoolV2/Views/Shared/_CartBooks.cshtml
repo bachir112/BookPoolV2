@@ -1,4 +1,4 @@
-﻿
+﻿@using BookPoolV2.Global
 @using BookPool.DataObjects.DTO
 @using System;
 @using System.Globalization;
@@ -32,13 +32,24 @@
                                 by @string.Join(",", Model.Authors)
                             </h5>
                         }
+
+                        if (Model.SellingStatus == Globals.BookSellingStatus_Available)
+                        {
+                            <p class="card-text" style="margin-bottom:6px;margin-top:6px;color:var(--primaryGrey);">
+                                Price: @Model.Price.ToString("C0", CultureInfo.CurrentCulture).Replace("$", string.Empty)L.L.
+                            </p>
+                            <p class="card-text" style="margin-bottom: 0px; margin-top: 6px; color: black; font-size: 13px; font-weight: bold;">
+                                @Model.BookCondition
+                            </p>
+                        }
+                        else
+                        {
+                            <p class="card-text" style="margin-bottom: 0px; margin-top: 6px; color: black; font-size: 13px; font-weight: bold;">
+                                This book has been sold and is no longer available
+                            </p>
+                        }
                     }
-                    <p class="card-text" style="margin-bottom:6px;margin-top:6px;color:var(--primaryGrey);">
-                        Price: @Model.Price.ToString("C0", CultureInfo.CurrentCulture).Replace("$", string.Empty)L.L.
-                    </p>
-                    <p class="card-text" style="margin-bottom: 0px; margin-top: 6px; color: black; font-size: 13px; font-weight: bold;">
-                        @Model.BookCondition
-                    </p>
+
                 </div>
 
                 <button type="button" class="waves-effect waves-light btn-small modal-trigger removeFromBasket red" data-BookID="@Model.ID">

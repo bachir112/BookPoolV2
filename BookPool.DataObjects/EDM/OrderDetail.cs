@@ -21,5 +21,8 @@ namespace BookPool.DataObjects.EDM
         public decimal BookPrice { get; set; }
         public string Status { get; set; }
         public string SellerUserID { get; set; }
+        public string Authors { get; set; }
+        public string GoogleID { get; set; }
+        public int BookID { get; set; }
     }
 }

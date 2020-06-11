@@ -14,11 +14,20 @@ namespace BookPoolV2.Controllers
 {
     public class HomeController : Controller
     {
-        public async Task<ActionResult> Index(string query = null)
+        public async Task<ActionResult> Index(string query = null,
+            string language = null,
+            bool sortByPrice = false,
+            bool AvailableOnly = false,
+            bool sortByPopularity = false)
         {
             ViewBag.Query = query;
             ViewBag.UserAddresses = await Global.Globals.GetUserAddresses(User.Identity.GetUserId());
             ViewBag.UserCartCookie = await Global.Globals.GetCart(User.Identity.GetUserId());
+
+            if (string.IsNullOrEmpty(query))
+            {
+                query = string.Empty;
+            }
 
             Dictionary<string, List<BookPoolResult>> apiResults = new Dictionary<string, List<BookPoolResult>>();
             using (var client = new HttpClient())
@@ -26,10 +35,27 @@ namespace BookPoolV2.Controllers
                 client.BaseAddress = new Uri(Global.Globals.baseURL);
                 StringBuilder httpRoute = new StringBuilder();
                 httpRoute.Append("api/Books/GetBooks");
-                if(query != null)
+                httpRoute.Append("?");
+                httpRoute.AppendFormat("query={0}", query);
+                if (language != null)
                 {
-                    httpRoute.Append("?");
-                    httpRoute.AppendFormat("query={0}", query);
+                    httpRoute.Append("&");
+                    httpRoute.AppendFormat("language={0}", language);
+                }
+                if (sortByPrice)
+                {
+                    httpRoute.Append("&");
+                    httpRoute.AppendFormat("sortByPrice={0}", sortByPrice);
+                }
+                if (AvailableOnly)
+                {
+                    httpRoute.Append("&");
+                    httpRoute.AppendFormat("AvailableOnly={0}", AvailableOnly);
+                }
+                if (sortByPopularity)
+                {
+                    httpRoute.Append("&");
+                    httpRoute.AppendFormat("sortByPopularity={0}", sortByPopularity);
                 }
 
                 var response = await client.GetAsync(httpRoute.ToString());
@@ -237,6 +263,47 @@ namespace BookPoolV2.Controllers
         public async Task<ActionResult> MyOrders()
         {
             ViewBag.UserAddresses = await Global.Globals.GetUserAddresses(User.Identity.GetUserId());
+
+            Dictionary<string, List<OrderHeader>> apiOrderHeaderResults = new Dictionary<string, List<OrderHeader>>();
+            List<OrderHeader> resultOrderHeader = new List<OrderHeader>();
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(Global.Globals.baseURL);
+                StringBuilder httpRoute = new StringBuilder();
+                httpRoute.Append("api/Books/GetMyOrdersHeaders");
+                httpRoute.Append("?");
+                httpRoute.AppendFormat("UserID={0}", User.Identity.GetUserId());
+
+                var response = await client.GetAsync(httpRoute.ToString());
+                if (response.IsSuccessStatusCode)
+                {
+                    apiOrderHeaderResults = await response.Content.ReadAsAsync<Dictionary<string, List<OrderHeader>>>();
+                    resultOrderHeader = apiOrderHeaderResults["results"];
+                    ViewBag.OrdersHeaders = apiOrderHeaderResults["results"];
+                }
+            }
+
+            List<int> ordersHeadersListOfIDs = resultOrderHeader.Select(x => x.ID).ToList();
+            string csvHeadersIDs = string.Join(",", ordersHeadersListOfIDs);
+            Dictionary<string, List<OrderDetail>> apiOrderDetailsResults = new Dictionary<string, List<OrderDetail>>();
+            List<OrderDetail> resultOrderDetails = new List<OrderDetail>();
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(Global.Globals.baseURL);
+                StringBuilder httpRoute = new StringBuilder();
+                httpRoute.Append("api/Books/GetMyOrdersDetails");
+                httpRoute.Append("?");
+                httpRoute.AppendFormat("OrderHeadersCSV={0}", csvHeadersIDs);
+
+                var response = await client.GetAsync(httpRoute.ToString());
+                if (response.IsSuccessStatusCode)
+                {
+                    apiOrderDetailsResults = await response.Content.ReadAsAsync<Dictionary<string, List<OrderDetail>>>();
+                    ViewBag.OrdersDetails = apiOrderDetailsResults["results"];
+                    //resultOrderDetails = apiOrderDetailsResults["results"];
+                }
+            }
+
             return View();
         }
 

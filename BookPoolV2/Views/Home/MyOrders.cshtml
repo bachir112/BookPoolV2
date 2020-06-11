@@ -1,18 +1,27 @@
-﻿
+﻿@using BookPool.DataObjects.DTO
+@using BookPool.DataObjects.EDM
+
 @{
     ViewBag.Title = "MyOrders";
     Layout = "~/Views/Shared/_Layout_Out.cshtml";
+
+    List<OrderHeader> orderHeader = new List<OrderHeader>();
+    if (ViewBag.OrdersHeaders != null)
+    {
+        orderHeader = ViewBag.OrdersHeaders as List<OrderHeader>;
+    }
+
+    List<OrderDetail> orderDetail = new List<OrderDetail>();
+    if (ViewBag.OrdersDetails != null)
+    {
+        orderDetail = ViewBag.OrdersDetails as List<OrderDetail>;
+    }
+
 }
 
 <hr />
 
 <div class="row itemslist container">
-    <div class="col s12 m12 l12">
-        <h5>Order: #12984425</h5>
-        <h5>Ordered On: 7 Dec 2019</h5>
-        <h5>Total: 90,000LL</h5>
-        <h5>Status: <span style="color:#01B460;">Received</span></h5>
-    </div>
 
     <div id="mainSortByFilter" style="background: white; height:50px;" class="">
         <div class="row">
@@ -77,254 +86,293 @@
         </div>
     </div>
 
-    <div class="col s12 m12 l6" style="overflow-x:auto; overflow-y:hidden;">
-        <div class="card gotoproduct" style="box-shadow:none; -webkit-box-shadow:none; max-width:400px;">
-            <div class="card-horizontal" style="overflow: hidden;">
-                <div class="img-square-wrapper" style="width: 100px;">
-                    <img class="smallImage" src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg" alt="Card image cap">
-                </div>
-                <div class="card-body">
-                    <div style="width:100%;">
-                        <div style="float:left;height: 100px;width: 100%;padding-right: 15px;">
-                            <h5 class="card-title" style="padding-top:0px;margin-top:0px;margin-bottom:0px;color: black;font-size: 16px;">
-                                An economist walks into a brothel
-                            </h5>
-                            <p class="card-text" style="margin-bottom:6px;margin-top:6px;color:var(--primaryGrey);">
-                                Price: 20,000LL
-                            </p>
-                            <p class="card-text" style="margin-bottom:6px;margin-top:6px; color:#01B460;">
-                                Received
-                            </p>
-                        </div>
-                    </div>
-                </div>
+    @{
+        foreach (var header in orderHeader)
+        {
+            <div class="col s12 m12 l12">
+                <h5>Order: #@header.ID.ToString()@header.OrderedOn.ToString("ddMMyy")</h5>
+                <h5>Ordered On: @header.OrderedOn.ToString("dd MMM yyyy")</h5>
+                <h5>Total: @(header.TotalPrice)L.L.</h5>
+                <h5>Status: <span style="color:#01B460;">@(header.Status)</span></h5>
             </div>
-        </div>
-    </div>
 
-    <div class="col s12 m12 l6" style="overflow-x:auto; overflow-y:hidden;">
-        <div class="card" style="box-shadow:none; -webkit-box-shadow:none; max-width:400px;">
-            <div class="card-horizontal" style="overflow: hidden;">
-                <div class="img-square-wrapper" style="width: 100px;">
-                    <img class="smallImage" src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg" alt="Card image cap">
-                </div>
-                <div class="card-body">
-                    <div style="width:100%;">
-                        <div style="float:left;height: 100px;width: 100%;padding-right: 15px;">
-                            <h5 class="card-title" style="padding-top:0px;margin-top:0px;margin-bottom:0px;color: black;font-size: 16px;">
-                                An economist walks into a brothel
-                            </h5>
-                            <p class="card-text" style="margin-bottom:6px;margin-top:6px;color:var(--primaryGrey);">
-                                Price: 20,000LL
-                            </p>
-                            <p class="card-text" style="margin-bottom:6px;margin-top:6px; color:var(--secondaryOrange)">
-                                Not Received
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+            List<OrderDetail> detailsInheader = orderDetail.Where(x => x.OrderHeaderID == header.ID).Select(x => x).ToList();
+            foreach (var details in detailsInheader)
+            {
+                BookPoolResult book = new BookPoolResult();
+                book.BookName = details.BookName;
+                book.Price = details.BookPrice;
+                book.ImageURL = details.BookImage;
+                book.GoogleID = details.GoogleID;
+                book.ID = details.BookID;
+                book.Authors = details.Authors.Split(',').ToList();
 
-    <div class="col s12 m12 l6" style="overflow-x:auto; overflow-y:hidden;">
-        <div class="card" style="box-shadow:none; -webkit-box-shadow:none; max-width:400px;">
-            <div class="card-horizontal" style="overflow: hidden;">
-                <div class="img-square-wrapper" style="width: 100px;">
-                    <img class="smallImage" src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg" alt="Card image cap">
+                <div class="col s12 m12 l12">
+                    @Html.Partial("_MyBook", book)
+                    <hr />
                 </div>
-                <div class="card-body">
-                    <div style="width:100%;">
-                        <div style="float:left;height: 100px;width: 100%;padding-right: 15px;">
-                            <h5 class="card-title" style="padding-top:0px;margin-top:0px;margin-bottom:0px;color: black;font-size: 16px;">
-                                An economist walks into a brothel
-                            </h5>
-                            <p class="card-text" style="margin-bottom:6px;margin-top:6px;color:var(--primaryGrey);">
-                                Price: 20,000LL
-                            </p>
-                            <p class="card-text" style="margin-bottom:6px;margin-top:6px; color:#01B460;">
-                                Received
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+            }
+        }
 
-    <div class="col s12 m12 l6" style="overflow-x:auto; overflow-y:hidden;">
-        <div class="card" style="box-shadow:none; -webkit-box-shadow:none; max-width:400px;">
-            <div class="card-horizontal" style="overflow: hidden;">
-                <div class="img-square-wrapper" style="width: 100px;">
-                    <img class="smallImage" src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg" alt="Card image cap">
-                </div>
-                <div class="card-body">
-                    <div style="width:100%;">
-                        <div style="float:left;height: 100px;width: 100%;padding-right: 15px;">
-                            <h5 class="card-title" style="padding-top:0px;margin-top:0px;margin-bottom:0px;color: black;font-size: 16px;">
-                                An economist walks into a brothel
-                            </h5>
-                            <p class="card-text" style="margin-bottom:6px;margin-top:6px;color:var(--primaryGrey);">
-                                Price: 20,000LL
-                            </p>
-                            <p class="card-text" style="margin-bottom:6px;margin-top:6px; color:#01B460;">
-                                Received
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+        if (orderHeader.Count() == 0)
+        {
+            <div class="col s12 m12 l12">
+                <h5>
+                    You don't have any order yet.
+                </h5>
 
-    <div class="col s12 m12 l6" style="overflow-x:auto; overflow-y:hidden;">
-        <div class="card" style="box-shadow:none; -webkit-box-shadow:none; max-width:400px;">
-            <div class="card-horizontal" style="overflow: hidden;">
-                <div class="img-square-wrapper" style="width: 100px;">
-                    <img class="smallImage" src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg" alt="Card image cap">
-                </div>
-                <div class="card-body">
-                    <div style="width:100%;">
-                        <div style="float:left;height: 100px;width: 100%;padding-right: 15px;">
-                            <h5 class="card-title" style="padding-top:0px;margin-top:0px;margin-bottom:0px;color: black;font-size: 16px;">
-                                An economist walks into a brothel
-                            </h5>
-                            <p class="card-text" style="margin-bottom:6px;margin-top:6px;color:var(--primaryGrey);">
-                                Price: 20,000LL
-                            </p>
-                            <p class="card-text" style="margin-bottom:6px;margin-top:6px; color:#01B460;">
-                                Received
-                            </p>
-                        </div>
-                    </div>
-                </div>
             </div>
-        </div>
-    </div>
+        }
+    }
 
-    <div class="col s12 m12 l6" style="overflow-x:auto; overflow-y:hidden;">
-        <div class="card" style="box-shadow:none; -webkit-box-shadow:none; max-width:400px;">
-            <div class="card-horizontal" style="overflow: hidden;">
-                <div class="img-square-wrapper" style="width: 100px;">
-                    <img class="smallImage" src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg" alt="Card image cap">
-                </div>
-                <div class="card-body">
-                    <div style="width:100%;">
-                        <div style="float:left;height: 100px;width: 100%;padding-right: 15px;">
-                            <h5 class="card-title" style="padding-top:0px;margin-top:0px;margin-bottom:0px;color: black;font-size: 16px;">
-                                An economist walks into a brothel
-                            </h5>
-                            <p class="card-text" style="margin-bottom:6px;margin-top:6px;color:var(--primaryGrey);">
-                                Price: 20,000LL
-                            </p>
-                            <p class="card-text" style="margin-bottom:6px;margin-top:6px; color:#01B460;">
-                                Received
-                            </p>
+    @*<div class="col s12 m12 l6" style="overflow-x:auto; overflow-y:hidden;">
+            <div class="card gotoproduct" style="box-shadow:none; -webkit-box-shadow:none; max-width:400px;">
+                <div class="card-horizontal" style="overflow: hidden;">
+                    <div class="img-square-wrapper" style="width: 100px;">
+                        <img class="smallImage" src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg" alt="Card image cap">
+                    </div>
+                    <div class="card-body">
+                        <div style="width:100%;">
+                            <div style="float:left;height: 100px;width: 100%;padding-right: 15px;">
+                                <h5 class="card-title" style="padding-top:0px;margin-top:0px;margin-bottom:0px;color: black;font-size: 16px;">
+                                    An economist walks into a brothel
+                                </h5>
+                                <p class="card-text" style="margin-bottom:6px;margin-top:6px;color:var(--primaryGrey);">
+                                    Price: 20,000LL
+                                </p>
+                                <p class="card-text" style="margin-bottom:6px;margin-top:6px; color:#01B460;">
+                                    Received
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="col s12 m12 l6" style="overflow-x:auto; overflow-y:hidden;">
-        <div class="card" style="box-shadow:none; -webkit-box-shadow:none; max-width:400px;">
-            <div class="card-horizontal" style="overflow: hidden;">
-                <div class="img-square-wrapper" style="width: 100px;">
-                    <img class="smallImage" src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg" alt="Card image cap">
-                </div>
-                <div class="card-body">
-                    <div style="width:100%;">
-                        <div style="float:left;height: 100px;width: 100%;padding-right: 15px;">
-                            <h5 class="card-title" style="padding-top:0px;margin-top:0px;margin-bottom:0px;color: black;font-size: 16px;">
-                                An economist walks into a brothel
-                            </h5>
-                            <p class="card-text" style="margin-bottom:6px;margin-top:6px;color:var(--primaryGrey);">
-                                Price: 20,000LL
-                            </p>
-                            <p class="card-text" style="margin-bottom:6px;margin-top:6px; color:#01B460;">
-                                Received
-                            </p>
+        <div class="col s12 m12 l6" style="overflow-x:auto; overflow-y:hidden;">
+            <div class="card" style="box-shadow:none; -webkit-box-shadow:none; max-width:400px;">
+                <div class="card-horizontal" style="overflow: hidden;">
+                    <div class="img-square-wrapper" style="width: 100px;">
+                        <img class="smallImage" src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg" alt="Card image cap">
+                    </div>
+                    <div class="card-body">
+                        <div style="width:100%;">
+                            <div style="float:left;height: 100px;width: 100%;padding-right: 15px;">
+                                <h5 class="card-title" style="padding-top:0px;margin-top:0px;margin-bottom:0px;color: black;font-size: 16px;">
+                                    An economist walks into a brothel
+                                </h5>
+                                <p class="card-text" style="margin-bottom:6px;margin-top:6px;color:var(--primaryGrey);">
+                                    Price: 20,000LL
+                                </p>
+                                <p class="card-text" style="margin-bottom:6px;margin-top:6px; color:var(--secondaryOrange)">
+                                    Not Received
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="col s12 m12 l6" style="overflow-x:auto; overflow-y:hidden;">
-        <div class="card" style="box-shadow:none; -webkit-box-shadow:none; max-width:400px;">
-            <div class="card-horizontal" style="overflow: hidden;">
-                <div class="img-square-wrapper" style="width: 100px;">
-                    <img class="smallImage" src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg" alt="Card image cap">
-                </div>
-                <div class="card-body">
-                    <div style="width:100%;">
-                        <div style="float:left;height: 100px;width: 100%;padding-right: 15px;">
-                            <h5 class="card-title" style="padding-top:0px;margin-top:0px;margin-bottom:0px;color: black;font-size: 16px;">
-                                An economist walks into a brothel
-                            </h5>
-                            <p class="card-text" style="margin-bottom:6px;margin-top:6px;color:var(--primaryGrey);">
-                                Price: 20,000LL
-                            </p>
-                            <p class="card-text" style="margin-bottom:6px;margin-top:6px; color:#01B460;">
-                                Received
-                            </p>
+        <div class="col s12 m12 l6" style="overflow-x:auto; overflow-y:hidden;">
+            <div class="card" style="box-shadow:none; -webkit-box-shadow:none; max-width:400px;">
+                <div class="card-horizontal" style="overflow: hidden;">
+                    <div class="img-square-wrapper" style="width: 100px;">
+                        <img class="smallImage" src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg" alt="Card image cap">
+                    </div>
+                    <div class="card-body">
+                        <div style="width:100%;">
+                            <div style="float:left;height: 100px;width: 100%;padding-right: 15px;">
+                                <h5 class="card-title" style="padding-top:0px;margin-top:0px;margin-bottom:0px;color: black;font-size: 16px;">
+                                    An economist walks into a brothel
+                                </h5>
+                                <p class="card-text" style="margin-bottom:6px;margin-top:6px;color:var(--primaryGrey);">
+                                    Price: 20,000LL
+                                </p>
+                                <p class="card-text" style="margin-bottom:6px;margin-top:6px; color:#01B460;">
+                                    Received
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="col s12 m12 l6" style="overflow-x:auto; overflow-y:hidden;">
-        <div class="card" style="box-shadow:none; -webkit-box-shadow:none; max-width:400px;">
-            <div class="card-horizontal" style="overflow: hidden;">
-                <div class="img-square-wrapper" style="width: 100px;">
-                    <img class="smallImage" src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg" alt="Card image cap">
-                </div>
-                <div class="card-body">
-                    <div style="width:100%;">
-                        <div style="float:left;height: 100px;width: 100%;padding-right: 15px;">
-                            <h5 class="card-title" style="padding-top:0px;margin-top:0px;margin-bottom:0px;color: black;font-size: 16px;">
-                                An economist walks into a brothel
-                            </h5>
-                            <p class="card-text" style="margin-bottom:6px;margin-top:6px;color:var(--primaryGrey);">
-                                Price: 20,000LL
-                            </p>
-                            <p class="card-text" style="margin-bottom:6px;margin-top:6px; color:#01B460;">
-                                Received
-                            </p>
+        <div class="col s12 m12 l6" style="overflow-x:auto; overflow-y:hidden;">
+            <div class="card" style="box-shadow:none; -webkit-box-shadow:none; max-width:400px;">
+                <div class="card-horizontal" style="overflow: hidden;">
+                    <div class="img-square-wrapper" style="width: 100px;">
+                        <img class="smallImage" src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg" alt="Card image cap">
+                    </div>
+                    <div class="card-body">
+                        <div style="width:100%;">
+                            <div style="float:left;height: 100px;width: 100%;padding-right: 15px;">
+                                <h5 class="card-title" style="padding-top:0px;margin-top:0px;margin-bottom:0px;color: black;font-size: 16px;">
+                                    An economist walks into a brothel
+                                </h5>
+                                <p class="card-text" style="margin-bottom:6px;margin-top:6px;color:var(--primaryGrey);">
+                                    Price: 20,000LL
+                                </p>
+                                <p class="card-text" style="margin-bottom:6px;margin-top:6px; color:#01B460;">
+                                    Received
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="col s12 m12 l6" style="overflow-x:auto; overflow-y:hidden;">
-        <div class="card" style="box-shadow:none; -webkit-box-shadow:none; max-width:400px;">
-            <div class="card-horizontal" style="overflow: hidden;">
-                <div class="img-square-wrapper" style="width: 100px;">
-                    <img class="smallImage" src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg" alt="Card image cap">
-                </div>
-                <div class="card-body">
-                    <div style="width:100%;">
-                        <div style="float:left;height: 100px;width: 100%;padding-right: 15px;">
-                            <h5 class="card-title" style="padding-top:0px;margin-top:0px;margin-bottom:0px;color: black;font-size: 16px;">
-                                An economist walks into a brothel
-                            </h5>
-                            <p class="card-text" style="margin-bottom:6px;margin-top:6px;color:var(--primaryGrey);">
-                                Price: 20,000LL
-                            </p>
-                            <p class="card-text" style="margin-bottom:6px;margin-top:6px; color:#01B460;">
-                                Received
-                            </p>
+        <div class="col s12 m12 l6" style="overflow-x:auto; overflow-y:hidden;">
+            <div class="card" style="box-shadow:none; -webkit-box-shadow:none; max-width:400px;">
+                <div class="card-horizontal" style="overflow: hidden;">
+                    <div class="img-square-wrapper" style="width: 100px;">
+                        <img class="smallImage" src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg" alt="Card image cap">
+                    </div>
+                    <div class="card-body">
+                        <div style="width:100%;">
+                            <div style="float:left;height: 100px;width: 100%;padding-right: 15px;">
+                                <h5 class="card-title" style="padding-top:0px;margin-top:0px;margin-bottom:0px;color: black;font-size: 16px;">
+                                    An economist walks into a brothel
+                                </h5>
+                                <p class="card-text" style="margin-bottom:6px;margin-top:6px;color:var(--primaryGrey);">
+                                    Price: 20,000LL
+                                </p>
+                                <p class="card-text" style="margin-bottom:6px;margin-top:6px; color:#01B460;">
+                                    Received
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+
+        <div class="col s12 m12 l6" style="overflow-x:auto; overflow-y:hidden;">
+            <div class="card" style="box-shadow:none; -webkit-box-shadow:none; max-width:400px;">
+                <div class="card-horizontal" style="overflow: hidden;">
+                    <div class="img-square-wrapper" style="width: 100px;">
+                        <img class="smallImage" src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg" alt="Card image cap">
+                    </div>
+                    <div class="card-body">
+                        <div style="width:100%;">
+                            <div style="float:left;height: 100px;width: 100%;padding-right: 15px;">
+                                <h5 class="card-title" style="padding-top:0px;margin-top:0px;margin-bottom:0px;color: black;font-size: 16px;">
+                                    An economist walks into a brothel
+                                </h5>
+                                <p class="card-text" style="margin-bottom:6px;margin-top:6px;color:var(--primaryGrey);">
+                                    Price: 20,000LL
+                                </p>
+                                <p class="card-text" style="margin-bottom:6px;margin-top:6px; color:#01B460;">
+                                    Received
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col s12 m12 l6" style="overflow-x:auto; overflow-y:hidden;">
+            <div class="card" style="box-shadow:none; -webkit-box-shadow:none; max-width:400px;">
+                <div class="card-horizontal" style="overflow: hidden;">
+                    <div class="img-square-wrapper" style="width: 100px;">
+                        <img class="smallImage" src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg" alt="Card image cap">
+                    </div>
+                    <div class="card-body">
+                        <div style="width:100%;">
+                            <div style="float:left;height: 100px;width: 100%;padding-right: 15px;">
+                                <h5 class="card-title" style="padding-top:0px;margin-top:0px;margin-bottom:0px;color: black;font-size: 16px;">
+                                    An economist walks into a brothel
+                                </h5>
+                                <p class="card-text" style="margin-bottom:6px;margin-top:6px;color:var(--primaryGrey);">
+                                    Price: 20,000LL
+                                </p>
+                                <p class="card-text" style="margin-bottom:6px;margin-top:6px; color:#01B460;">
+                                    Received
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col s12 m12 l6" style="overflow-x:auto; overflow-y:hidden;">
+            <div class="card" style="box-shadow:none; -webkit-box-shadow:none; max-width:400px;">
+                <div class="card-horizontal" style="overflow: hidden;">
+                    <div class="img-square-wrapper" style="width: 100px;">
+                        <img class="smallImage" src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg" alt="Card image cap">
+                    </div>
+                    <div class="card-body">
+                        <div style="width:100%;">
+                            <div style="float:left;height: 100px;width: 100%;padding-right: 15px;">
+                                <h5 class="card-title" style="padding-top:0px;margin-top:0px;margin-bottom:0px;color: black;font-size: 16px;">
+                                    An economist walks into a brothel
+                                </h5>
+                                <p class="card-text" style="margin-bottom:6px;margin-top:6px;color:var(--primaryGrey);">
+                                    Price: 20,000LL
+                                </p>
+                                <p class="card-text" style="margin-bottom:6px;margin-top:6px; color:#01B460;">
+                                    Received
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col s12 m12 l6" style="overflow-x:auto; overflow-y:hidden;">
+            <div class="card" style="box-shadow:none; -webkit-box-shadow:none; max-width:400px;">
+                <div class="card-horizontal" style="overflow: hidden;">
+                    <div class="img-square-wrapper" style="width: 100px;">
+                        <img class="smallImage" src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg" alt="Card image cap">
+                    </div>
+                    <div class="card-body">
+                        <div style="width:100%;">
+                            <div style="float:left;height: 100px;width: 100%;padding-right: 15px;">
+                                <h5 class="card-title" style="padding-top:0px;margin-top:0px;margin-bottom:0px;color: black;font-size: 16px;">
+                                    An economist walks into a brothel
+                                </h5>
+                                <p class="card-text" style="margin-bottom:6px;margin-top:6px;color:var(--primaryGrey);">
+                                    Price: 20,000LL
+                                </p>
+                                <p class="card-text" style="margin-bottom:6px;margin-top:6px; color:#01B460;">
+                                    Received
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col s12 m12 l6" style="overflow-x:auto; overflow-y:hidden;">
+            <div class="card" style="box-shadow:none; -webkit-box-shadow:none; max-width:400px;">
+                <div class="card-horizontal" style="overflow: hidden;">
+                    <div class="img-square-wrapper" style="width: 100px;">
+                        <img class="smallImage" src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg" alt="Card image cap">
+                    </div>
+                    <div class="card-body">
+                        <div style="width:100%;">
+                            <div style="float:left;height: 100px;width: 100%;padding-right: 15px;">
+                                <h5 class="card-title" style="padding-top:0px;margin-top:0px;margin-bottom:0px;color: black;font-size: 16px;">
+                                    An economist walks into a brothel
+                                </h5>
+                                <p class="card-text" style="margin-bottom:6px;margin-top:6px;color:var(--primaryGrey);">
+                                    Price: 20,000LL
+                                </p>
+                                <p class="card-text" style="margin-bottom:6px;margin-top:6px; color:#01B460;">
+                                    Received
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>*@
 
 </div>

@@ -363,7 +363,6 @@
         });
 
         $(document).ready(function () {
-            showItemsInCart();
 
             $('.collapsible').collapsible();
             $('#search-request-successful').modal();
@@ -537,7 +536,14 @@
 
         function showItemsInCart() {
 
-            getCookieFromDatabase();
+            @{ 
+                if (userCookieCart.Count() > 0)
+                {
+                    <text>
+                        getCookieFromDatabase();
+                    </text>
+                }
+            }
 
             var books = $.parseJSON($.cookie("Books"));
 
@@ -570,6 +576,9 @@
             if (userCookieCart.Count()>0)
             {
                 <text>
+                    $(document).ready(function () {
+                        showItemsInCart();
+                    });
                     function getCookieFromDatabase() {
                         var userCookie = JSON.parse('@Html.Raw(Json.Encode(userCookieCart))');
                         $.cookie("Books", JSON.stringify(userCookie), { path: '/' });
@@ -579,9 +588,9 @@
             else
             {
                 <text>
-                    function getCookieFromDatabase() {
-
-                    }
+                    $(document).ready(function () {
+                        $.removeCookie('Books', { path: '/' });
+                    });
                 </text>
             }
         }

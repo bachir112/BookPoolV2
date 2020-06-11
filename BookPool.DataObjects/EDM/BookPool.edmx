@@ -114,6 +114,9 @@
           <Property Name="BookPrice" Type="decimal" Precision="18" Scale="0" Nullable="false" />
           <Property Name="Status" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="SellerUserID" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Authors" Type="nvarchar" MaxLength="200" />
+          <Property Name="GoogleID" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="BookID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="OrderHeader">
           <Key>
@@ -379,6 +382,9 @@
           <Property Name="BookPrice" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
           <Property Name="Status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="SellerUserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Authors" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="GoogleID" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="BookID" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="OrderHeader">
           <Key>
@@ -553,6 +559,9 @@
           <EntitySetMapping Name="OrderDetails">
             <EntityTypeMapping TypeName="BookPoolModel.OrderDetail">
               <MappingFragment StoreEntitySet="OrderDetails">
+                <ScalarProperty Name="BookID" ColumnName="BookID" />
+                <ScalarProperty Name="GoogleID" ColumnName="GoogleID" />
+                <ScalarProperty Name="Authors" ColumnName="Authors" />
                 <ScalarProperty Name="SellerUserID" ColumnName="SellerUserID" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="BookPrice" ColumnName="BookPrice" />

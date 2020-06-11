@@ -106,19 +106,29 @@ namespace BookPool.DataInterface.Controllers
             {
                 using (var db = new BookPoolEntities())
                 {
+                    decimal totalPrice = 0;
+                    List<int> booksIDsInCart = BooksIDs.Split(',').Select(int.Parse).ToList();
+                    foreach (var bookID in booksIDsInCart)
+                    {
+                        AvailableBook availableBook = db.AvailableBooks.FirstOrDefault(x => x.ID == bookID);
+                        totalPrice += availableBook.Price;
+                    }
+
                     OrderHeader orderHeader = new OrderHeader();
                     orderHeader.ClientUserID = BuyerID;
                     orderHeader.OrderedOn = DateTime.Now;
                     orderHeader.Status = Globals.OrderStatusPending;
-
+                    orderHeader.TotalPrice = totalPrice;
+                    
                     db.OrderHeaders.Add(orderHeader);
 
                     db.SaveChanges();
 
                     results = orderHeader.ID.ToString() + orderHeader.OrderedOn.ToString("ddMMyy");
 
-                    List<int> booksIDsInCart = BooksIDs.Split(',').Select(int.Parse).ToList();
-                    foreach(var bookID in booksIDsInCart)
+                    UserCart userCart = db.UserCarts.FirstOrDefault(x => x.UserID == BuyerID);
+
+                    foreach (var bookID in booksIDsInCart)
                     {
                         AvailableBook availableBook = db.AvailableBooks.FirstOrDefault(x => x.ID == bookID);
                         if(availableBook != null)
@@ -131,6 +141,7 @@ namespace BookPool.DataInterface.Controllers
                             orderDetail.OrderHeaderID = orderHeader.ID;
                             orderDetail.Status = Globals.OrderStatusPending;
                             orderDetail.SellerUserID = availableBook.OwnerUserID;
+                            orderDetail.BookID = availableBook.ID;
 
                             GoogleBook googleResult = new GoogleBook();
                             using (var client = new HttpClient())
@@ -147,12 +158,25 @@ namespace BookPool.DataInterface.Controllers
                             }
 
                             orderDetail.BookImage = googleResult.volumeInfo.imageLinks.thumbnail;
+                            orderDetail.Authors = string.Join(",", googleResult.volumeInfo.authors);
+                            orderDetail.GoogleID = googleResult.id;
 
                             db.OrderDetails.Add(orderDetail);
 
                             db.SaveChanges();
                         }
+
+
+                        if (userCart != null)
+                        {
+                            List<int> userCartBooks = userCart.BooksIDsCSV.Split(',').Select(int.Parse).ToList();
+                            userCartBooks.Remove(bookID);
+                            userCart.BooksIDsCSV = string.Join(",", userCartBooks);
+                            db.SaveChanges();
+                        }
                     }
+
+
                 }
             }
             catch (Exception ex)
