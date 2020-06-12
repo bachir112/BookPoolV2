@@ -24,6 +24,11 @@ namespace BookPoolV2.Controllers
             ViewBag.UserAddresses = await Global.Globals.GetUserAddresses(User.Identity.GetUserId());
             ViewBag.UserCartCookie = await Global.Globals.GetCart(User.Identity.GetUserId());
 
+            ViewBag.Language = language;
+            ViewBag.SortByPrice = sortByPrice;
+            ViewBag.AvailableOnly = AvailableOnly;
+            ViewBag.SortByPopularity = sortByPopularity;
+
             if (string.IsNullOrEmpty(query))
             {
                 query = string.Empty;

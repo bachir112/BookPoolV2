@@ -82,7 +82,7 @@ namespace BookPool.DataInterface.Controllers
                                     join languages in db.Languages on availableBooks.BookLanguageID equals languages.ID
                                     join users in db.AspNetUsers on availableBooks.OwnerUserID equals users.Id
                                     where availableBooks.SellingStatus == Global.Globals.BookSellingStatus_Available
-                                    && languages == null ? true : (languages.LanguageName.ToLower() == language)
+
                                     select new BookPoolResult
                                     {
                                         ID = availableBooks.ID,
@@ -286,8 +286,21 @@ namespace BookPool.DataInterface.Controllers
                         Subtitle = x.volumeInfo.subtitle
                     }).ToList();
 
-                    results.AddRange(dbResult);
-                    results.AddRange(googleUnavailableBooks);
+                    if (sortByPopularity == true)
+                    {
+                        googleUnavailableBooks = googleUnavailableBooks.OrderByDescending(x => x.AverageRating).Select(x => x).ToList();
+                    }
+
+                    if (AvailableOnly)
+                    {
+                        dbResult = dbResult.Where(x => x.SellingStatus == Global.Globals.BookSellingStatus_Available).Select(x => x).ToList();
+                        results.AddRange(dbResult);
+                    }
+                    else
+                    {
+                        results.AddRange(dbResult);
+                        results.AddRange(googleUnavailableBooks);
+                    }
 
                 }
 
@@ -739,7 +752,12 @@ namespace BookPool.DataInterface.Controllers
 
                     if (userCart != null)
                     {
-                        List<int> booksIDsInCart = userCart.BooksIDsCSV.Split(',').Select(int.Parse).ToList();
+                        List<int> booksIDsInCart = new List<int>();
+                        if (!string.IsNullOrEmpty(userCart.BooksIDsCSV))
+                        {
+                            booksIDsInCart = userCart.BooksIDsCSV.Split(',').Select(int.Parse).ToList();
+                        }
+
                         if (!booksIDsInCart.Contains(BookID))
                         {
                             booksIDsInCart.Add(BookID);
@@ -931,7 +949,7 @@ namespace BookPool.DataInterface.Controllers
             {
                 using (var db = new BookPoolEntities())
                 {
-                    orderHeader = db.OrderHeaders.Where(x => x.ClientUserID == UserID).Select(x => x).ToList();
+                    orderHeader = db.OrderHeaders.Where(x => x.ClientUserID == UserID).Select(x => x).OrderByDescending(x => x.OrderedOn).ToList();
                     results.AddRange(orderHeader);
                 }
             }

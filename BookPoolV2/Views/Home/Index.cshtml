@@ -116,4 +116,66 @@
         var url = '@Url.Action("Index","Home")?' + filterName + "=" + filterValue;
         window.location = url;
     });
+
+    @{
+        if (ViewBag.Language == "English")
+        {
+            <text>
+                $(document).ready(function () {
+                    $('#englishFilter').addClass('active');
+                });
+            </text>
+        }
+
+        if (ViewBag.Language == "French")
+        {
+            <text>
+                $(document).ready(function () {
+                    $('#frenchFilter').addClass('active');
+                });
+            </text>
+        }
+
+        if (ViewBag.Language == "Arabic")
+        {
+            <text>
+                $(document).ready(function () {
+                    $('#arabicFilter').addClass('active');
+                });
+            </text>
+        }
+
+        if (ViewBag.AvailableOnly)
+        {
+
+            <text>
+                $(document).ready(function () {
+                    $('#availableOnlyFilter').addClass('active');
+                });
+            </text>
+        }
+
+        if (ViewBag.SortByPopularity)
+        {
+
+            <text>
+                $(document).ready(function () {
+                    $('#sortByPopularityFilter').addClass('active');
+                });
+            </text>
+        }
+
+        if (ViewBag.SortByPrice)
+        {
+
+            <text>
+                $(document).ready(function () {
+                    $('#sortByPriceFilter').addClass('active');
+                });
+            </text>
+        }
+
+
+    }
+
 </script>
