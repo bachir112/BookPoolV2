@@ -65,6 +65,8 @@
           <Property Name="LockoutEnabled" Type="bit" Nullable="false" />
           <Property Name="AccessFailedCount" Type="int" Nullable="false" />
           <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="AvailableBooks">
           <Key>
@@ -80,6 +82,10 @@
           <Property Name="GoogleID" Type="nvarchar" MaxLength="200" />
           <Property Name="OwnerUserID" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="SellingStatus" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PostedOn" Type="datetime" Nullable="false" />
+          <Property Name="InstitutionID" Type="int" />
+          <Property Name="CourseID" Type="int" />
+          <Property Name="Institution" Type="nvarchar" MaxLength="250" />
         </EntityType>
         <EntityType Name="Categories">
           <Key>
@@ -95,6 +101,23 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ConditionName" Type="nvarchar" MaxLength="150" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Courses">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CourseName" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="CourseDescription" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Institutions">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="InstitutionName" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="InstitutionCode" Type="nvarchar" MaxLength="255" />
+          <Property Name="InstitutionType" Type="nvarchar" MaxLength="255" Nullable="false" />
         </EntityType>
         <EntityType Name="Languages">
           <Key>
@@ -220,6 +243,8 @@
           <EntitySet Name="AvailableBooks" EntityType="Self.AvailableBooks" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Conditions" EntityType="Self.Conditions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Courses" EntityType="Self.Courses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Institutions" EntityType="Self.Institutions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Languages" EntityType="Self.Languages" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OrderDetails" EntityType="Self.OrderDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OrderHeader" EntityType="Self.OrderHeader" Schema="dbo" store:Type="Tables" />
@@ -256,6 +281,8 @@
           <EntitySet Name="AvailableBooks" EntityType="BookPoolModel.AvailableBook" />
           <EntitySet Name="Categories" EntityType="BookPoolModel.Category" />
           <EntitySet Name="Conditions" EntityType="BookPoolModel.Condition" />
+          <EntitySet Name="Courses" EntityType="BookPoolModel.Cours" />
+          <EntitySet Name="Institutions" EntityType="BookPoolModel.Institution" />
           <EntitySet Name="Languages" EntityType="BookPoolModel.Language" />
           <EntitySet Name="OrderDetails" EntityType="BookPoolModel.OrderDetail" />
           <EntitySet Name="OrderHeaders" EntityType="BookPoolModel.OrderHeader" />
@@ -330,6 +357,8 @@
           <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
           <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
           <Property Name="UserName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="AspNetUserClaims" Relationship="BookPoolModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserClaim" />
           <NavigationProperty Name="AspNetUserLogins" Relationship="BookPoolModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserLogin" />
           <NavigationProperty Name="AspNetRoles" Relationship="BookPoolModel.AspNetUserRoles" FromRole="AspNetUser" ToRole="AspNetRole" />
@@ -348,6 +377,10 @@
           <Property Name="GoogleID" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="OwnerUserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="SellingStatus" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PostedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="InstitutionID" Type="Int32" />
+          <Property Name="CourseID" Type="Int32" />
+          <Property Name="Institution" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Category">
           <Key>
@@ -363,6 +396,23 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ConditionName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Cours">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CourseName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CourseDescription" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Institution">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="InstitutionName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="InstitutionCode" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="InstitutionType" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Language">
           <Key>
@@ -500,6 +550,8 @@
           <EntitySetMapping Name="AspNetUsers">
             <EntityTypeMapping TypeName="BookPoolModel.AspNetUser">
               <MappingFragment StoreEntitySet="AspNetUsers">
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
                 <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
@@ -518,6 +570,10 @@
           <EntitySetMapping Name="AvailableBooks">
             <EntityTypeMapping TypeName="BookPoolModel.AvailableBook">
               <MappingFragment StoreEntitySet="AvailableBooks">
+                <ScalarProperty Name="Institution" ColumnName="Institution" />
+                <ScalarProperty Name="CourseID" ColumnName="CourseID" />
+                <ScalarProperty Name="InstitutionID" ColumnName="InstitutionID" />
+                <ScalarProperty Name="PostedOn" ColumnName="PostedOn" />
                 <ScalarProperty Name="SellingStatus" ColumnName="SellingStatus" />
                 <ScalarProperty Name="OwnerUserID" ColumnName="OwnerUserID" />
                 <ScalarProperty Name="GoogleID" ColumnName="GoogleID" />
@@ -544,6 +600,25 @@
             <EntityTypeMapping TypeName="BookPoolModel.Condition">
               <MappingFragment StoreEntitySet="Conditions">
                 <ScalarProperty Name="ConditionName" ColumnName="ConditionName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Courses">
+            <EntityTypeMapping TypeName="BookPoolModel.Cours">
+              <MappingFragment StoreEntitySet="Courses">
+                <ScalarProperty Name="CourseDescription" ColumnName="CourseDescription" />
+                <ScalarProperty Name="CourseName" ColumnName="CourseName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Institutions">
+            <EntityTypeMapping TypeName="BookPoolModel.Institution">
+              <MappingFragment StoreEntitySet="Institutions">
+                <ScalarProperty Name="InstitutionType" ColumnName="InstitutionType" />
+                <ScalarProperty Name="InstitutionCode" ColumnName="InstitutionCode" />
+                <ScalarProperty Name="InstitutionName" ColumnName="InstitutionName" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

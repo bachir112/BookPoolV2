@@ -57,36 +57,6 @@
                         }
                     }
                 </div>
-                @*<div style="float:right;position: absolute;right: 0;">
-                    @{
-                        string averageRating = Model.AverageRating.ToString();
-                        string backgroundColor = "transparent";
-
-                        if (Model.AverageRating == 0)
-                        {
-                            averageRating = "N/A";
-                            backgroundColor = "grey";
-                        }
-                        else if (Model.AverageRating < 2)
-                        {
-                            backgroundColor = "yellow";
-                        }
-                        else if (Model.AverageRating < 3)
-                        {
-                            backgroundColor = "orange";
-                        }
-                        else if (Model.AverageRating < 4)
-                        {
-                            backgroundColor = "green";
-                        }
-                        else if (Model.AverageRating < 5)
-                        {
-                            backgroundColor = "forestgreen";
-                        }
-
-                        <span class="badge" style="color:white; background-color:@backgroundColor;">@averageRating</span>
-                    }
-                </div>*@
             </div>
         </div>
     </div>

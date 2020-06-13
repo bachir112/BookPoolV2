@@ -11,6 +11,7 @@ using Microsoft.Owin.Security;
 using BookPoolV2.Models;
 using BookPoolV2.Global;
 using BookPoolV2.Classes;
+using BookPool.DataObjects.EDM;
 
 namespace BookPoolV2.Controllers
 {
@@ -53,6 +54,50 @@ namespace BookPoolV2.Controllers
                 _userManager = value;
             }
         }
+
+        public async Task<ActionResult> MyProfile()
+        {
+            ViewBag.UserAddresses = await Global.Globals.GetUserAddresses(User.Identity.GetUserId());
+
+            AspNetUser aspNetUser = new AspNetUser();
+
+            using (var db = new BookPoolEntities())
+            {
+                string thisUserID = User.Identity.GetUserId();
+                aspNetUser = db.AspNetUsers.First(x => x.Id == thisUserID);
+            }
+            
+            return View(aspNetUser);
+        }
+
+        public ActionResult UpdateUserInfo(string FirstName, string LastName, string Email, string PhoneNumber)
+        {
+            bool result = false;
+
+            try
+            {
+                using (var db = new BookPoolEntities())
+                {
+                    string thisUserID = User.Identity.GetUserId();
+                    AspNetUser aspNetUser = db.AspNetUsers.First(x => x.Id == thisUserID);
+                    aspNetUser.FirstName = FirstName;
+                    aspNetUser.LastName = LastName;
+                    aspNetUser.Email = Email;
+                    aspNetUser.PhoneNumber = PhoneNumber;
+
+                    db.SaveChanges();
+                }
+                result = true;
+            }
+            catch(Exception ex)
+            {
+
+            }
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        
 
         //
         // GET: /Account/Login

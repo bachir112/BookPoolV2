@@ -15,7 +15,7 @@
     Category category = ViewBag.Category as Category;
 }
 
-<div id="goToHomeContainer" style="display:inline-flex;">
+<div id="goToHomeContainer" style="display:inline-flex;width:100%;">
     <a href="/" class="sidenav-trigger" style="display:inherit; width:30px; color:var(--primaryRed); cursor:pointer;">
         <i class="material-icons">keyboard_arrow_left</i>
     </a>
@@ -73,8 +73,84 @@
 
 
 <script>
+
     $(document).ready(function () {
         booksSection_active();
         $('.modal-trigger').leanModal();
     });
+
+    $(document).on('click', '.filterResults', function () {
+        var filterName = $(this).attr('data-Filter');
+        var filterValue = $(this).attr('data-Value');
+
+        $('.filterResults').removeClass('active');
+        $(this).addClass('active');
+
+        var url = '@Url.Action("FilteredByCategory", "Home")?CategoryID=@(ViewBag.CategoryID)&' + filterName + "=" + filterValue;
+        window.location = url;
+    });
+
+</script>
+
+<script>
+
+    @{
+        if (ViewBag.Language == "english")
+        {
+            <text>
+                $(document).ready(function () {
+                    $('#englishFilter').addClass('active');
+                });
+            </text>
+        }
+
+        if (ViewBag.Language == "french")
+        {
+            <text>
+                $(document).ready(function () {
+                    $('#frenchFilter').addClass('active');
+                });
+            </text>
+        }
+
+        if (ViewBag.Language == "arabic")
+        {
+            <text>
+                $(document).ready(function () {
+                    $('#arabicFilter').addClass('active');
+                });
+            </text>
+        }
+
+        if (ViewBag.AvailableOnly)
+        {
+
+            <text>
+                $(document).ready(function () {
+                    $('#availableOnlyFilter').addClass('active');
+                });
+            </text>
+        }
+
+        if (ViewBag.SortByPopularity)
+        {
+
+            <text>
+                $(document).ready(function () {
+                    $('#sortByPopularityFilter').addClass('active');
+                });
+            </text>
+        }
+
+        if (ViewBag.SortByPrice)
+        {
+
+            <text>
+                $(document).ready(function () {
+                    $('#sortByPriceFilter').addClass('active');
+                });
+            </text>
+        }
+    }
+
 </script>

@@ -93,7 +93,13 @@
     <Compile Include="EDM\Condition.cs">
       <DependentUpon>BookPool.tt</DependentUpon>
     </Compile>
+    <Compile Include="EDM\Cours.cs">
+      <DependentUpon>BookPool.tt</DependentUpon>
+    </Compile>
     <Compile Include="EDM\C__MigrationHistory.cs">
+      <DependentUpon>BookPool.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EDM\Institution.cs">
       <DependentUpon>BookPool.tt</DependentUpon>
     </Compile>
     <Compile Include="EDM\Language.cs">

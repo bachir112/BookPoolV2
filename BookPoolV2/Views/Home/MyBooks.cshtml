@@ -11,6 +11,7 @@
     if (ViewBag.MyBooks != null)
     {
         myBooks = ViewBag.MyBooks as List<BookPoolResult>;
+        myBooks = myBooks.OrderByDescending(x => x.PostedOn).Select(x => x).ToList();
     }
 
     List<Category> categories = new List<Category>();
@@ -32,9 +33,123 @@
     }
 }
 
+@{
+    List<BookPoolResult> books = new List<BookPoolResult>();
+    if (ViewBag.Books != null)
+    {
+        books = ViewBag.Books as List<BookPoolResult>;
+    }
+
+    List<Institution> AvailableInstitutions = ViewBag.Institutions as List<Institution>;
+
+    //Institution AllUniversities = new Institution();
+    //AllUniversities.ID = -1;
+    //AllUniversities.InstitutionName = "All Universities";
+    //AllUniversities.InstitutionCode = string.Empty;
+    //AllUniversities.InstitutionType = "section";
+    //AvailableInstitutions.Add(AllUniversities);
+
+    //Institution AllSchools = new Institution();
+    //AllSchools.ID = -2;
+    //AllSchools.InstitutionName = "All Schools";
+    //AllSchools.InstitutionCode = string.Empty;
+    //AllSchools.InstitutionType = "section";
+    //AvailableInstitutions.Add(AllSchools);
+
+    var UniversityGroup = new SelectListGroup { Name = "Universities" };
+    var SchoolGroup = new SelectListGroup { Name = "Schools" };
+    var SectionGroup = new SelectListGroup { Name = "Sections" };
+
+    List<SelectListItem> AvailableInstitutionsList = new List<SelectListItem>();
+
+    List<SelectListItem> AllSectionsList = AvailableInstitutions.Where(x => x.InstitutionType == "section").OrderBy(x => x.ID).Select(x => x).ToList()
+        .ConvertAll(x =>
+        {
+            return new SelectListItem()
+            {
+                Text = x.InstitutionName,
+                Value = x.ID.ToString(),
+                Selected = x.ID == -1 ? true : false,
+                Group = SectionGroup
+            };
+        });
+
+    List<SelectListItem> AvailableUniversitiesList = AvailableInstitutions.Where(x => x.InstitutionType == "university").OrderBy(x => x.ID).Select(x => x).ToList()
+        .ConvertAll(x =>
+        {
+            return new SelectListItem()
+            {
+                Text = x.InstitutionName + ", " + x.InstitutionCode,
+                Value = x.ID.ToString(),
+                Selected = false,
+                Group = UniversityGroup
+            };
+        });
+
+    List<SelectListItem> AvailableSchoolsList = AvailableInstitutions.Where(x => x.InstitutionType == "school").OrderBy(x => x.ID).Select(x => x).ToList()
+        .ConvertAll(x =>
+        {
+            return new SelectListItem()
+            {
+                Text = x.InstitutionName,
+                Value = x.ID.ToString(),
+                Selected = false,
+                Group = SchoolGroup
+            };
+        });
+
+    AvailableInstitutionsList.AddRange(AllSectionsList);
+    AvailableInstitutionsList.AddRange(AvailableUniversitiesList);
+    AvailableInstitutionsList.AddRange(AvailableSchoolsList);
+
+    List<Cours> AvailableCourses = ViewBag.Courses as List<Cours>;
+
+    //Cours AllUniversityCourses = new Cours();
+    //AllUniversityCourses.ID = -1;
+    //AllUniversityCourses.CourseName = "All Classes";
+    //AllUniversityCourses.CourseDescription = "university";
+    //AvailableCourses.Add(AllUniversityCourses);
+
+    //Cours AllSchoolCourses = new Cours();
+    //AllSchoolCourses.ID = -2;
+    //AllSchoolCourses.CourseName = "All Classes";
+    //AllSchoolCourses.CourseDescription = "school";
+    //AvailableCourses.Add(AllSchoolCourses);
+
+    List<SelectListItem> AvailableCoursesUniversities = AvailableCourses.Where(x => x.CourseDescription == "university").Select(x => x).ToList()
+        .ConvertAll(x =>
+        {
+            return new SelectListItem()
+            {
+                Text = x.ID == -1 ? x.CourseName : x.CourseName,
+                Value = x.ID.ToString(),
+                Selected = x.ID == -1 ? true : false
+            };
+        });
+
+    List<SelectListItem> AvailableCoursesSchools = AvailableCourses.Where(x => x.CourseDescription == "school").OrderBy(x => x.ID).Select(x => x).ToList()
+    .ConvertAll(x =>
+    {
+        return new SelectListItem()
+        {
+            Text = x.CourseName,
+            Value = x.ID.ToString(),
+            Selected = x.ID == -2 ? true : false
+        };
+    });
+}
+
 <style>
     .tabs .tab a:hover, .tabs .tab a.active {
         border-left: 0px;
+    }
+
+    .tabs-content.carousel.carousel-slider{
+        height:500px!important;
+    }
+
+    #bookInfo{
+        height:500px!important;
     }
 
     .carousel {
@@ -93,7 +208,7 @@
         }
 
         #findMyBooksResult label img {
-            height: 100px !important;
+            height: 150px !important;
             width: 100px !important;
             transition-duration: 0.2s;
             transform-origin: 50% 50%;
@@ -114,7 +229,51 @@
             /* box-shadow: 0 0 5px #333; */
             z-index: -1;
         }
+
+    #institutionsContainer .select-dropdown.dropdown-trigger{
+        display:none!important;
+    }
+
+    #searchCoursesUniversitiesContainer .select-dropdown.dropdown-trigger {
+        display: none !important;
+    }
+
+    #searchCoursesSchoolsContainer .select-dropdown.dropdown-trigger {
+        display: none !important;
+    }
+
+    #bookCategoryContainer .select-dropdown.dropdown-trigger {
+        display: none !important;
+    }
+
+    #languagesContainer .select-dropdown.dropdown-trigger {
+        display: none !important;
+    }
+
+    #isAcademicContainer .select-dropdown.dropdown-trigger {
+        display: none !important;
+    }
+
+    .select2-search__field {
+        height: 30px !important;
+    }
+
+    .select2 {
+        width: 100% !important;
+    }
 </style>
+
+<div id="errorsModal" class="modal modal-fixed-footer">
+    <div class="modal-content">
+        <h4>Could not post book for sale</h4>
+        <div id="errorText">
+
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat red" style="color:white;">Okay</a>
+    </div>
+</div>
 
 <div id="mainSearchBar" style="background: white; height: 55px; display: none;" class="">
     <div class="row searchBar">
@@ -149,7 +308,7 @@
         <hr />
     </div>
 
-    <div class="col s12 m12 l12" style="margin-bottom:30px;">
+    <div class="col s12 m12 l12" style="margin-bottom:30px; max-height:500px; overflow:auto;">
         @{
             if (myBooks.Count() == 0)
             {
@@ -208,33 +367,59 @@
                 </div>
                 <div id="bookInfo" class="col s12" style="padding:20px!important;">
                     <div style="float:left;width: 100%;padding-right: 15px;">
-                        <select id="bookLanguage">
-                            <option>Language</option>
-                            @{
-                                foreach (var language in languages)
-                                {
-                                    <option value="@language.ID">@language.LanguageName</option>
+                        <h5 class="screen-reader-text">Language</h5>
+                        <div id="languagesContainer">
+                            <select id="bookLanguage">
+                                @{
+                                    foreach (var language in languages)
+                                    {
+                                        <option value="@language.ID">@language.LanguageName</option>
+                                    }
                                 }
-                            }
-                        </select>
+                            </select>
+                        </div>
                     </div>
                     <div style="float:left;width: 100%;padding-right: 15px;">
-                        <select id="academic">
-                            <option value="">Is it a book you used at school or university?</option>
-                            <option value="False">Non Academic - Not a university or school book</option>
-                            <option value="True">Academic - A university or school book</option>
-                        </select>
+                        <h5 class="screen-reader-text">Is it a book you used at school or university?</h5>
+                        <div id="isAcademicContainer">
+                            <select id="academic">
+                                <option value="false">Non Academic - Not a university or school book</option>
+                                <option value="true">Academic - A university or school book</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="selectInstitutionsContainer" style="float:left;width: 100%;padding-right: 15px; display:none;">
+                        <h5 class="screen-reader-text">Academical institution</h5>
+                        <div id="institutionsContainer">
+                            @Html.DropDownList("searchUniversities", AvailableInstitutionsList, new { @style = "width:100%;", @name = "university" })
+                        </div>
+                    </div>
+                    <div id="selectCoursesContainer" style="float:left;width: 100%;padding-right: 15px; display:none;">
+                        <h5 class="screen-reader-text">Class</h5>
+                        <div id="searchCoursesUniversitiesContainer" style="display:none;">
+                            @Html.DropDownList("searchCoursesUniversities", AvailableCoursesUniversities, new { @name = "course" })
+                        </div>
+                        <div id="searchCoursesSchoolsContainer" style="display:none;">
+                            @Html.DropDownList("searchCoursesSchools", AvailableCoursesSchools, new { @name = "course" })
+                        </div>
                     </div>
                     <div style="float:left;width: 100%;padding-right: 15px;">
-                        <select id="bookCategory">
-                            <option>Category</option>
-                            @{
-                                foreach (var category in categories)
-                                {
-                                    <option value="@category.ID">@category.CategoryName</option>
+                        <h5 class="screen-reader-text">Category</h5>
+                        <div id="bookCategoryContainer">
+                            <select id="bookCategory">
+                                @{
+                                    foreach (var category in categories)
+                                    {
+                                        <option value="@category.ID">@category.CategoryName</option>
+                                    }
                                 }
-                            }
-                        </select>
+                            </select>
+                        </div>
+                    </div>
+                    <div style="float:left;width: 100%;padding-right: 15px; margin-top:20px;">
+                        <a id="goToPricing" class="waves-effect waves-light btn-large pull-right red">
+                            Next
+                        </a>
                     </div>
                 </div>
                 <div id="pricing" class="col s12" style="padding:20px!important;">
@@ -247,10 +432,6 @@
                                     <option value="@condition.ID">@condition.ConditionName</option>
                                 }
                             }
-                            <option value="1">New</option>
-                            <option value="2">Good</option>
-                            <option value="3">Normal</option>
-                            <option value="4">Bad</option>
                         </select>
                     </div>
                     <div style="float:left;width: 100%;padding-right: 15px;">
@@ -279,6 +460,8 @@
             swipeable: true//,
             //responsiveThreshold: 1920
         });
+
+        $('#errorsModal').modal();
     });
 
     $(document).on('click', '#sellABookHeader', function () {
@@ -290,6 +473,10 @@
             $('#sellABookContainer').fadeIn("slow");
             $(this).attr('data-IsVisible', 'True');
         }
+    });
+
+    $(document).on('click', '#goToPricing', function () {
+        $('ul.tabs').tabs('select', 'pricing');
     });
 
     $(document).on('click', '.booksCheckbox', function () {
@@ -321,6 +508,61 @@
         });
     });
 
+    function checkForErrors() {
+        var googleID = $('.booksCheckbox:checked').val();
+        var bookName = $('.booksCheckbox:checked').attr('data-BookName');
+        var price = $('#bookPrice').val();
+        var condition = $('#bookCondition').val();
+        var category = $('#bookCategory').val();
+        var language = $('#bookLanguage').val();
+        var academic = $('#academic').val();
+
+        var errorHtml = '';
+
+        var openErrorModal = false;
+        if (!googleID || !bookName) {
+            openErrorModal = true;
+            errorHtml += "<p>Please choose a book.</p>";
+        }
+
+        if (!price) {
+            openErrorModal = true;
+            errorHtml += "<p>Please set the book's price.</p>";
+        }
+
+        if (!condition) {
+            openErrorModal = true;
+            errorHtml += "<p>Please set the book's condition.</p>";
+        }
+
+        if (!category) {
+            openErrorModal = true;
+            errorHtml += "<p>Please set the book's category.</p>";
+        }
+
+        if (!language) {
+            openErrorModal = true;
+            errorHtml += "<p>Please set the book's language.</p>";
+        }
+
+        if (!academic) {
+            openErrorModal = true;
+            errorHtml += "<p>Please set the book's academic status.</p>";
+        }
+
+        if (openErrorModal) {
+            $('#errorText').html(errorHtml);
+            $('#errorsModal').modal('open');
+        }
+
+        return openErrorModal;
+    }
+
+    function isHidden(el) {
+        var style = window.getComputedStyle(el);
+        return (style.display === 'none')
+    }
+
     $(document).on('click', '#createAvailableBook', function () {
         var googleID = $('.booksCheckbox:checked').val();
         var bookName = $('.booksCheckbox:checked').attr('data-BookName');
@@ -329,6 +571,36 @@
         var category = $('#bookCategory').val();
         var language = $('#bookLanguage').val();
         var academic = $('#academic').val();
+
+        var institution = '';
+        var selectInstitutionsContainer = document.getElementById('selectInstitutionsContainer');
+        if (!isHidden(selectInstitutionsContainer)) {
+            institution = $('#searchUniversities').val();
+        }
+
+        var institutionType = '';
+        var course = '';
+        var universityCourses = document.getElementById('searchCoursesUniversitiesContainer');
+        if (!isHidden(universityCourses)) {
+            course = $('#searchCoursesUniversities').val();
+            institutionType = 'university';
+        }
+        var schoolCourses = document.getElementById('searchCoursesSchoolsContainer');
+        if (!isHidden(schoolCourses)) {
+            course = $('#searchCoursesSchools').val();
+            institutionType = 'school';
+        }
+
+        if (academic == 'false') {
+            institution = '';
+            course = '';
+        }
+
+        var openErrorModal = checkForErrors();
+
+        if (openErrorModal) {
+            return;
+        }
 
         $.ajax({
             url: '@Url.Action("SellMyBook","Home")',
@@ -341,7 +613,10 @@
                 condition: condition,
                 category: category,
                 language: language,
-                academic: academic
+                academic: academic,
+                institution: institution,
+                course: course,
+                institutionType: institutionType
             },
             success: function (data) {
                 location.reload();
@@ -383,6 +658,47 @@
             }
         });
 
+    });
+
+    $(document).on('change', '#academic', function () {
+        var academicOrNot = $('#academic').val();
+
+        if (academicOrNot == 'true') {
+            $('#selectInstitutionsContainer').show();
+            $('#selectCoursesContainer').show();
+            $('#searchCoursesUniversitiesContainer').show();
+        } else {
+            $('#selectInstitutionsContainer').hide();
+            $('#selectCoursesContainer').hide();
+            $('#searchCoursesUniversitiesContainer').hide();
+        }
+    });
+
+    $(document).on('change', '#searchUniversities', function () {
+        var label = $('#searchUniversities :selected').parent().attr('label');
+        var selectedValue = $('#searchUniversities').val();
+        if (label == "Universities" || selectedValue == -1) {
+            $('#searchCoursesSchoolsContainer').hide();
+            $('#searchCoursesCertificatesContainer').hide();
+            $('#searchCoursesUniversitiesContainer').show();
+        } else if (label == "Schools" || selectedValue == -2) {
+            $('#searchCoursesUniversitiesContainer').hide();
+            $('#searchCoursesCertificatesContainer').hide();
+            $('#searchCoursesSchoolsContainer').show();
+        } else if (label == "Certificates" || selectedValue == -3) {
+            $('#searchCoursesUniversitiesContainer').hide();
+            $('#searchCoursesSchoolsContainer').hide();
+            $('#searchCoursesCertificatesContainer').show();
+        }
+    });
+
+    $(document).ready(function () {
+        $('#searchUniversities').select2();
+        $('#searchCoursesUniversities').select2();
+        $('#searchCoursesSchools').select2();
+        $('#bookCategory').select2();
+        $('#bookLanguage').select2();
+        $('#academic').select2();
     });
 
 </script>

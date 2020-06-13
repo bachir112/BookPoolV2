@@ -83,5 +83,53 @@ namespace BookPool.DataInterface.Controllers
             return Json((object)new { results });
         }
 
+        [System.Web.Http.Route("api/Values/GetInstitutions")]
+        [System.Web.Http.HttpGet]
+        public JsonResult<Object> GetInstitutions()
+        {
+            List<object> results = new List<object>();
+            List<Institution> institutions = new List<Institution>();
+
+            try
+            {
+                using (var db = new BookPoolEntities())
+                {
+                    institutions = db.Institutions.ToList();
+                }
+
+                results.AddRange(institutions);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+
+            return Json((object)new { results });
+        }
+
+        [System.Web.Http.Route("api/Values/GetCourses")]
+        [System.Web.Http.HttpGet]
+        public JsonResult<Object> GetCourses()
+        {
+            List<object> results = new List<object>();
+            List<Cours> courses = new List<Cours>();
+
+            try
+            {
+                using (var db = new BookPoolEntities())
+                {
+                    courses = db.Courses.ToList();
+                }
+
+                results.AddRange(courses);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+
+            return Json((object)new { results });
+        }
+
     }
 }

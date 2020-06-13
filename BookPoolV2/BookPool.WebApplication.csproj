@@ -459,6 +459,7 @@
     <Content Include="Views\Shared\_UsersMenu.cshtml" />
     <Content Include="Views\Shared\_SearchForBook.cshtml" />
     <Content Include="Views\Shared\_CartBooks.cshtml" />
+    <Content Include="Views\Account\MyProfile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -50,13 +50,18 @@
 
     <li><div class="divider"></div></li>
     <li>
-        <a href="/Home/Contact" class="waves-effect">
+        <a href="@Url.Action("Contact","Home")" class="waves-effect">
             <i class="material-icons">mail_outline</i>Contact Us
         </a>
     </li>
     @{
         if (Request.IsAuthenticated)
         {
+        <li>
+            <a href="@Url.Action("MyProfile","Account")" class="waves-effect">
+                <i class="material-icons">account_circle</i>Account
+            </a>
+        </li>
             <li>
                 <a href="javascript:document.getElementById('logoutForm').submit()">
                     <i class="fa fa-sign-out" style="font-size:24px;"></i>Logout

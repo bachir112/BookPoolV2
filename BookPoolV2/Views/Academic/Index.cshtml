@@ -1,20 +1,131 @@
-﻿<!-- Modal Structure -->
-@*<div id="search-for-my-book-modal" class="modal bottom-sheet">
-    <div class="modal-content">
-        <h4>Search for my book</h4>
-        <p>
-            Bookpool will search for copies of your book in local shops and social media platforms.
-            <br />
-            We will contact you by email/phone as soon as we find it.
-        </p>
-    </div>
-    <div class="modal-footer">
-        <a href="#!" class="modal-close waves-effect waves-green btn-flat pull-left red">No, I'll search for it</a>
-        <a href="#!" class="modal-close waves-effect waves-green btn-flat green">Yes please</a>
-    </div>
-</div>*@
+﻿@using BookPool.DataObjects.DTO
+@using BookPool.DataObjects.EDM
+@using BookPoolV2.Global
 
-<div class="row itemslist">
+
+@{
+    List<BookPoolResult> books = new List<BookPoolResult>();
+    if (ViewBag.Books != null)
+    {
+        books = ViewBag.Books as List<BookPoolResult>;
+    }
+
+    List<Institution> AvailableInstitutions = ViewBag.Institutions as List<Institution>;
+
+    Institution AllUniversities = new Institution();
+    AllUniversities.ID = -1;
+    AllUniversities.InstitutionName = "All Universities";
+    AllUniversities.InstitutionCode = string.Empty;
+    AllUniversities.InstitutionType = "section";
+    AvailableInstitutions.Add(AllUniversities);
+
+    Institution AllSchools = new Institution();
+    AllSchools.ID = -2;
+    AllSchools.InstitutionName = "All Schools";
+    AllSchools.InstitutionCode = string.Empty;
+    AllSchools.InstitutionType = "section";
+    AvailableInstitutions.Add(AllSchools);
+
+    var UniversityGroup = new SelectListGroup { Name = "Universities" };
+    var SchoolGroup = new SelectListGroup { Name = "Schools" };
+    var SectionGroup = new SelectListGroup { Name = "Sections" };
+
+    List<SelectListItem> AvailableInstitutionsList = new List<SelectListItem>();
+
+    List<SelectListItem> AllSectionsList = AvailableInstitutions.Where(x => x.InstitutionType == "section").OrderBy(x => x.ID).Select(x => x).ToList()
+        .ConvertAll(x =>
+        {
+            return new SelectListItem()
+            {
+                Text = x.InstitutionName,
+                Value = x.ID.ToString(),
+                Selected = x.ID == -1 ? true : false,
+                Group = SectionGroup
+            };
+        });
+
+    List<SelectListItem> AvailableUniversitiesList = AvailableInstitutions.Where(x => x.InstitutionType == "university").OrderBy(x => x.ID).Select(x => x).ToList()
+        .ConvertAll(x =>
+        {
+            return new SelectListItem()
+            {
+                Text = x.InstitutionName + ", " + x.InstitutionCode,
+                Value = x.ID.ToString(),
+                Selected = false,
+                Group = UniversityGroup
+            };
+        });
+
+    List<SelectListItem> AvailableSchoolsList = AvailableInstitutions.Where(x => x.InstitutionType == "school").OrderBy(x => x.ID).Select(x => x).ToList()
+        .ConvertAll(x =>
+        {
+            return new SelectListItem()
+            {
+                Text = x.InstitutionName,
+                Value = x.ID.ToString(),
+                Selected = false,
+                Group = SchoolGroup
+            };
+        });
+
+    AvailableInstitutionsList.AddRange(AllSectionsList);
+    AvailableInstitutionsList.AddRange(AvailableUniversitiesList);
+    AvailableInstitutionsList.AddRange(AvailableSchoolsList);
+
+    List<Cours> AvailableCourses = ViewBag.Courses as List<Cours>;
+
+    Cours AllUniversityCourses = new Cours();
+    AllUniversityCourses.ID = -1;
+    AllUniversityCourses.CourseName = "All Classes";
+    AllUniversityCourses.CourseDescription = "university";
+    AvailableCourses.Add(AllUniversityCourses);
+
+    Cours AllSchoolCourses = new Cours();
+    AllSchoolCourses.ID = -2;
+    AllSchoolCourses.CourseName = "All Classes";
+    AllSchoolCourses.CourseDescription = "school";
+    AvailableCourses.Add(AllSchoolCourses);
+
+    List<SelectListItem> AvailableCoursesUniversities = AvailableCourses.Where(x => x.CourseDescription == "university").Select(x => x).ToList()
+        .ConvertAll(x =>
+        {
+            return new SelectListItem()
+            {
+                Text = x.ID == -1 ? x.CourseName : x.CourseName,
+                Value = x.ID.ToString(),
+                Selected = x.ID == -1 ? true : false
+            };
+        });
+
+    List<SelectListItem> AvailableCoursesSchools = AvailableCourses.Where(x => x.CourseDescription == "school").OrderBy(x => x.ID).Select(x => x).ToList()
+    .ConvertAll(x =>
+    {
+        return new SelectListItem()
+        {
+            Text = x.CourseName,
+            Value = x.ID.ToString(),
+            Selected = x.ID == -2 ? true : false
+        };
+    });
+}
+
+
+<style>
+
+    .select-dropdown.dropdown-trigger {
+        display: none !important;
+    }
+
+    .select2-search__field {
+        height: 30px !important;
+    }
+
+    .select2 {
+        width: 100% !important;
+    }
+</style>
+
+<div class="row">
     <div class="col s12 m12 l12" style="margin-bottom:30px;">
         <h5>
             <i class="material-icons left red-text">search</i>
@@ -23,80 +134,51 @@
         <div class="card" style="box-shadow:none; -webkit-box-shadow:none;">
             <div class="card-body">
                 <div style="float:left;width: 100%;padding-right: 15px;">
-                    <select>
-                        <option>University Name</option>
-                        <option>AUST</option>
-                        <option>AUB</option>
-                        <option>USJ</option>
-                    </select>
+                    <h5 class="screen-reader-text">Academical institution</h5>
+                    @Html.DropDownList("searchUniversities", AvailableInstitutionsList, new { @style = "width:100%;", @name = "university" })
                 </div>
                 <div style="float:left;width: 100%;padding-right: 15px;">
-                    <select>
-                        <option>Major</option>
-                        <option>CCE</option>
-                        <option>Architecture</option>
-                    </select>
+                    <h5 class="screen-reader-text">Class</h5>
+                    <div id="searchCoursesUniversitiesContainer">
+                        @Html.DropDownList("searchCoursesUniversities", AvailableCoursesUniversities, new { @name = "course" })
+                    </div>
+                    <div id="searchCoursesSchoolsContainer" style="display:none;">
+                        @Html.DropDownList("searchCoursesSchools", AvailableCoursesSchools, new { @name = "course" })
+                    </div>
                 </div>
-                <div style="float:left;width: 100%; text-align:center;">
-                    <a class="btn-large waves-effect waves-light btn-small" style="background-color:rgb(255, 76, 76) !important;">
+                <div style="float:left;width: 100%; text-align:center; margin-top:15px;">
+                    <button id="searchAcademicBooks" class="btn-large waves-effect waves-light btn-small" style="background-color:rgb(255, 76, 76) !important;">
                         <i class="material-icons left">search</i>
                         Search
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+@Html.Partial("_Filter")
+
 <div class="row itemslist">
 
-    @Html.Partial("_AvailableBook")
+    @{
+        foreach (var book in books)
+        {
+            if (book.OwnerUserID == null || book.SellingStatus != Globals.BookSellingStatus_Available)
+            {
+                <div class="col s12 m6 l4" style="height:250px;overflow:hidden;margin-bottom:15px;">
+                    @Html.Partial("_UnavailableBook", book)
+                </div>
+            }
+            else
+            {
+                <div class="col s12 m6 l4" style="height:250px;overflow:hidden;margin-bottom:15px;">
+                    @Html.Partial("_AvailableBook", book)
+                </div>
+            }
+        }
+    }
 
-    @Html.Partial("_UnavailableBook")
-
-    @Html.Partial("_UnavailableBook")
-
-    @Html.Partial("_UnavailableBook")
-
-    @Html.Partial("_UnavailableBook")
-
-    @Html.Partial("_UnavailableBook")
-
-    @Html.Partial("_UnavailableBook")
-
-    @Html.Partial("_UnavailableBook")
-
-    @Html.Partial("_UnavailableBook")
-
-    @Html.Partial("_UnavailableBook")
-
-    @Html.Partial("_UnavailableBook")
-
-    @Html.Partial("_UnavailableBook")
-
-    @Html.Partial("_AvailableBook")
-
-    @Html.Partial("_UnavailableBook")
-
-    @Html.Partial("_UnavailableBook")
-
-    @Html.Partial("_UnavailableBook")
-
-    @Html.Partial("_UnavailableBook")
-
-    @Html.Partial("_UnavailableBook")
-
-    @Html.Partial("_UnavailableBook")
-
-    @Html.Partial("_UnavailableBook")
-
-    @Html.Partial("_UnavailableBook")
-
-    @Html.Partial("_UnavailableBook")
-
-    @Html.Partial("_UnavailableBook")
-
-    @Html.Partial("_UnavailableBook")
 </div>
 
 <script>
@@ -104,4 +186,202 @@
         academicSection_active();
         $('.modal-trigger').leanModal();
     });
+
+    $(document).on('change', '#searchUniversities', function () {
+        var label = $('#searchUniversities :selected').parent().attr('label');
+        var selectedValue = $('#searchUniversities').val();
+        if (label == "Universities" || selectedValue == -1) {
+            $('#searchCoursesSchoolsContainer').hide();
+            $('#searchCoursesCertificatesContainer').hide();
+            $('#searchCoursesUniversitiesContainer').show();
+        } else if (label == "Schools" || selectedValue == -2) {
+            $('#searchCoursesUniversitiesContainer').hide();
+            $('#searchCoursesCertificatesContainer').hide();
+            $('#searchCoursesSchoolsContainer').show();
+        } else if (label == "Certificates" || selectedValue == -3) {
+            $('#searchCoursesUniversitiesContainer').hide();
+            $('#searchCoursesSchoolsContainer').hide();
+            $('#searchCoursesCertificatesContainer').show();
+        }
+    });
+
+
+    $(document).on('click', '#searchButton', function () {
+
+        var courseID;
+        var universityID = $('#searchUniversities').val();
+
+        if ($('#searchCoursesUniversitiesContainer').is(":visible")) {
+            courseID = $('#searchCoursesUniversities').val();
+        } else if ($('#searchCoursesSchoolsContainer').is(":visible")) {
+            courseID = $('#searchCoursesSchools').val();
+        } else if ($('#searchCoursesCertificatesContainer').is(":visible")) {
+            courseID = $('#searchCoursesCertificates').val();
+        }
+
+        var bookName = $('#bookName').val();
+
+		@*if ((universityID < 0) && (courseID < 0) && (bookName == '')) {
+
+		    $('#loaderTitle').html('Specify at least one field');
+		    $('#loaderStatusLogo').removeClass('fa-spinner fa-spin');
+		    $('#loaderStatusLogo').addClass('fa-times');
+		    $('#loaderStatusLogo').css('color', 'red');
+		    $('#loaderModal').modal('toggle');
+
+		    setTimeout(
+              function () {
+                  $('#loaderModal').modal('hide');
+              }, 2500);
+
+		} else {
+
+		    var url = '@Url.Action("Index", "FindBooks")' + '?institutionID=' + universityID + '&courseID=' + courseID + '&bookName=' + bookName;
+		    window.location = url;
+
+		}*@
+    });
+
+    $(document).ready(function () {
+        $('select').select2();
+    });
+
+    $(document).on('click', '#searchAcademicBooks', function () {
+
+        var institutionID = $('#searchUniversities').val();
+
+        var course = '';
+        var universityCourses = document.getElementById('searchCoursesUniversitiesContainer');
+        if (!isHidden(universityCourses)) {
+            course = $('#searchCoursesUniversities').val();
+        }
+        var schoolCourses = document.getElementById('searchCoursesSchoolsContainer');
+        if (!isHidden(schoolCourses)) {
+            course = $('#searchCoursesSchools').val();
+        }
+
+        if (parseInt(course) < 0) {
+            course = '';
+        }
+
+        var url = '@Url.Action("Index","Academic")?Institution=' + institutionID + '&Course=' + course;
+
+        window.location = url;
+    });
+
+
+    function isHidden(el) {
+        var style = window.getComputedStyle(el);
+        return (style.display === 'none')
+    }
+
+    @{
+        if (ViewBag.Institution != null)
+        {
+            <text>
+                    $('#searchUniversities').select2().val('@ViewBag.Institution').change();
+            </text>
+        }
+        if(ViewBag.Course != null)
+        {
+            <text>
+                $('#searchCoursesUniversities').select2().val('@ViewBag.Course').change();
+            </text>
+        }
+        if(ViewBag.Course != null)
+        {
+            <text>
+                $('#searchCoursesSchools').select2().val('@ViewBag.Course').change();
+            </text>
+        }
+    }
+</script>
+
+<script>
+
+    $(document).on('click', '.filterResults', function () {
+        var filterName = $(this).attr('data-Filter');
+        var filterValue = $(this).attr('data-Value');
+
+        $('.filterResults').removeClass('active');
+        $(this).addClass('active');
+
+        var institutionID = $('#searchUniversities').val();
+
+        var course = '';
+        var universityCourses = document.getElementById('searchCoursesUniversitiesContainer');
+        if (!isHidden(universityCourses)) {
+            course = $('#searchCoursesUniversities').val();
+        }
+        var schoolCourses = document.getElementById('searchCoursesSchoolsContainer');
+        if (!isHidden(schoolCourses)) {
+            course = $('#searchCoursesSchools').val();
+        }
+
+        if (parseInt(course) < 0) {
+            course = '';
+        }
+
+        var url = '@Url.Action("Index","Academic")?Institution=' + institutionID + '&Course=' + course + '&' + filterName + "=" + filterValue;
+        window.location = url;
+    });
+
+    @{
+        if (ViewBag.Language == "english")
+        {
+            <text>
+                $(document).ready(function () {
+                    $('#englishFilter').addClass('active');
+                });
+            </text>
+        }
+
+        if (ViewBag.Language == "french")
+        {
+            <text>
+                $(document).ready(function () {
+                    $('#frenchFilter').addClass('active');
+                });
+            </text>
+        }
+
+        if (ViewBag.Language == "arabic")
+        {
+            <text>
+                $(document).ready(function () {
+                    $('#arabicFilter').addClass('active');
+                });
+            </text>
+        }
+
+        if (ViewBag.AvailableOnly)
+        {
+
+            <text>
+                $(document).ready(function () {
+                    $('#availableOnlyFilter').addClass('active');
+                });
+            </text>
+        }
+
+        if (ViewBag.SortByPopularity)
+        {
+
+            <text>
+                $(document).ready(function () {
+                    $('#sortByPopularityFilter').addClass('active');
+                });
+            </text>
+        }
+
+        if (ViewBag.SortByPrice)
+        {
+
+            <text>
+                $(document).ready(function () {
+                    $('#sortByPriceFilter').addClass('active');
+                });
+            </text>
+        }
+    }
 </script>

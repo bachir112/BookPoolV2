@@ -113,12 +113,15 @@
         var filterName = $(this).attr('data-Filter');
         var filterValue = $(this).attr('data-Value');
 
+        $('.filterResults').removeClass('active');
+        $(this).addClass('active');
+
         var url = '@Url.Action("Index","Home")?' + filterName + "=" + filterValue;
         window.location = url;
     });
 
     @{
-        if (ViewBag.Language == "English")
+        if (ViewBag.Language == "english")
         {
             <text>
                 $(document).ready(function () {
@@ -127,7 +130,7 @@
             </text>
         }
 
-        if (ViewBag.Language == "French")
+        if (ViewBag.Language == "french")
         {
             <text>
                 $(document).ready(function () {
@@ -136,7 +139,7 @@
             </text>
         }
 
-        if (ViewBag.Language == "Arabic")
+        if (ViewBag.Language == "arabic")
         {
             <text>
                 $(document).ready(function () {
@@ -174,8 +177,6 @@
                 });
             </text>
         }
-
-
     }
 
 </script>

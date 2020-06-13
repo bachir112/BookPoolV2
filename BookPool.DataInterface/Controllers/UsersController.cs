@@ -119,6 +119,7 @@ namespace BookPool.DataInterface.Controllers
                     orderHeader.OrderedOn = DateTime.Now;
                     orderHeader.Status = Globals.OrderStatusPending;
                     orderHeader.TotalPrice = totalPrice;
+
                     
                     db.OrderHeaders.Add(orderHeader);
 

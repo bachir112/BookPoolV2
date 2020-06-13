@@ -24,5 +24,9 @@ namespace BookPool.DataObjects.EDM
         public string GoogleID { get; set; }
         public string OwnerUserID { get; set; }
         public string SellingStatus { get; set; }
+        public System.DateTime PostedOn { get; set; }
+        public Nullable<int> InstitutionID { get; set; }
+        public Nullable<int> CourseID { get; set; }
+        public string Institution { get; set; }
     }
 }

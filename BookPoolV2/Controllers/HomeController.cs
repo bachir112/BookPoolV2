@@ -194,6 +194,36 @@ namespace BookPoolV2.Controllers
                 }
             }
 
+            Dictionary<string, List<Institution>> apiInstitutionsResults = new Dictionary<string, List<Institution>>();
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(Global.Globals.baseURL);
+                StringBuilder httpRoute = new StringBuilder();
+                httpRoute.Append("api/Values/GetInstitutions");
+
+                var response = await client.GetAsync(httpRoute.ToString());
+                if (response.IsSuccessStatusCode)
+                {
+                    apiInstitutionsResults = await response.Content.ReadAsAsync<Dictionary<string, List<Institution>>>();
+                    ViewBag.Institutions = apiInstitutionsResults["results"];
+                }
+            }
+
+            Dictionary<string, List<Cours>> apiCoursesResults = new Dictionary<string, List<Cours>>();
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(Global.Globals.baseURL);
+                StringBuilder httpRoute = new StringBuilder();
+                httpRoute.Append("api/Values/GetCourses");
+
+                var response = await client.GetAsync(httpRoute.ToString());
+                if (response.IsSuccessStatusCode)
+                {
+                    apiCoursesResults = await response.Content.ReadAsAsync<Dictionary<string, List<Cours>>>();
+                    ViewBag.Courses = apiCoursesResults["results"];
+                }
+            }
+
             return View();
         }
         
@@ -211,6 +241,8 @@ namespace BookPoolV2.Controllers
                 httpRoute.Append("api/Books/GetBooks");
                 httpRoute.Append("?");
                 httpRoute.AppendFormat("query={0}", query);
+                httpRoute.Append("&");
+                httpRoute.AppendFormat("BookID={0}", bookID);
 
                 var response = await client.GetAsync(httpRoute.ToString());
                 if (response.IsSuccessStatusCode)
@@ -224,10 +256,20 @@ namespace BookPoolV2.Controllers
             return View();
         }
 
-        public async Task<ActionResult> FilteredByCategory(int categoryID)
+        public async Task<ActionResult> FilteredByCategory(int categoryID,
+            string language = null,
+            bool sortByPrice = false,
+            bool AvailableOnly = false,
+            bool sortByPopularity = false)
         {
             ViewBag.UserAddresses = await Global.Globals.GetUserAddresses(User.Identity.GetUserId());
             ViewBag.UserCartCookie = await Global.Globals.GetCart(User.Identity.GetUserId());
+
+            ViewBag.CategoryID = categoryID;
+            ViewBag.Language = language;
+            ViewBag.SortByPrice = sortByPrice;
+            ViewBag.AvailableOnly = AvailableOnly;
+            ViewBag.SortByPopularity = sortByPopularity;
 
             Dictionary<string, List<BookPoolResult>> apiResults = new Dictionary<string, List<BookPoolResult>>();
             using (var client = new HttpClient())
@@ -237,6 +279,26 @@ namespace BookPoolV2.Controllers
                 httpRoute.Append("api/Books/GetBooksInCategory");
                 httpRoute.Append("?");
                 httpRoute.AppendFormat("CategoryID={0}", categoryID);
+                if (language != null)
+                {
+                    httpRoute.Append("&");
+                    httpRoute.AppendFormat("language={0}", language);
+                }
+                if (sortByPrice)
+                {
+                    httpRoute.Append("&");
+                    httpRoute.AppendFormat("sortByPrice={0}", sortByPrice);
+                }
+                if (AvailableOnly)
+                {
+                    httpRoute.Append("&");
+                    httpRoute.AppendFormat("AvailableOnly={0}", AvailableOnly);
+                }
+                if (sortByPopularity)
+                {
+                    httpRoute.Append("&");
+                    httpRoute.AppendFormat("sortByPopularity={0}", sortByPopularity);
+                }
 
                 var response = await client.GetAsync(httpRoute.ToString());
                 if (response.IsSuccessStatusCode)
@@ -323,7 +385,7 @@ namespace BookPoolV2.Controllers
             {
                 client.BaseAddress = new Uri(Global.Globals.baseURL);
                 StringBuilder httpRoute = new StringBuilder();
-                httpRoute.Append("api/Books/GetBooks");
+                httpRoute.Append("api/Books/FindMyBook");
                 httpRoute.Append("?");
                 httpRoute.AppendFormat("query={0}", query);
 
@@ -344,8 +406,11 @@ namespace BookPoolV2.Controllers
                                                    string price, 
                                                    string condition, 
                                                    string category,
-                                                   string language, 
-                                                   string academic)
+                                                   string language,
+                                                   string academic,
+                                                   string institution,
+                                                   string course,
+                                                   string institutionType)
         {
             Dictionary<string, List<BookPoolResult>> apiResults = new Dictionary<string, List<BookPoolResult>>();
             List<BookPoolResult> result = new List<BookPoolResult>();
@@ -371,6 +436,12 @@ namespace BookPoolV2.Controllers
                 httpRoute.AppendFormat("Language={0}", language);
                 httpRoute.Append("&");
                 httpRoute.AppendFormat("Academic={0}", academic);
+                httpRoute.Append("&");
+                httpRoute.AppendFormat("Institution={0}", institution);
+                httpRoute.Append("&");
+                httpRoute.AppendFormat("Course={0}", course);
+                httpRoute.Append("&");
+                httpRoute.AppendFormat("institutionType={0}", institutionType);
 
                 var response = await client.GetAsync(httpRoute.ToString());
                 if (response.IsSuccessStatusCode)

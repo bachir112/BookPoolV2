@@ -1,4 +1,5 @@
 ﻿using BookPool.DataObjects.DTO;
+using BookPool.DataObjects.EDM;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
@@ -35,12 +36,31 @@ namespace BookPoolV2.Controllers
                 }
             }
 
+
+            using (var db = new BookPoolEntities())
+            {
+                string thisUserID = User.Identity.GetUserId();
+                ViewBag.AspNetUser = db.AspNetUsers.First(x => x.Id == thisUserID);
+            }
+
             return View();
         }
 
-        public async Task<ActionResult> PlacedOrder(string books)
+        public async Task<ActionResult> PlacedOrder(string books, string FirstName, string LastName, string Email, string PhoneNumber)
         {
             ViewBag.UserAddresses = await Global.Globals.GetUserAddresses(User.Identity.GetUserId());
+
+            using (var db = new BookPoolEntities())
+            {
+                string thisUserID = User.Identity.GetUserId();
+                AspNetUser aspNetUser = db.AspNetUsers.First(x => x.Id == thisUserID);
+                aspNetUser.FirstName = FirstName;
+                aspNetUser.LastName = LastName;
+                aspNetUser.Email = Email;
+                aspNetUser.PhoneNumber = PhoneNumber;
+
+                db.SaveChanges();
+            }
 
             Dictionary<string, string> apiResults = new Dictionary<string, string>();
             using (var client = new HttpClient())
