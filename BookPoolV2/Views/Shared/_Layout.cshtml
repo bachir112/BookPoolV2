@@ -184,7 +184,7 @@
 
 <body class="white lighten-4">
 
-    <div id="mainSearchBar" style="background:white;">
+    <div id="mainSearchBar" style="background:white;height:110px;">
         <nav id="locationMainHeader" class="z-depth-0 titlenav">
             <div class="nav-wrapper container">
                 @{
@@ -228,20 +228,25 @@
                 <span class="right" style="color: var(--primaryBlue); cursor:pointer;">
                     <i style="font-size:30px;" class="material-icons sidenav-trigger" data-target="side-menu">account_circle</i>
                 </span>
-                <span class="right" style="cursor:pointer; margin-right:20px;">
-                    <a href="/Checkout">
-                        <span id="itemsincartbadge" class="badge itemsincart" style="display:none;">0</span>
-                        <i style="font-size:30px; color: var(--primaryGrey);" class="material-icons">shopping_cart</i>
-                    </a>
-                </span>
+                @{
+                    if (Request.IsAuthenticated)
+                    {
+                        <span class="right" style="cursor:pointer; margin-right:20px;">
+                            <a href="@Url.Action("Index","Checkout")">
+                                <span id="itemsincartbadge" class="badge itemsincart" style="display:none;">0</span>
+                                <i style="font-size:30px; color: var(--primaryGrey);" class="material-icons">shopping_cart</i>
+                            </a>
+                        </span>
+                    }
+                }
 
             </div>
 
         </nav>
-        <nav id="searchBooksContainer" class="z-depth-0 titlenav">
-            <div class="nav-wrapper container" style="background:white; height:55px; padding-top:5px;">
+        <nav id="searchBooksContainer" class="z-depth-0 titlenav" style="height:50px;">
+            <div class="nav-wrapper container" style="background:white; height:50px; padding-top:5px;">
                 <div class="row searchBar">
-                    <div class="col s12 m12 l12">
+                    <div class="col s12 m12 l12" style="height:50px;">
                         <div class="sectionnav">
                             <div class="nav-wrapper">
                                 <div class="input-field" style="margin-top:5px;">

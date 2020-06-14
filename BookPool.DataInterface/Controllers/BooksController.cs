@@ -1183,6 +1183,8 @@ namespace BookPool.DataInterface.Controllers
 
             List<BookPoolResult> dbResult = new List<BookPoolResult>();
 
+            List<int> booksIDsInCart = new List<int>();
+
             try
             {
                 List<string> myGoogleBooksIDs = new List<string>();
@@ -1191,7 +1193,7 @@ namespace BookPool.DataInterface.Controllers
                     string booksCSV = db.UserCarts.FirstOrDefault(x => x.UserID == UserID)?.BooksIDsCSV;
                     if(booksCSV != null)
                     {
-                        List<int> booksIDsInCart = booksCSV.Split(',').Select(int.Parse).ToList();
+                        booksIDsInCart = booksCSV.Split(',').Select(int.Parse).ToList();
                         myGoogleBooksIDs = db.AvailableBooks.Where(x => booksIDsInCart.Contains(x.ID)).Select(x => x.GoogleID).ToList();
                     }
                 }
@@ -1217,7 +1219,7 @@ namespace BookPool.DataInterface.Controllers
                 {
                     dbResult = (from googleBooks in googleBooksResult
                                 join availableBooks in db.AvailableBooks on googleBooks.id equals availableBooks.GoogleID
-                                //where availableBooks.SellingStatus == Global.Globals.BookSellingStatus_Available
+                                where booksIDsInCart.Contains(availableBooks.ID)
                                 select new BookPoolResult
                                 {
                                     ID = availableBooks.ID,

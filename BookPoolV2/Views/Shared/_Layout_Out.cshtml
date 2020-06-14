@@ -105,12 +105,17 @@
             <span class="right" style="color: var(--primaryBlue); cursor:pointer;">
                 <i style="font-size:30px;" class="material-icons sidenav-trigger" data-target="side-menu">account_circle</i>
             </span>
-            <span class="right" style="cursor:pointer; margin-right:20px;">
-                <a href="/Checkout">
-                    <span id="itemsincartbadge" class="badge itemsincart" style="display:none;">0</span>
-                    <i style="font-size:30px; color: var(--primaryGrey);" class="material-icons">shopping_cart</i>
-                </a>
-            </span>
+            @{
+                if (Request.IsAuthenticated)
+                {
+                    <span class="right" style="cursor:pointer; margin-right:20px;">
+                        <a href="@Url.Action("Index","Checkout")">
+                            <span id="itemsincartbadge" class="badge itemsincart" style="display:none;">0</span>
+                            <i style="font-size:30px; color: var(--primaryGrey);" class="material-icons">shopping_cart</i>
+                        </a>
+                    </span>
+                }
+            }
         </div>
     </nav>
 
