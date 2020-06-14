@@ -11,7 +11,11 @@ namespace BookPoolV2.Global
 {
     public class Globals
     {
+        //dev
         public static string baseURL = "https://localhost:44361/";
+
+        //prod
+        //public static string baseURL = "http://localhost:44361/";
 
         static public string FacebookGraphAPIBaseUrl = "https://graph.facebook.com/";
         public const string DefaultFacebookFields = "id,name,email,gender,birthday,location,friends,first_name,last_name";

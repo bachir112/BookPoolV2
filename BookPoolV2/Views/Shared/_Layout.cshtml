@@ -3,9 +3,17 @@
 @using BookPool.DataObjects.EDM
 
 @{
-    List<UsersAddress> userAddresses = ViewBag.UserAddresses as List<UsersAddress>;
+    List<UsersAddress> userAddresses = new List<UsersAddress>();
+    if (ViewBag.UserAddresses != null)
+    {
+        userAddresses = ViewBag.UserAddresses as List<UsersAddress>;
+    }
 
-    List<Dictionary<string, string>> userCookieCart = ViewBag.UserCartCookie as List<Dictionary<string, string>>;
+    List<Dictionary<string, string>> userCookieCart = new List<Dictionary<string, string>>();
+    if(ViewBag.UserCartCookie != null)
+    {
+        userCookieCart = ViewBag.UserCartCookie as List<Dictionary<string, string>>;
+    }
 }
 
 <!DOCTYPE html>

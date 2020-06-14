@@ -1,9 +1,10 @@
 ﻿@using BookPool.DataObjects.EDM
 
 @{ 
-    List<UsersAddress> userAddresses = ViewBag.UserAddresses as List<UsersAddress>;
-    if(userAddresses != null)
+    List<UsersAddress> userAddresses = new List<UsersAddress>();
+    if(ViewBag.UserAddresses != null)
     {
+        userAddresses = ViewBag.UserAddresses as List<UsersAddress>;
         userAddresses = userAddresses.OrderByDescending(x => x.DeliveringTo).Select(x => x).ToList();
     }
 }
@@ -12,7 +13,7 @@
 <div id="side-form" class="sidenav side-form">
     <form class="add-recipe container section">
         @{
-            if (userAddresses.Count() > 0)
+            if (userAddresses != null && userAddresses.Count() > 0)
             {
                 <h6 style="margin-bottom:15px;">Saved Addresses</h6>
                 foreach (var address in userAddresses)
