@@ -20,6 +20,7 @@
 <html lang="en">
 
 <head>
+    <link rel="icon" href="@Url.Content("~/img/logo.png")">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -33,7 +34,7 @@
     <link type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
 
-    <link rel="manifest" href="/Content/manifest.json">
+    <link rel="manifest" href="@Url.Content("~/Content/manifest.json")">
     <!-- ios support -->
     <link rel="apple-touch-icon" href="/img/icons/icon-96x96.png">
     <meta name="apple-mobile-web-app-status-bar" content="#FFE1C4">
@@ -52,14 +53,19 @@
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600&display=swap" rel="stylesheet">
     <meta name="theme-color" content="#FFE1C4" />
     <link rel="manifest" href="/manifest.webmanifest" />
+    <script src="@Url.Content("~/Content/js/app.js")"></script>
 
     <style>
         #side-form {
             z-index: 2147483647 !important
         }
 
-        .media-buttons .btn:hover {
+        .media-buttons .facebook.btn:hover {
             background-color: #445c8e;
+        }
+
+        .media-buttons .google.btn:hover {
+            background-color: #DE5246;
         }
 
         .media-buttons .btn {
@@ -71,6 +77,10 @@
 
         .media-buttons button i {
             padding-right: 15px;
+        }
+
+        button.google {
+            background-color: #DE5246;
         }
 
         button.facebook {
@@ -163,29 +173,68 @@
     </div>
 </div>
 
-
-<!-- Modal Structure -->
-<div id="search-for-my-book-modal" class="modal bottom-sheet">
+<div id="sell-my-book-modal" class="modal bottom-sheet">
     <div class="modal-content">
-        <h4>Search for my book</h4>
+        <h4>Please login to continue</h4>
         <p>
-            Bookpool will search for copies of your book in local shops and social media platforms.
+            Bookpool will post your book in the database and will contact you when someone wants to buy it.
             <br />
-            We will contact you by email/phone as soon as we find it.
+            We will contact you by email/phone, pay you and deliver it to the client.
         </p>
     </div>
     <div class="modal-footer">
-        <a href="#!" class="modal-close waves-effect waves-green btn-flat pull-left red" style="min-width:100px;">No</a>
-        <a id="findMyBook" href="#!" class="modal-close waves-effect waves-green btn-flat green" style="min-width:100px;" data-GoogleBookID="">Yes please</a>
+        <a class="modal-close waves-effect waves-green btn-flat green sidenav-trigger"
+           style="min-width:100px;"
+           data-GoogleBookID=""
+           data-target="side-menu">LOGIN</a>
     </div>
 </div>
 
+@{
+    if (Request.IsAuthenticated)
+    {
+        <div id="search-for-my-book-modal" class="modal bottom-sheet">
+            <div class="modal-content">
+                <h4>Search for my book</h4>
+                <p>
+                    Bookpool will search for copies of your book in local shops and social media platforms.
+                    <br />
+                    We will contact you by email/phone as soon as we find it.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <a href="#!" class="modal-close waves-effect waves-green btn-flat pull-left red" style="min-width:100px;">No</a>
+                <a id="findMyBook" href="#!" class="modal-close waves-effect waves-green btn-flat green" style="min-width:100px;" data-GoogleBookID="">Yes please</a>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div id="search-for-my-book-modal" class="modal bottom-sheet">
+            <div class="modal-content">
+                <h4>Please login to continue</h4>
+                <p>
+                    Bookpool will search for copies of your book in local shops and social media platforms.
+                    <br />
+                    We will contact you by email/phone as soon as we find it.
+                </p>
+            </div>
+            <div class="modal-footer">
+                @*<a href="#!" class="modal-close waves-effect waves-green btn-flat pull-left red" style="min-width:100px;">No</a>*@
+                <a class="modal-close waves-effect waves-green btn-flat green sidenav-trigger"
+                   style="min-width:100px;"
+                   data-GoogleBookID=""
+                   data-target="side-menu">LOGIN</a>
+            </div>
+        </div>
+    }
+}
 
 
 <body class="white lighten-4">
 
     <div id="mainSearchBar" style="background:white;height:110px;">
-        <nav id="locationMainHeader" class="z-depth-0 titlenav">
+        <nav id="locationMainHeader" class="z-depth-0 titlenav" style="height:50px;">
             <div class="nav-wrapper container">
                 @{
                     if (Request.IsAuthenticated)
@@ -218,20 +267,26 @@
                     }
                 }
                 <div id="goToHomeContainer" style="display:none;">
-                    <a href="/" class="sidenav-trigger" style="display:inherit; width:30px; color:var(--primaryRed); cursor:pointer;">
+                    <a href="/" class="sidenav-trigger" style="        display: inherit;
+        width: 30px;
+        color: var(--primaryRed);
+        cursor: pointer;">
                         <i class="material-icons">keyboard_arrow_left</i>
                     </a>
-                    <a href="/" class="sidenav-trigger" style="display:inherit; margin-left:0px; cursor:pointer;">
+                    <a href="/" class="sidenav-trigger" style="        display: inherit;
+        margin-left: 0px;
+        cursor: pointer;
+">
                         <span style="font-family:AvenirNextBold;">Home</span>
                     </a>
                 </div>
                 <span class="right" style="color: var(--primaryBlue); cursor:pointer;">
-                    <i style="font-size:30px;" class="material-icons sidenav-trigger" data-target="side-menu">account_circle</i>
+                    <i style="        font-size: 30px;" class="material-icons sidenav-trigger" data-target="side-menu">account_circle</i>
                 </span>
                 @{
                     if (Request.IsAuthenticated)
                     {
-                        <span class="right" style="cursor:pointer; margin-right:20px;">
+                        <span class="right" style="cursor: pointer; margin-right: 20px; ">
                             <a href="@Url.Action("Index","Checkout")">
                                 <span id="itemsincartbadge" class="badge itemsincart" style="display:none;">0</span>
                                 <i style="font-size:30px; color: var(--primaryGrey);" class="material-icons">shopping_cart</i>
@@ -243,14 +298,14 @@
             </div>
 
         </nav>
-        <nav id="searchBooksContainer" class="z-depth-0 titlenav" style="height:50px;">
+        <nav id="searchBooksContainer" class="z-depth-0 titlenav" style="height:50px;background:white;">
             <div class="nav-wrapper container" style="background:white; height:50px; padding-top:5px; width:100%;">
                 <div id="searchBooksInnerContainer" class="row searchBar">
-                    <div class="col s12 m12 l12" style="height:50px;">
+                    <div class="col s12 m12 l12" style="height:50px;float:inherit;">
                         <div class="sectionnav">
                             <div class="nav-wrapper">
                                 <div class="input-field" style="margin-top:5px;">
-                                    <input id="searchInput" type="search" required placeholder="Search">
+                                    <input id="searchInput" type="search" required placeholder="Search" style="position:absolute;">
                                     <label class="label-icon" for="search">
                                         <i class="material-icons" style="color:var(--primaryGrey) !important">search</i>
                                     </label>
@@ -552,7 +607,7 @@
 
         function showItemsInCart() {
 
-            @{ 
+            @{
                 if (userCookieCart.Count() > 0)
                 {
                     <text>

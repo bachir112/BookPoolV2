@@ -70,6 +70,30 @@ namespace BookPoolV2.Controllers
             return View(aspNetUser);
         }
 
+        public ActionResult UpdateUserPhoneNumber(string PhoneNumber)
+        {
+            bool result = false;
+
+            try
+            {
+                using (var db = new BookPoolEntities())
+                {
+                    string thisUserID = User.Identity.GetUserId();
+                    AspNetUser aspNetUser = db.AspNetUsers.First(x => x.Id == thisUserID);
+                    aspNetUser.PhoneNumber = PhoneNumber;
+
+                    db.SaveChanges();
+                }
+                result = true;
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
         public ActionResult UpdateUserInfo(string FirstName, string LastName, string Email, string PhoneNumber)
         {
             bool result = false;
@@ -383,8 +407,11 @@ namespace BookPoolV2.Controllers
             if (claim != null)
                 accessToken = claim.Value;
 
-            FacebookGraphAPI fga = new FacebookGraphAPI(accessToken, Global.Globals.FacebookGraphAPIBaseUrl, "me", Global.Globals.DefaultFacebookFields);
-            FacebookAccount facebookAccountInfo = await fga.GetUserInfo(fga);
+            if(loginInfo.Login.LoginProvider == "Facebook")
+            {
+                FacebookGraphAPI fga = new FacebookGraphAPI(accessToken, Global.Globals.FacebookGraphAPIBaseUrl, "me", Global.Globals.DefaultFacebookFields);
+                FacebookAccount facebookAccountInfo = await fga.GetUserInfo(fga);
+            }
 
             switch (result)
             {
@@ -399,7 +426,7 @@ namespace BookPoolV2.Controllers
                     // If the user does not have an account, then prompt the user to create an account
                     ViewBag.ReturnUrl = returnUrl;
                     ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
-                    return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email, Birthday = facebookAccountInfo.Birthday, FirstName = facebookAccountInfo.First_Name, LastName = facebookAccountInfo.Last_Name, Gender = facebookAccountInfo.Gender, Picture = facebookAccountInfo.Picture });
+                    return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
             }
         }
 

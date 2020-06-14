@@ -31,9 +31,13 @@
     {
         languages = ViewBag.Languages as List<Language>;
     }
-}
 
-@{
+    AspNetUser aspNetUser = new AspNetUser();
+    if (ViewBag.AspNetUser != null)
+    {
+        aspNetUser = ViewBag.AspNetUser as AspNetUser;
+    }
+
     List<BookPoolResult> books = new List<BookPoolResult>();
     if (ViewBag.Books != null)
     {
@@ -302,6 +306,24 @@
 
     <div class="col s12 m12 l12" style="margin-top:30px;">
         <h5>
+            Contact Phone Number
+            <i class="material-icons" style="color: red;">phone</i>
+        </h5>
+        <span style="color:red;">Enter a valid phone number so Bookpool can contact you to deliver your book when it's sold</span>
+        <hr />
+        <div class="input-field col s12" style="padding:0!important;">
+            <input id="phoneNumber" type="text" class="validate" value="@aspNetUser.PhoneNumber">
+            <label for="phoneNumber" style="left:0;">Phone Number</label>
+        </div>
+        <div class="col s12" style="padding:0px;">
+            <button id="saveUserID" type="button" class="waves-effect waves-light btn-small modal-trigger red" style="float:right;">
+                Save Phone Number
+            </button>
+        </div>
+    </div>
+
+    <div class="col s12 m12 l12" style="margin-top:30px;">
+        <h5>
             MY BOOKS - Books i want to sell
             <i class="material-icons" style="color: red;">library_books</i>
         </h5>
@@ -353,7 +375,7 @@
             </ul>
 
             <div class="tabs-wrap">
-                <div id="chooseBook" class="col s12" style="padding:20px!important;">
+                <div id="chooseBook" class="col s12" style="padding:0!important; padding-top:20px!important;">
                     <input id="findMyBookValue" style="border-bottom:1px solid white!important;" placeholder="Find & Select Your Book" class="input-field" />
                     <div style="float:left;width: 100%;padding-right: 15px;">
                         <a id="findMyBook" class="waves-effect waves-light btn-large pull-right red">
@@ -365,7 +387,7 @@
 
                     </div>
                 </div>
-                <div id="bookInfo" class="col s12" style="padding:20px!important;">
+                <div id="bookInfo" class="col s12" style="padding:0!important; padding-top:20px!important;">
                     <div style="float:left;width: 100%;padding-right: 15px;">
                         <h5 class="screen-reader-text">Language</h5>
                         <div id="languagesContainer">
@@ -422,7 +444,7 @@
                         </a>
                     </div>
                 </div>
-                <div id="pricing" class="col s12" style="padding:20px!important;">
+                <div id="pricing" class="col s12" style="padding:0!important; padding-top:20px!important;">
                     <div style="float:left;width: 100%;padding-right: 15px;">
                         <select id="bookCondition">
                             <option value="">Condition</option>
@@ -699,6 +721,26 @@
         $('#bookCategory').select2();
         $('#bookLanguage').select2();
         $('#academic').select2();
+    });
+
+    $(document).on('click', '#saveUserID', function () {
+
+        var phoneNumber = $('#phoneNumber').val();
+
+        $.ajax({
+            url: '@Url.Action("UpdateUserPhoneNumber", "Account")',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                PhoneNumber: phoneNumber
+            },
+            success: function (data) {
+                location.reload();
+            },
+            error: function (request, error) {
+                location.reload();
+            }
+        });
     });
 
 </script>

@@ -245,6 +245,7 @@
     <Content Include="Content\img\product\1\4.PNG" />
     <Content Include="Content\img\product\1\5.PNG" />
     <Content Include="Content\img\product\1\6.PNG" />
+    <Content Include="Content\js\app.js" />
     <Content Include="Content\js\dynamics.min.js" />
     <Content Include="Content\js\open_streets\OpenLayers.debug.js" />
     <Content Include="Content\js\open_streets\OpenLayers.js" />
@@ -301,6 +302,8 @@
     <Content Include="Content\js\shop\materialize.min.js" />
     <Content Include="Content\js\shop\ui.js" />
     <Content Include="Content\js\site.js" />
+    <Content Include="img\logo.png" />
+    <Content Include="sw.js" />
     <Content Include="Content\lib\bootstrap\dist\css\bootstrap-grid.css" />
     <Content Include="Content\lib\bootstrap\dist\css\bootstrap-grid.min.css" />
     <Content Include="Content\lib\bootstrap\dist\css\bootstrap-reboot.css" />

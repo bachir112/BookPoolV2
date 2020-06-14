@@ -16,6 +16,7 @@
     }
 }
 
+
 @{
     if (ViewBag.Query == null)
     {
@@ -49,6 +50,23 @@
         </div>
     }
 }
+
+<div class="section filtercontainer">
+    @{
+        if (Request.IsAuthenticated)
+        {
+            <a href="@Url.Action("MyBooks","Home")" class="waves-effect waves-green btn-flat green" style="min-width:100px; color:white;">
+                Sell a book
+            </a>
+        }
+        else
+        {
+            <a class="waves-effect waves-green btn-flat green modal-trigger" data-target="sell-my-book-modal" style="min-width:100px; color:white;">
+                Sell a book
+            </a>
+        }
+    }
+</div>
 
 <div class="section filtercontainer" style="width:100%; margin:0px;">
 

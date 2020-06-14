@@ -224,6 +224,12 @@ namespace BookPoolV2.Controllers
                 }
             }
 
+            using (var db = new BookPoolEntities())
+            {
+                string thisUserID = User.Identity.GetUserId();
+                ViewBag.AspNetUser = db.AspNetUsers.First(x => x.Id == thisUserID);
+            }
+
             return View();
         }
         

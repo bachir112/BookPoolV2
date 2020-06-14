@@ -20,12 +20,24 @@
                 <p>
                     @foreach (AuthenticationDescription p in loginProviders)
                     {
-                        <button id="@p.AuthenticationType" type="submit" class="btn col-sm-12 facebook" data-toggle="tooltip" data-placement="top" name="provider" value="@p.AuthenticationType">
-                            <i class="fab fa-facebook-f" style="float:left;"></i>
-                            Login with Facebook
-                        </button>
-                        @*<button type="submit" class="btn btn-default" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Log in using your @p.Caption account">@p.AuthenticationType</button>*@
+                        if (p.AuthenticationType == "Google")
+                        {
+                            <button id="@p.AuthenticationType" type="submit" class="btn col-sm-12 google" data-toggle="tooltip" data-placement="top" name="provider" value="@p.AuthenticationType">
+                                <i class="fab fa-google" style="float:left;"></i>
+                                Login with Google
+                            </button>
+                        }
+                        if (p.AuthenticationType == "Facebook")
+                        {
+                            <button id="@p.AuthenticationType" type="submit" class="btn col-sm-12 facebook" data-toggle="tooltip" data-placement="top" name="provider" value="@p.AuthenticationType">
+                                <i class="fab fa-facebook-f" style="float:left;"></i>
+                                Login with Facebook
+                            </button>
+                        }
                     }
+                    <a href="@Url.Action("Login","Account")" type="submit" class="btn col-sm-12" data-toggle="tooltip" data-placement="top" name="provider">
+                        Login with Bookpool
+                    </a>
                 </p>
             </div>
         }
