@@ -146,6 +146,10 @@ nav {
     border-radius: 15px!important;
 }
 
+#searchBooksInnerContainer{
+    width:70%;
+}
+
 /* layout styles */
 nav.titlenav {
     background: var(--primary);
@@ -869,6 +873,11 @@ table tr td{
     .hiddenHR{
         display:block!important;
         margin-bottom:20px!important;
+    }
+
+
+    #searchBooksInnerContainer {
+        width: 100%;
     }
 
 }
