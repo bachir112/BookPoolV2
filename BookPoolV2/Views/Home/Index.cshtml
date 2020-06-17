@@ -134,8 +134,13 @@
         $('.filterResults').removeClass('active');
         $(this).addClass('active');
 
-        var url = '@Url.Action("Index","Home")?' + filterName + "=" + filterValue;
-        window.location = url;
+        if (@(ViewBag.Query == null ? "true" : "false")) {
+            var url = '@Url.Action("Index","Home")?' + filterName + "=" + filterValue;
+            window.location = url;
+        } else {
+            var url = '@Url.Action("Index","Home")?query=' + '@ViewBag.Query' + '&' + filterName + "=" + filterValue;
+            window.location = url;
+        }
     });
 
     @{

@@ -158,7 +158,7 @@ namespace BookPool.DataInterface.Controllers
                                 }
                             }
 
-                            orderDetail.BookImage = googleResult.volumeInfo.imageLinks.thumbnail;
+                            orderDetail.BookImage = googleResult.volumeInfo.imageLinks.thumbnail.Replace("http:", "https:");
                             orderDetail.Authors = string.Join(",", googleResult.volumeInfo.authors);
                             orderDetail.GoogleID = googleResult.id;
 

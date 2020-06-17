@@ -143,17 +143,17 @@
     });
 }
 
-<style>
+    <style>
     .tabs .tab a:hover, .tabs .tab a.active {
         border-left: 0px;
     }
 
-    .tabs-content.carousel.carousel-slider{
-        height:500px!important;
+    .tabs-content.carousel.carousel-slider {
+        height: 500px !important;
     }
 
-    #bookInfo{
-        height:500px!important;
+    #bookInfo {
+        height: 500px !important;
     }
 
     .carousel {
@@ -234,8 +234,8 @@
             z-index: -1;
         }
 
-    #institutionsContainer .select-dropdown.dropdown-trigger{
-        display:none!important;
+    #institutionsContainer .select-dropdown.dropdown-trigger {
+        display: none !important;
     }
 
     #searchCoursesUniversitiesContainer .select-dropdown.dropdown-trigger {
@@ -264,6 +264,115 @@
 
     .select2 {
         width: 100% !important;
+    }
+
+
+    .tabs-content.carousel.carousel-slider {
+        height: 550px !important;
+    }
+
+    @@media only screen and (max-width: 768px){
+        .content {
+            padding: 0px !important;
+        }
+    }
+    </style>
+
+<style>
+
+    #sellMyBookContainer h1 {
+        padding: 50px 0;
+        font-weight: 400;
+        text-align: center;
+    }
+
+    #sellMyBookContainer p {
+        margin: 0 0 20px;
+        line-height: 1.5;
+    }
+
+    #sellMyBookContainer main {
+        padding: 0px;
+        margin: 0 auto;
+        background: #fff;
+    }
+
+    #sellMyBookContainer section {
+        display: none;
+        padding: 20px 0 0;
+        border-top: 1px solid #ddd;
+    }
+
+    /*#sellMyBookContainer input {
+        display: none;
+    }*/
+
+    #sellMyBookContainer label {
+        display: inline-block;
+        margin: 0 0 -1px;
+        padding: 15px 25px;
+        font-weight: 600;
+        text-align: center;
+        color: #bbb;
+        border: 1px solid transparent;
+    }
+
+        #sellMyBookContainer label:before {
+            font-family: fontawesome;
+            font-weight: normal;
+            margin-right: 10px;
+        }
+
+        /*#sellMyBookContainer label[for*='1']:before {
+            content: '\f1cb';
+        }
+
+        #sellMyBookContainer label[for*='2']:before {
+            content: '\f17d';
+        }
+
+        #sellMyBookContainer label[for*='3']:before {
+            content: '\f16b';
+        }
+
+        #sellMyBookContainer label[for*='4']:before {
+            content: '\f1a9';
+        }*/
+
+        #sellMyBookContainer label:hover {
+            color: #888;
+            cursor: pointer;
+        }
+
+    #sellMyBookContainer input:checked + label {
+        color: #555;
+        border: 1px solid #ddd;
+        border-top: 2px solid orange;
+        border-bottom: 1px solid #fff;
+    }
+
+    #sellMyBookContainer #tab1:checked ~ #content1,
+    #sellMyBookContainer #tab2:checked ~ #content2,
+    #sellMyBookContainer #tab3:checked ~ #content3,
+    #sellMyBookContainer #tab4:checked ~ #content4 {
+        display: block;
+    }
+
+    @@media screen and (max-width: 650px) {
+        #sellMyBookContainer label {
+            font-size: 0;
+        }
+
+            #sellMyBookContainer label:before {
+                margin: 0;
+                font-size: 18px;
+            }
+    }
+
+    @@media screen and (max-width: 400px) {
+        #sellMyBookContainer label {
+            padding: 15px;
+        }
     }
 </style>
 
@@ -330,7 +439,7 @@
         <hr />
     </div>
 
-    <div class="col s12 m12 l12" style="margin-bottom:30px; max-height:500px; overflow:auto;">
+    <div class="col s12 m12 l12" style="margin-bottom:30px; max-height: 500px; overflow:auto;">
         @{
             if (myBooks.Count() == 0)
             {
@@ -348,36 +457,27 @@
         }
     </div>
 
-    <div class="col s12 m12 l12" style="margin-bottom:30px;">
-        <h5 id="sellABookHeader" style="cursor:pointer;" data-IsVisible="True">
+
+    <div id="sellMyBookContainer" class="col s12 m12 l12">
+        <h5 id="sellABookHeader" style="cursor:pointer;padding-bottom:20px;" data-IsVisible="True">
             <i class="material-icons left red-text">add_circle_outline</i>
             Sell a book
         </h5>
+        <main>
 
-        <div id="sellABookContainer" style="margin-top:30px;">
+            <input id="tab1" type="radio" name="tabs" checked>
+            <label for="tab1" style="color:black;font-size:15px;">Book</label>
 
-            <ul id="sellMyBookTabs" class="tabs">
-                <li class="tab col s3" style="padding:0!important;">
-                    <a href="#chooseBook" style="padding:0!important;">
-                        Book
-                    </a>
-                </li>
-                <li class="tab col s3" style="padding:0!important;">
-                    <a href="#bookInfo" style="padding:0!important;">
-                        Info
-                    </a>
-                </li>
-                <li class="tab col s3" style="padding:0!important;">
-                    <a href="#pricing" style="padding:0!important;">
-                        Pricing
-                    </a>
-                </li>
-            </ul>
+            <input id="tab2" type="radio" name="tabs">
+            <label for="tab2" style="color:black;font-size:15px;">Info</label>
 
-            <div class="tabs-wrap">
+            <input id="tab3" type="radio" name="tabs">
+            <label for="tab3" style="color:black;font-size:15px;">Pricing</label>
+
+            <section id="content1">
                 <div id="chooseBook" class="col s12" style="padding:0!important; padding-top:20px!important;">
                     <input id="findMyBookValue" style="border-bottom:1px solid white!important;" placeholder="Find & Select Your Book" class="input-field" />
-                    <div style="float:left;width: 100%;padding-right: 15px;">
+                    <div style="float:left;width: 100%;padding-right: 15px;margin-bottom:20px;">
                         <a id="findMyBook" class="waves-effect waves-light btn-large pull-right red">
                             <i class="material-icons left">location_searching</i>
                             Find
@@ -387,6 +487,9 @@
 
                     </div>
                 </div>
+            </section>
+
+            <section id="content2">
                 <div id="bookInfo" class="col s12" style="padding:0!important; padding-top:20px!important;">
                     <div style="float:left;width: 100%;padding-right: 15px;">
                         <h5 class="screen-reader-text">Language</h5>
@@ -444,6 +547,9 @@
                         </a>
                     </div>
                 </div>
+            </section>
+
+            <section id="content3">
                 <div id="pricing" class="col s12" style="padding:0!important; padding-top:20px!important;">
                     <div style="float:left;width: 100%;padding-right: 15px;">
                         <select id="bookCondition">
@@ -466,11 +572,134 @@
                         </a>
                     </div>
                 </div>
+            </section>
+
+        </main>
+    </div>
+
+    @*<div class="col s12 m12 l12" style="margin-bottom:30px;">
+            <h5 id="sellABookHeader" style="cursor:pointer;" data-IsVisible="True">
+                <i class="material-icons left red-text">add_circle_outline</i>
+                Sell a book
+            </h5>
+
+            <div id="sellABookContainer" style="margin-top:30px;">
+
+                <ul id="sellMyBookTabs" class="tabs">
+                    <li class="tab col s3" style="padding:0!important;">
+                        <a href="#chooseBook" style="padding:0!important;">
+                            Book
+                        </a>
+                    </li>
+                    <li class="tab col s3" style="padding:0!important;">
+                        <a href="#bookInfo" style="padding:0!important;">
+                            Info
+                        </a>
+                    </li>
+                    <li class="tab col s3" style="padding:0!important;">
+                        <a href="#pricing" style="padding:0!important;">
+                            Pricing
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="tabs-wrap">
+                    <div id="chooseBook" class="col s12" style="padding:0!important; padding-top:20px!important;">
+                        <input id="findMyBookValue" style="border-bottom:1px solid white!important;" placeholder="Find & Select Your Book" class="input-field" />
+                        <div style="float:left;width: 100%;padding-right: 15px;">
+                            <a id="findMyBook" class="waves-effect waves-light btn-large pull-right red">
+                                <i class="material-icons left">location_searching</i>
+                                Find
+                            </a>
+                        </div>
+                        <div id="findMyBooksResult">
+
+                        </div>
+                    </div>
+                    <div id="bookInfo" class="col s12" style="padding:0!important; padding-top:20px!important;">
+                        <div style="float:left;width: 100%;padding-right: 15px;">
+                            <h5 class="screen-reader-text">Language</h5>
+                            <div id="languagesContainer">
+                                <select id="bookLanguage">
+                                    @{
+                                        foreach (var language in languages)
+                                        {
+                                            <option value="@language.ID">@language.LanguageName</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div style="float:left;width: 100%;padding-right: 15px;">
+                            <h5 class="screen-reader-text">Is it a book you used at school or university?</h5>
+                            <div id="isAcademicContainer">
+                                <select id="academic">
+                                    <option value="false">Non Academic - Not a university or school book</option>
+                                    <option value="true">Academic - A university or school book</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div id="selectInstitutionsContainer" style="float:left;width: 100%;padding-right: 15px; display:none;">
+                            <h5 class="screen-reader-text">Academical institution</h5>
+                            <div id="institutionsContainer">
+                                @Html.DropDownList("searchUniversities", AvailableInstitutionsList, new { @style = "width:100%;", @name = "university" })
+                            </div>
+                        </div>
+                        <div id="selectCoursesContainer" style="float:left;width: 100%;padding-right: 15px; display:none;">
+                            <h5 class="screen-reader-text">Class</h5>
+                            <div id="searchCoursesUniversitiesContainer" style="display:none;">
+                                @Html.DropDownList("searchCoursesUniversities", AvailableCoursesUniversities, new { @name = "course" })
+                            </div>
+                            <div id="searchCoursesSchoolsContainer" style="display:none;">
+                                @Html.DropDownList("searchCoursesSchools", AvailableCoursesSchools, new { @name = "course" })
+                            </div>
+                        </div>
+                        <div style="float:left;width: 100%;padding-right: 15px;">
+                            <h5 class="screen-reader-text">Category</h5>
+                            <div id="bookCategoryContainer">
+                                <select id="bookCategory">
+                                    @{
+                                        foreach (var category in categories)
+                                        {
+                                            <option value="@category.ID">@category.CategoryName</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div style="float:left;width: 100%;padding-right: 15px; margin-top:20px;">
+                            <a id="goToPricing" class="waves-effect waves-light btn-large pull-right red">
+                                Next
+                            </a>
+                        </div>
+                    </div>
+                    <div id="pricing" class="col s12" style="padding:0!important; padding-top:20px!important;">
+                        <div style="float:left;width: 100%;padding-right: 15px;">
+                            <select id="bookCondition">
+                                <option value="">Condition</option>
+                                @{
+                                    foreach (var condition in conditions)
+                                    {
+                                        <option value="@condition.ID">@condition.ConditionName</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div style="float:left;width: 100%;padding-right: 15px;">
+                            <input id="bookPrice" type="number" style="border-bottom:1px solid #9e9e9e!important;" placeholder="The price you wish to sell it for in Lebanese Pounds" class="input-field" />
+                        </div>
+                        <div style="float:left;width: 100%;padding-right: 15px;">
+                            <a id="createAvailableBook" class="waves-effect waves-light btn-large pull-right red">
+                                <i class="material-icons left">add_circle_outline</i>
+                                Sell
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
-        </div>
-
-    </div>
+        </div>*@
 
 
 </div>
@@ -498,11 +727,13 @@
     });
 
     $(document).on('click', '#goToPricing', function () {
-        $('ul.tabs').tabs('select', 'pricing');
+        //$('ul.tabs').tabs('select', 'pricing');
+        $('#tab3').click();
     });
 
     $(document).on('click', '.booksCheckbox', function () {
-        $('ul.tabs').tabs('select', 'bookInfo');
+        //$('ul.tabs').tabs('select', 'bookInfo');
+        $('#tab2').click();
     });
 
     $(document).on('change', '.booksCheckbox', function () {
