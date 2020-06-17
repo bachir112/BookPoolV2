@@ -302,6 +302,7 @@
     <Content Include="Content\js\shop\materialize.min.js" />
     <Content Include="Content\js\shop\ui.js" />
     <Content Include="Content\js\site.js" />
+    <Content Include="img\bookpool-logo.png" />
     <Content Include="img\logo.png" />
     <Content Include="sw.js" />
     <Content Include="Content\lib\bootstrap\dist\css\bootstrap-grid.css" />
