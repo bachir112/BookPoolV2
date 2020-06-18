@@ -14,7 +14,8 @@
         </div>
     }
     else {
-        using (Html.BeginForm("ExternalLogin", "Account", new { ReturnUrl = Model.ReturnUrl })) {
+        string redirectToURL = HttpContext.Current.Request.Url.AbsoluteUri.Replace(HttpContext.Current.Request.Url.Host, string.Empty).Replace("https://", string.Empty).Replace("http://", string.Empty);
+        using (Html.BeginForm("ExternalLogin", "Account", new { ReturnUrl = redirectToURL })) {
             @Html.AntiForgeryToken()
             <div id="socialLoginList" class="media-buttons">
                 <p>

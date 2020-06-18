@@ -200,6 +200,8 @@
                     Bookpool will search for copies of your book in local shops and social media platforms.
                     <br />
                     We will contact you by email/phone as soon as we find it.
+                    <br />
+                    If you haven't specified your phone number yet, please <a href="@Url.Action("MyProfile","Account")">click here</a> to update it.
                 </p>
             </div>
             <div class="modal-footer">
@@ -217,6 +219,8 @@
                     Bookpool will search for copies of your book in local shops and social media platforms.
                     <br />
                     We will contact you by email/phone as soon as we find it.
+                    <br />
+                    If you haven't specified your phone number yet, please <a href="@Url.Action("MyProfile","Account")">click here</a> to update it.
                 </p>
             </div>
             <div class="modal-footer">
@@ -419,6 +423,14 @@
             window.location = url;
         });
 
+        $(document).on('click', '.gotoproductnotavailable', function () {
+            var googleBookID = $(this).attr('data-BookGoogleID');
+            var bookName = $(this).attr('data-BookName');
+
+            var url = '@Url.Action("ProductNotAvailable", "Home")?query=' + bookName + '&googleBookID=' + googleBookID;
+            window.location = url;
+        });
+
         $(document).on('click', '.gotouserbooks', function () {
             console.log('Here');
             var shopId = $(this).data('data-shopId');
@@ -541,6 +553,19 @@
                     //location.reload();
                 }
             });
+        });
+
+        $(document).on('click', '#hideMessage', function () {
+            $('#founderMessage').hide();
+            $('#sellABookContainer').show();
+            $.cookie("HideMessage", true, { path: '/' });
+        });
+
+        $(document).ready(function () {
+            if (!!$.cookie('HideMessage')) {
+                $('#founderMessage').hide();
+                $('#sellABookContainer').show();
+            }
         });
 
 

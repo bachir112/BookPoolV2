@@ -31,30 +31,11 @@
                     <a class="carousel-item active" href="#one!">
                         <img src="@availableBook.ImageURL">
                     </a>
-                    @*<a class="carousel-item" href="#two!">
-                        <img src="@availableBook.ImageURL">
-                    </a>
-                    <a class="carousel-item" href="#three!">
-                        <img src="@availableBook.ImageURL">
-                    </a>
-                    <a class="carousel-item" href="#four!">
-                        <img src="@availableBook.ImageURL">
-                    </a>
-                    <a class="carousel-item" href="#four!">
-                        <img src="@availableBook.ImageURL">
-                    </a>
-                    <a class="carousel-item" href="#four!">
-                        <img src="@availableBook.ImageURL">
-                    </a>*@
                 </div>
 
                 <a class="btn-floating waves-effect waves-light white" style="text-align: center;color: white;background-color: #60842D!important;">
                     @availableBook.AverageRating
                 </a>
-
-                @*<a class="btn-floating halfway-fab waves-effect waves-light white" style="bottom:-40px;">
-                    <i class="material-icons red">favorite_border</i>
-                </a>*@
             </div>
             <div class="card-content col s12 m12 l9" style="padding-bottom:0px;margin-top:50px;">
                 <div class="row" style="margin-bottom:0px;">
@@ -71,7 +52,6 @@
                             <p style="margin-top:15px; font-size:18px;">
                                 <span style="display: flex;">
                                     <i class="fa fa-pencil-square" aria-hidden="true" style="padding-right:10px;padding-top:5px;"></i>
-                                    @*<i class="material-icons" style="padding-right:10px;">info_outline</i>*@
                                     @string.Join(",", availableBook.Authors)
                                 </span>
                             </p>
@@ -80,55 +60,24 @@
                             <p style="margin-top:15px; font-size:18px;">
                                 <span style="display: flex;">
                                     <i class="fa fa-money" aria-hidden="true" style="padding-right:10px;padding-top:5px;"></i>
-                                    @availableBook.Price.ToString("C0", CultureInfo.CurrentCulture).Replace("$", string.Empty)L.L.
+                                    Not available yet
                                 </span>
                             </p>
                         </div>
                         <div class="row">
                             <div style="margin-top:15px;" class="quantity buttons_added">
-                                @*<input type="button" value="-" class="minus"><input type="number" step="1" min="1" max="" name="quantity" value="1" title="Qty" class="input-text qty text" size="4" pattern="" inputmode=""><input type="button" value="+" class="plus">*@
+
                             </div>
                         </div>
-                        <div class="row" style="margin-top:15px;">
-                            <div>
-                                @*<div class="card-panel productInfoSize" style="float:left;text-align: center;margin-right: 10px; padding:10px;">
-                                        <span>
-                                            Ebook
-                                        </span>
-                                    </div>*@
-                                <div class="card-panel productInfoSize productInfoactive" style="float:left;text-align: center;margin-right: 10px; padding:10px;">
-                                    <span>
-                                        Hard Copy
-                                    </span>
-                                </div>
-                            </div>
+                        <div class="row" style="margin-top:15px;height:60px;">
+                            <button type="button" class="waves-effect waves-light btn-small modal-trigger findThisBookForMe red" data-GoogleBookID="@availableBook.GoogleID" data-target="search-for-my-book-modal">
+                                <i class="material-icons left" style="margin-right: 0;">search</i>
+                                Find it for me
+                            </button>
                         </div>
                     </div>
-                    <div class="col s12 m12 l3" style="padding-top:20px!important;">
-                        @{
-                            if (Request.IsAuthenticated)
-                            {
-                                <div class="row addtoCart" data-BookID="@availableBook.ID" data-Price="@availableBook.Price" style="text-align: center; color: var(--primaryGrey);">
-                                    <i class="material-icons" style="font-size: 50px; width:100%;">add_shopping_cart</i>
-                                    <span>Add to cart</span>
-                                </div>
-                            }
-                            else
-                            {
-                                <div class="row sidenav-trigger" data-target="side-menu" style="text-align: center; color: var(--primaryGrey);">
-                                    <i class="material-icons" style="font-size: 50px; width:100%;">add_shopping_cart</i>
-                                    <span>Add to cart</span>
-                                </div>
-                            }
-                        }
-                        @*<hr>*@
-                        @*<div class="row gotouserbooks" style="text-align: center; color: var(--primaryGrey);">
-                            <i class="material-icons" style="font-size: 50px; width:100%;">streetview</i>
-                            <span>All books for sale by:</span>
-                            <span style="font-weight:bold;">@availableBook.OwnerUser</span>
-                        </div>
-                        <hr style="display:none;" class="hiddenHR">*@
-                    </div>
+                    @*<div class="col s12 m12 l3" style="padding-top:20px!important;">
+                    </div>*@
                 </div>
             </div>
         </div>
@@ -201,25 +150,6 @@
                         <div class="card-stacked" style="width:100%;">
                             <div class="card-content" style="padding:20px;">
                                 <a href="@availableBook.PreviewLink" target="_blank">Click here</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card-content col s12 m12 l12" style="padding-top:0px; cursor:default;">
-                <div class="row">
-                    <h5 style="margin:auto;">
-                        Categories
-                    </h5>
-                </div>
-                <div class="row">
-                    <div class="card horizontal" style="margin:auto;">
-                        <div class="card-stacked" style="width:100%;">
-                            <div class="card-content" style="padding:20px;">
-                                <span>
-                                    @availableBook.Category
-                                    @*@string.Join(",", availableBook.Categories)*@
-                                </span>
                             </div>
                         </div>
                     </div>

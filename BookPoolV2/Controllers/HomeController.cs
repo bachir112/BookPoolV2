@@ -262,6 +262,35 @@ namespace BookPoolV2.Controllers
             return View();
         }
 
+        public async Task<ActionResult> ProductNotAvailable(string googleBookID, string query = null)
+        {
+            ViewBag.UserAddresses = await Global.Globals.GetUserAddresses(User.Identity.GetUserId());
+            ViewBag.UserCartCookie = await Global.Globals.GetCart(User.Identity.GetUserId());
+
+            Dictionary<string, List<BookPoolResult>> apiResults = new Dictionary<string, List<BookPoolResult>>();
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(Global.Globals.baseURL);
+                StringBuilder httpRoute = new StringBuilder();
+                httpRoute.Append("api/Books/GetBooks");
+                httpRoute.Append("?");
+                httpRoute.AppendFormat("query={0}", query);
+                httpRoute.Append("&");
+                httpRoute.AppendFormat("BookID={0}", googleBookID);
+
+                var response = await client.GetAsync(httpRoute.ToString());
+                if (response.IsSuccessStatusCode)
+                {
+                    apiResults = await response.Content.ReadAsAsync<Dictionary<string, List<BookPoolResult>>>();
+                    ViewBag.AvailableBook = apiResults["results"].First(x => x.GoogleID == googleBookID);
+                    ViewBag.SuggestedBooks = apiResults["results"].Where(x => x.GoogleID != googleBookID).Select(x => x).ToList();
+                }
+            }
+
+            return View();
+        }
+
         public async Task<ActionResult> FilteredByCategory(int categoryID,
             string language = null,
             bool sortByPrice = false,

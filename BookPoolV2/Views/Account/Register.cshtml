@@ -9,18 +9,38 @@
         display: none;
     }
 
-    #mainSearchBar{
-        height:60px!important;
+    #locationMainHeader {
+        display: none;
     }
 
+    #mainSearchBar {
+        height: 60px !important;
+    }
+
+    h4 {
+        display: block;
+        margin-block-start: 1.33em;
+        margin-block-end: 1.33em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+        font-weight: bold;
+    }
 </style>
 
-@*<h2>@ViewBag.Title.</h2>*@
+
+<div id="goToHomeContainer" style="display:inline-flex;width:100%;">
+    <a href="@Url.Action("Login","Account")" class="sidenav-trigger" style="display:inherit; width:30px; color:var(--primaryRed); cursor:pointer;">
+        <i class="material-icons">keyboard_arrow_left</i>
+    </a>
+    <a href="@Url.Action("Login","Account")" class="sidenav-trigger" style="display:inherit; margin-left:0px; cursor:pointer;">
+        <span style="font-family:AvenirNextBold;">Back</span>
+    </a>
+</div>
 
 @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
-    <h4>Register a new account.</h4>
+    <h4 style="margin-bottom:20px;">Register a new account.</h4>
     <hr />
     @Html.ValidationSummary("", new { @class = "text-danger" })
     <div class="form-group">
