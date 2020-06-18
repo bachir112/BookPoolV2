@@ -273,7 +273,7 @@ namespace BookPoolV2.Controllers
             {
                 client.BaseAddress = new Uri(Global.Globals.baseURL);
                 StringBuilder httpRoute = new StringBuilder();
-                httpRoute.Append("api/Books/GetBooks");
+                httpRoute.Append("api/Books/GetNotAvailableBooks");
                 httpRoute.Append("?");
                 httpRoute.AppendFormat("query={0}", query);
                 httpRoute.Append("&");

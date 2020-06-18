@@ -378,6 +378,150 @@ namespace BookPool.DataInterface.Controllers
             return Json((object)new { results });
         }
 
+        [System.Web.Http.Route("api/Books/GetNotAvailableBooks")]
+        [System.Web.Http.HttpGet]
+        public async Task<JsonResult<Object>> GetNotAvailableBooks(string query = null,
+            string language = null,
+            string BookID = null,
+            bool sortByPrice = false,
+            bool AvailableOnly = false,
+            bool sortByPopularity = false)
+        {
+            List<BookPoolResult> results = new List<BookPoolResult>();
+
+            GoogleBooksResult googleResult = new GoogleBooksResult();
+            List<GoogleBook> googleBooksResult = new List<GoogleBook>();
+            List<GoogleBook> googleBooksNotAvailableResult = new List<GoogleBook>();
+
+            List<BookPoolResult> availableResults = new List<BookPoolResult>();
+
+            GoogleBook searchingForBookGoogle = new GoogleBook();
+            List<GoogleBook> listGoogleBooks = new List<GoogleBook>();
+            List<GoogleBooksResult> listGoogleBooksResult = new List<GoogleBooksResult>();
+
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(DataObjects.Global.Globals.googleBaseAPI_SearchByID);
+                    StringBuilder httpRoute = new StringBuilder();
+                    httpRoute.Append(BookID);
+
+                    var response = await client.GetAsync(httpRoute.ToString());
+                    if (response.IsSuccessStatusCode)
+                    {
+                        searchingForBookGoogle = await response.Content.ReadAsAsync<GoogleBook>();
+
+                        BookPoolResult availableResult = new BookPoolResult()
+                        {
+                            Academic = false,
+                            BookConditionID = -1,
+                            BookLanguageID = -1,
+                            BookName = searchingForBookGoogle.volumeInfo.title,
+                            CategoryID = -1,
+                            GoogleID = searchingForBookGoogle.id,
+                            OwnerUserID = null,
+                            Price = -1,
+                            Authors = searchingForBookGoogle.volumeInfo.authors,
+                            AverageRating = searchingForBookGoogle.volumeInfo.averageRating,
+                            Categories = searchingForBookGoogle.volumeInfo.categories,
+                            Description = searchingForBookGoogle.volumeInfo.description,
+                            ImageURL = searchingForBookGoogle.volumeInfo.imageLinks == null ? null : searchingForBookGoogle.volumeInfo.imageLinks.thumbnail.Replace("http:", "https:"),
+                            PageCount = searchingForBookGoogle.volumeInfo.pageCount,
+                            PreviewLink = searchingForBookGoogle.volumeInfo.previewLink,
+                            PrintType = searchingForBookGoogle.volumeInfo.printType,
+                            PublishedDate = searchingForBookGoogle.volumeInfo.publishedDate,
+                            Publisher = searchingForBookGoogle.volumeInfo.publisher,
+                            Subtitle = searchingForBookGoogle.volumeInfo.subtitle
+                        };
+
+                        availableResults.Add(availableResult);
+                        //listGoogleBooks.Add(searchingForBookGoogle);
+                        //GoogleBooksResult result = new GoogleBooksResult()
+                        //{
+                        //    totalItems = 0,
+                        //    kind = "Book",
+                        //    items = listGoogleBooks
+                        //};
+                        //listGoogleBooksResult.Add(result);
+                    }
+                }
+
+
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(DataObjects.Global.Globals.googleBaseAPI);
+                    StringBuilder httpRoute = new StringBuilder();
+                    httpRoute.Append("?");
+                    httpRoute.AppendFormat("q={0}", query);
+                    httpRoute.Append("&");
+                    httpRoute.Append("maxResults=40");
+                    if (language != null)
+                    {
+                        string lan = "en";
+                        switch (language)
+                        {
+                            case "english":
+                                lan = "en";
+                                break;
+                            case "french":
+                                lan = "fr";
+                                break;
+                            case "arabic":
+                                lan = "ar";
+                                break;
+                            default:
+                                break;
+                        }
+                        httpRoute.Append("&");
+                        httpRoute.AppendFormat("langRestrict={0}", lan);
+                    }
+
+                    var response = await client.GetAsync(httpRoute.ToString());
+                    if (response.IsSuccessStatusCode)
+                    {
+                        googleResult = await response.Content.ReadAsAsync<GoogleBooksResult>();
+                        googleBooksResult = googleResult.items.ToList<GoogleBook>();
+                        googleBooksResult = googleBooksResult.Where(x => x.volumeInfo.authors != null).Select(x => x).ToList();
+                    }
+                }
+
+                var unavailableBooks = googleBooksResult.Where(x => x.id != BookID).Select(x => x).ToList();
+
+                List<BookPoolResult> googleUnavailableBooks = unavailableBooks.Select(x => new BookPoolResult
+                {
+                    Academic = false,
+                    BookConditionID = -1,
+                    BookLanguageID = -1,
+                    BookName = x.volumeInfo.title,
+                    CategoryID = -1,
+                    GoogleID = x.id,
+                    OwnerUserID = null,
+                    Price = -1,
+                    Authors = x.volumeInfo.authors,
+                    AverageRating = x.volumeInfo.averageRating,
+                    Categories = x.volumeInfo.categories,
+                    Description = x.volumeInfo.description,
+                    ImageURL = x.volumeInfo.imageLinks == null ? null : x.volumeInfo.imageLinks.thumbnail.Replace("http:", "https:"),
+                    PageCount = x.volumeInfo.pageCount,
+                    PreviewLink = x.volumeInfo.previewLink,
+                    PrintType = x.volumeInfo.printType,
+                    PublishedDate = x.volumeInfo.publishedDate,
+                    Publisher = x.volumeInfo.publisher,
+                    Subtitle = x.volumeInfo.subtitle
+                }).ToList();
+
+                results.AddRange(availableResults);
+                results.AddRange(googleUnavailableBooks);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+
+            return Json((object)new { results });
+        }
+
 
         [System.Web.Http.Route("api/Books/GetAcademicBooks")]
         [System.Web.Http.HttpGet]
