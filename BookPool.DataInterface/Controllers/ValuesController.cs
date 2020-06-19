@@ -94,7 +94,7 @@ namespace BookPool.DataInterface.Controllers
             {
                 using (var db = new BookPoolEntities())
                 {
-                    institutions = db.Institutions.ToList();
+                    institutions = db.Institutions.Where(x => x.InstitutionType != "school").ToList();
                 }
 
                 results.AddRange(institutions);
