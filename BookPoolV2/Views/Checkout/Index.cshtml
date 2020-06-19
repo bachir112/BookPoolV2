@@ -18,19 +18,28 @@
     List<BookPoolResult> booksInCart = ViewBag.BooksInCart as List<BookPoolResult>;
 
     AspNetUser aspNetUser = new AspNetUser();
-    if(ViewBag.AspNetUser != null)
+    if (ViewBag.AspNetUser != null)
     {
         aspNetUser = ViewBag.AspNetUser as AspNetUser;
     }
 }
+
+
+<div id="errorsModal" class="modal modal-fixed-footer">
+    <div id="errorText" class="modal-content">
+
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat green">Okay</a>
+    </div>
+</div>
+
 
 <div class="row container">
     <div class="col s12 m12 l12">
         <h5>CHECKOUT</h5>
     </div>
 </div>
-
-
 
 <div id="mainSortByFilter" style="background: white; height:50px;">
     <div class="row">
@@ -339,6 +348,8 @@
             }
         }
 
+        $('#errorsModal').modal();
+
     });
 
     $(document).on('change', '.addToCheckout', function () {
@@ -363,11 +374,60 @@
         }
     }
 
-    $(document).ready(function () {
-        $('#placeOrder').prop('disabled', true);
-    });
+    //$(document).ready(function () {
+    //    $('#placeOrder').prop('disabled', true);
+    //});
+
+    function checkForErrors() {
+        var userAddressExists = '@(userAddresses.Count() > 0 ? "true" : "false")';
+        var phoneNumber = $('#phoneNumber').val();
+
+        var checkedBooks = 0;
+        $('.addToCheckout').each(function () {
+            if (this.checked) {
+                checkedBooks += 1;
+            }
+        });
+
+        var errorHtml = '';
+
+        var openErrorModal = false;
+
+        if (!userAddressExists) {
+            openErrorModal = true;
+            errorHtml += "<p>Please set your address to place your order.</p>";
+        }
+
+        if (!phoneNumber) {
+            openErrorModal = true;
+            errorHtml += "<p>Please set a phone number where the delivery can contact you to place your order.</p>";
+        }
+
+        if (checkedBooks == 0) {
+            openErrorModal = true;
+            errorHtml += "<p>Please check the books you wish to buy.</p>";
+        }
+
+        console.log('openErrorModal = ' + openErrorModal);
+
+        if (openErrorModal) {
+            $('#errorText').html(errorHtml);
+            $('#errorsModal').modal('open');
+            console.log('OPEN ERROR MODAL');
+        }
+
+        return openErrorModal;
+    }
 
     $(document).on('click', '#placeOrder', function () {
+
+        var openErrorModal = checkForErrors();
+
+        console.log('openErrorModal = ' + openErrorModal);
+        if (openErrorModal) {
+            return;
+        }
+
         var booksIDs = [];
         $('.addToCheckout').each(function () {
             if (this.checked) {

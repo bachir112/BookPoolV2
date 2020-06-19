@@ -87,6 +87,13 @@
           <Property Name="CourseID" Type="int" />
           <Property Name="Institution" Type="nvarchar" MaxLength="250" />
         </EntityType>
+        <EntityType Name="BookPoolCharges">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Charge" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+        </EntityType>
         <EntityType Name="Categories">
           <Key>
             <PropertyRef Name="ID" />
@@ -241,6 +248,7 @@
           <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AvailableBooks" EntityType="Self.AvailableBooks" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BookPoolCharges" EntityType="Self.BookPoolCharges" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Conditions" EntityType="Self.Conditions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Courses" EntityType="Self.Courses" Schema="dbo" store:Type="Tables" />
@@ -279,6 +287,7 @@
           <EntitySet Name="AspNetUserLogins" EntityType="BookPoolModel.AspNetUserLogin" />
           <EntitySet Name="AspNetUsers" EntityType="BookPoolModel.AspNetUser" />
           <EntitySet Name="AvailableBooks" EntityType="BookPoolModel.AvailableBook" />
+          <EntitySet Name="BookPoolCharges" EntityType="BookPoolModel.BookPoolCharge" />
           <EntitySet Name="Categories" EntityType="BookPoolModel.Category" />
           <EntitySet Name="Conditions" EntityType="BookPoolModel.Condition" />
           <EntitySet Name="Courses" EntityType="BookPoolModel.Cours" />
@@ -381,6 +390,13 @@
           <Property Name="InstitutionID" Type="Int32" />
           <Property Name="CourseID" Type="Int32" />
           <Property Name="Institution" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="BookPoolCharge">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Charge" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="Category">
           <Key>
@@ -583,6 +599,14 @@
                 <ScalarProperty Name="BookConditionID" ColumnName="BookConditionID" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="BookName" ColumnName="BookName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BookPoolCharges">
+            <EntityTypeMapping TypeName="BookPoolModel.BookPoolCharge">
+              <MappingFragment StoreEntitySet="BookPoolCharges">
+                <ScalarProperty Name="Charge" ColumnName="Charge" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

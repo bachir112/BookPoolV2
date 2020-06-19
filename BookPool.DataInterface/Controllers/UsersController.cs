@@ -102,6 +102,8 @@ namespace BookPool.DataInterface.Controllers
         {
             string results = string.Empty;
 
+            decimal bookpoolCharges = Global.Globals.GetBookpoolCharges();
+
             try
             {
                 using (var db = new BookPoolEntities())
@@ -111,7 +113,7 @@ namespace BookPool.DataInterface.Controllers
                     foreach (var bookID in booksIDsInCart)
                     {
                         AvailableBook availableBook = db.AvailableBooks.FirstOrDefault(x => x.ID == bookID);
-                        totalPrice += availableBook.Price;
+                        totalPrice += (availableBook.Price + bookpoolCharges);
                     }
 
                     OrderHeader orderHeader = new OrderHeader();
@@ -138,7 +140,7 @@ namespace BookPool.DataInterface.Controllers
 
                             OrderDetail orderDetail = new OrderDetail();
                             orderDetail.BookName = availableBook.BookName;
-                            orderDetail.BookPrice = availableBook.Price;
+                            orderDetail.BookPrice = availableBook.Price + bookpoolCharges;
                             orderDetail.OrderHeaderID = orderHeader.ID;
                             orderDetail.Status = Globals.OrderStatusPending;
                             orderDetail.SellerUserID = availableBook.OwnerUserID;

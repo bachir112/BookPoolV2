@@ -7,20 +7,21 @@
       <Diagram DiagramId="4f3bd7871f7a414eaef4bbe7d9f1e0af" Name="Diagram1">
         <EntityTypeShape EntityType="BookPoolModel.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="6.75" />
         <EntityTypeShape EntityType="BookPoolModel.AspNetRole" Width="1.5" PointX="0.75" PointY="2.5" />
-        <EntityTypeShape EntityType="BookPoolModel.AspNetUserClaim" Width="1.5" PointX="5.25" PointY="1" />
-        <EntityTypeShape EntityType="BookPoolModel.AspNetUserLogin" Width="1.5" PointX="5.25" PointY="3.75" />
+        <EntityTypeShape EntityType="BookPoolModel.AspNetUserClaim" Width="1.5" PointX="5.25" PointY="3.625" />
+        <EntityTypeShape EntityType="BookPoolModel.AspNetUserLogin" Width="1.5" PointX="5.25" PointY="1" />
         <EntityTypeShape EntityType="BookPoolModel.AspNetUser" Width="1.5" PointX="3" PointY="1.125" />
         <EntityTypeShape EntityType="BookPoolModel.AvailableBook" Width="1.5" PointX="2.75" PointY="6.75" />
-        <EntityTypeShape EntityType="BookPoolModel.Category" Width="1.5" PointX="4.75" PointY="6.75" />
-        <EntityTypeShape EntityType="BookPoolModel.Condition" Width="1.5" PointX="6.75" PointY="6.75" />
-        <EntityTypeShape EntityType="BookPoolModel.Cours" Width="1.5" PointX="7.75" PointY="0.75" />
-        <EntityTypeShape EntityType="BookPoolModel.Institution" Width="1.5" PointX="7.75" PointY="3.75" />
-        <EntityTypeShape EntityType="BookPoolModel.Language" Width="1.5" PointX="8.75" PointY="6.75" />
-        <EntityTypeShape EntityType="BookPoolModel.OrderDetail" Width="1.5" PointX="9.75" PointY="0.75" />
-        <EntityTypeShape EntityType="BookPoolModel.OrderHeader" Width="1.5" PointX="4.75" PointY="9.75" />
+        <EntityTypeShape EntityType="BookPoolModel.BookPoolCharge" Width="1.5" PointX="4.75" PointY="6.75" />
+        <EntityTypeShape EntityType="BookPoolModel.Category" Width="1.5" PointX="6.75" PointY="6.75" />
+        <EntityTypeShape EntityType="BookPoolModel.Condition" Width="1.5" PointX="7.75" PointY="0.75" />
+        <EntityTypeShape EntityType="BookPoolModel.Cours" Width="1.5" PointX="7.75" PointY="3.75" />
+        <EntityTypeShape EntityType="BookPoolModel.Institution" Width="1.5" PointX="8.75" PointY="6.75" />
+        <EntityTypeShape EntityType="BookPoolModel.Language" Width="1.5" PointX="9.75" PointY="0.75" />
+        <EntityTypeShape EntityType="BookPoolModel.OrderDetail" Width="1.5" PointX="4.75" PointY="9.75" />
+        <EntityTypeShape EntityType="BookPoolModel.OrderHeader" Width="1.5" PointX="9.75" PointY="3.75" />
         <EntityTypeShape EntityType="BookPoolModel.SearchForBook" Width="1.5" PointX="6.75" PointY="9.75" />
         <EntityTypeShape EntityType="BookPoolModel.UserCart" Width="1.5" PointX="8.75" PointY="9.75" />
-        <EntityTypeShape EntityType="BookPoolModel.UsersAddress" Width="1.5" PointX="10.75" PointY="4.75" />
+        <EntityTypeShape EntityType="BookPoolModel.UsersAddress" Width="1.5" PointX="10.75" PointY="6.75" />
         <AssociationConnector Association="BookPoolModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
         <AssociationConnector Association="BookPoolModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
         <AssociationConnector Association="BookPoolModel.AspNetUserRoles" />

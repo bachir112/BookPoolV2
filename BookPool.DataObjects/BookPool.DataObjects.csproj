@@ -87,6 +87,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>BookPool.edmx</DependentUpon>
     </Compile>
+    <Compile Include="EDM\BookPoolCharge.cs">
+      <DependentUpon>BookPool.tt</DependentUpon>
+    </Compile>
     <Compile Include="EDM\Category.cs">
       <DependentUpon>BookPool.tt</DependentUpon>
     </Compile>

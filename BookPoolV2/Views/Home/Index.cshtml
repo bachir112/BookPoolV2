@@ -14,6 +14,12 @@
     {
         categories = ViewBag.Categories as List<Category>;
     }
+
+    List<BookPoolResult> mostSoldBooks = new List<BookPoolResult>();
+    if (ViewBag.MostSoldBooks != null)
+    {
+        mostSoldBooks = ViewBag.MostSoldBooks as List<BookPoolResult>;
+    }
 }
 
 
@@ -22,21 +28,14 @@
     {
         <div class="row rowmargins" style="margin-top:50px;">
             <div class="carousel">
-                <a class="carousel-item" href="#one!">
-                    <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg">
-                </a>
-                <a class="carousel-item" href="#two!">
-                    <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg">
-                </a>
-                <a class="carousel-item" href="#three!">
-                    <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg">
-                </a>
-                <a class="carousel-item" href="#four!">
-                    <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg">
-                </a>
-                <a class="carousel-item" href="#five!">
-                    <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1543181274l/40909433.jpg">
-                </a>
+                @{
+                    foreach (var book in mostSoldBooks)
+                    {
+                        <a class="carousel-item" href="@Url.Action("Index","Home")?query=@book.BookName">
+                            <img src="@book.ImageURL">
+                        </a>
+                    }
+                }
             </div>
         </div>
     }

@@ -56,27 +56,10 @@ namespace BookPoolV2
             //   consumerSecret: "");
 
             //dev
-            var facebookOptions = new Microsoft.Owin.Security.Facebook.FacebookAuthenticationOptions()
-            {
-                AppId = "571875340131395",
-                AppSecret = "279cbbfcf505ab7eb0566936796007cb",
-                Provider = new Microsoft.Owin.Security.Facebook.FacebookAuthenticationProvider()
-                {
-                    OnAuthenticated = (context) =>
-                    {
-                        context.Identity.AddClaim(new System.Security.Claims.Claim("urn:facebook:access_token", context.AccessToken, "Facebook"));
-                        context.Identity.AddClaim(new System.Security.Claims.Claim("urn:facebook:email", context.Email, "Facebook"));
-                        context.Identity.AddClaim(new System.Security.Claims.Claim("urn:facebook:email", context.Email, "Facebook"));
-                        return Task.FromResult(0);
-                    }
-                }
-            };
-
-            //prod
             //var facebookOptions = new Microsoft.Owin.Security.Facebook.FacebookAuthenticationOptions()
             //{
-            //    AppId = "292878855237237",
-            //    AppSecret = "34800344467e945a987c6e4d32527902",
+            //    AppId = "571875340131395",
+            //    AppSecret = "279cbbfcf505ab7eb0566936796007cb",
             //    Provider = new Microsoft.Owin.Security.Facebook.FacebookAuthenticationProvider()
             //    {
             //        OnAuthenticated = (context) =>
@@ -88,6 +71,23 @@ namespace BookPoolV2
             //        }
             //    }
             //};
+
+            //prod
+            var facebookOptions = new Microsoft.Owin.Security.Facebook.FacebookAuthenticationOptions()
+            {
+                AppId = "292878855237237",
+                AppSecret = "34800344467e945a987c6e4d32527902",
+                Provider = new Microsoft.Owin.Security.Facebook.FacebookAuthenticationProvider()
+                {
+                    OnAuthenticated = (context) =>
+                    {
+                        context.Identity.AddClaim(new System.Security.Claims.Claim("urn:facebook:access_token", context.AccessToken, "Facebook"));
+                        context.Identity.AddClaim(new System.Security.Claims.Claim("urn:facebook:email", context.Email, "Facebook"));
+                        context.Identity.AddClaim(new System.Security.Claims.Claim("urn:facebook:email", context.Email, "Facebook"));
+                        return Task.FromResult(0);
+                    }
+                }
+            };
 
             facebookOptions.Scope.Add("email");
 

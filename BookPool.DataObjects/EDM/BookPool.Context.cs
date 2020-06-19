@@ -31,6 +31,7 @@ namespace BookPool.DataObjects.EDM
         public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
         public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
         public virtual DbSet<AvailableBook> AvailableBooks { get; set; }
+        public virtual DbSet<BookPoolCharge> BookPoolCharges { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Condition> Conditions { get; set; }
         public virtual DbSet<Cours> Courses { get; set; }

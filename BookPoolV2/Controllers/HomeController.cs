@@ -71,6 +71,22 @@ namespace BookPoolV2.Controllers
                 }
             }
 
+
+            Dictionary<string, List<BookPoolResult>> apiMostSoldResults = new Dictionary<string, List<BookPoolResult>>();
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(Global.Globals.baseURL);
+                StringBuilder httpRoute = new StringBuilder();
+                httpRoute.Append("api/Books/GetMostSoldBooks");
+
+                var response = await client.GetAsync(httpRoute.ToString());
+                if (response.IsSuccessStatusCode)
+                {
+                    apiMostSoldResults = await response.Content.ReadAsAsync<Dictionary<string, List<BookPoolResult>>>();
+                    ViewBag.MostSoldBooks = apiMostSoldResults["results"];
+                }
+            }
+
             Dictionary<string, List<Category>> apiCategoriesResults = new Dictionary<string, List<Category>>();
             using (var client = new HttpClient())
             {

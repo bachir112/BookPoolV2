@@ -228,6 +228,8 @@ namespace BookPool.DataInterface.Controllers
                         }
                     }
 
+                    bookNames = bookNames.Take(5).Select(x => x).ToList();
+
                     foreach (var bookName in bookNames)
                     {
                         using (var client = new HttpClient())
@@ -237,7 +239,7 @@ namespace BookPool.DataInterface.Controllers
                             httpRoute.Append("?");
                             httpRoute.AppendFormat("q={0}", bookName);
                             httpRoute.Append("&");
-                            httpRoute.Append("maxResults=40");
+                            httpRoute.Append("maxResults=10");
                             if (language != null)
                             {
                                 string lan = "en";
@@ -375,8 +377,71 @@ namespace BookPool.DataInterface.Controllers
                 Console.WriteLine(ex);
             }
 
+            decimal bookpoolCharges = Global.Globals.GetBookpoolCharges();
+            results.ForEach(x => x.Price = x.Price + bookpoolCharges);
+
             return Json((object)new { results });
         }
+
+
+        [System.Web.Http.Route("api/Books/GetMostSoldBooks")]
+        [System.Web.Http.HttpGet]
+        public async Task<JsonResult<Object>> GetMostSoldBooks()
+        {
+            List<BookPoolResult> results = new List<BookPoolResult>();
+
+            GoogleBook googleResult = new GoogleBook();
+            List<GoogleBook> googleBooksResult = new List<GoogleBook>();
+
+            List<BookPoolResult> booksResult = new List<BookPoolResult>();
+
+            using (var db = new BookPoolEntities())
+            {
+                var books = db.AvailableBooks.GroupBy(x => x.GoogleID,
+                                                            (key, group) => new 
+                                                            { 
+                                                                GoogleID = key, 
+                                                                Count = group.Count()
+                                                            }).Select(x => x).ToList();
+
+                List<string> googleIDs = books.OrderByDescending(x => x.Count).Take(3).Select(x => x.GoogleID).ToList();
+
+
+                foreach (var googleID in googleIDs)
+                {
+                    using (var client = new HttpClient())
+                    {
+                        client.BaseAddress = new Uri(DataObjects.Global.Globals.googleBaseAPI_SearchByID);
+                        StringBuilder httpRoute = new StringBuilder();
+                        httpRoute.Append(googleID);
+
+                        var response = await client.GetAsync(httpRoute.ToString());
+                        if (response.IsSuccessStatusCode)
+                        {
+                            googleResult = await response.Content.ReadAsAsync<GoogleBook>();
+                            googleBooksResult.Add(googleResult);
+                        }
+                    }
+                }
+
+                booksResult = (from googleBooks in googleBooksResult
+                            join availableBooks in db.AvailableBooks on googleBooks.id equals availableBooks.GoogleID
+
+                            select new BookPoolResult
+                            {
+                                ID = availableBooks.ID,
+                                GoogleID = availableBooks.GoogleID,
+                                BookName = availableBooks.BookName,
+                                ImageURL = googleBooks.volumeInfo.imageLinks.thumbnail.Replace("http:", "https:")
+                            }).DistinctBy(x => x.GoogleID).ToList();
+            }
+
+            results.AddRange(booksResult);
+
+            return Json((object)new { results });
+        }
+
+
 
         [System.Web.Http.Route("api/Books/GetNotAvailableBooks")]
         [System.Web.Http.HttpGet]
@@ -661,6 +726,9 @@ namespace BookPool.DataInterface.Controllers
             }
 
 
+            decimal bookpoolCharges = Global.Globals.GetBookpoolCharges();
+            results.ForEach(x => x.Price = x.Price + bookpoolCharges);
+
             return Json((object)new { results });
         }
 
@@ -919,6 +987,10 @@ namespace BookPool.DataInterface.Controllers
             {
                 Console.WriteLine(ex);
             }
+
+
+            decimal bookpoolCharges = Global.Globals.GetBookpoolCharges();
+            results.ForEach(x => x.Price = x.Price + bookpoolCharges);
 
             return Json((object)new { results });
         }
@@ -1280,6 +1352,8 @@ namespace BookPool.DataInterface.Controllers
         [System.Web.Http.HttpGet]
         public JsonResult<Object> GetCart(string UserID)
         {
+            decimal bookpoolCharges = Global.Globals.GetBookpoolCharges();
+
             List<Dictionary<string, string>> results = new List<Dictionary<string, string>>();
             List<Dictionary<string, string>> userCookieCart = new List<Dictionary<string, string>>();
             try
@@ -1293,11 +1367,13 @@ namespace BookPool.DataInterface.Controllers
                         foreach (var bookID in booksIDsInCart)
                         {
                             AvailableBook availableBook = db.AvailableBooks.FirstOrDefault(x => x.ID == bookID && x.SellingStatus == Global.Globals.BookSellingStatus_Available);
+
+
                             if (availableBook != null)
                             {
                                 Dictionary<string, string> bookInCookie = new Dictionary<string, string>();
                                 bookInCookie.Add("BookID", bookID.ToString());
-                                bookInCookie.Add("Price", availableBook.Price.ToString());
+                                bookInCookie.Add("Price", (availableBook.Price + bookpoolCharges).ToString());
 
                                 userCookieCart.Add(bookInCookie);
                             }
@@ -1320,7 +1396,7 @@ namespace BookPool.DataInterface.Controllers
         [System.Web.Http.HttpGet]
         public async Task<JsonResult<Object>> GetBooksInCart(string UserID)
         {
-            List<object> results = new List<object>();
+            List<BookPoolResult> results = new List<BookPoolResult>();
 
             GoogleBook googleResult = new GoogleBook();
             List<GoogleBook> googleBooksResult = new List<GoogleBook>();
@@ -1424,6 +1500,9 @@ namespace BookPool.DataInterface.Controllers
                 Console.WriteLine(ex);
             }
 
+            decimal bookpoolCharges = Global.Globals.GetBookpoolCharges();
+            results.ForEach(x => x.Price = x.Price + bookpoolCharges);
+
             return Json((object)new { results });
         }
 
@@ -1475,6 +1554,5 @@ namespace BookPool.DataInterface.Controllers
 
             return Json((object)new { results });
         }
-
     }
 }
