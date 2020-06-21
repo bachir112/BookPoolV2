@@ -98,18 +98,18 @@ namespace BookPoolV2
             //   appSecret: "");
 
             //prod
-            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
-            //{
-            //    ClientId = "337728385862-uso50m3m8slhma133686ec7stmi17bp1.apps.googleusercontent.com",
-            //    ClientSecret = "YzQnPSohrfZypd-WbuVRo1jk"
-            //});
-
-            //dev
             app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             {
-                ClientId = "337728385862-q8031mo7q2qk15d94e2a9kv47st1ahkb.apps.googleusercontent.com",
-                ClientSecret = "IG0Vh2iIRkfrd0dPSmeJtpNw"
+                ClientId = "337728385862-uso50m3m8slhma133686ec7stmi17bp1.apps.googleusercontent.com",
+                ClientSecret = "YzQnPSohrfZypd-WbuVRo1jk"
             });
+
+            //dev
+            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            //{
+            //    ClientId = "337728385862-q8031mo7q2qk15d94e2a9kv47st1ahkb.apps.googleusercontent.com",
+            //    ClientSecret = "IG0Vh2iIRkfrd0dPSmeJtpNw"
+            //});
         }
     }
 }
