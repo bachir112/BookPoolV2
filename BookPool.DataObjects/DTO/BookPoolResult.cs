@@ -34,5 +34,7 @@ namespace BookPool.DataObjects.DTO
         public string PreviewLink { get; set; }
         public string SellingStatus { get; set; }
         public Nullable<DateTime> PostedOn { get; set; }
+        public string OwnerUserName { get; set; }
+        public string OwnerPhoneNumber { get; set; }
     }
 }

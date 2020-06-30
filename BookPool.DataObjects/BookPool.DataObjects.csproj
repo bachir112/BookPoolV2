@@ -55,6 +55,7 @@
     <Compile Include="DTO\GoogleBooksResult.cs" />
     <Compile Include="DTO\ImageLinks.cs" />
     <Compile Include="DTO\IndustryIdentifiers.cs" />
+    <Compile Include="DTO\OrderResult.cs" />
     <Compile Include="DTO\UserCartDTO.cs" />
     <Compile Include="DTO\VolumeInfo.cs" />
     <Compile Include="EDM\AspNetRole.cs">
