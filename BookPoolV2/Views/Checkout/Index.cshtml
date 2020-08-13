@@ -381,6 +381,8 @@
     function checkForErrors() {
         var userAddressExists = '@(userAddresses.Count() > 0 ? "true" : "false")';
         var phoneNumber = $('#phoneNumber').val();
+        var firstName = $('#firstName').val();
+        var lastName = $('#lastName').val();
 
         var checkedBooks = 0;
         $('.addToCheckout').each(function () {
@@ -393,7 +395,7 @@
 
         var openErrorModal = false;
 
-        if (!userAddressExists) {
+        if (userAddressExists == 'false') {
             openErrorModal = true;
             errorHtml += "<p>Please set your address to place your order.</p>";
         }
@@ -403,11 +405,25 @@
             errorHtml += "<p>Please set a phone number where the delivery can contact you to place your order.</p>";
         }
 
+        if (!firstName) {
+            openErrorModal = true;
+            errorHtml += "<p>Please specify your first name.</p>";
+        }
+
+        if (!lastName) {
+            openErrorModal = true;
+            errorHtml += "<p>Please specify your last name.</p>";
+        }
+
         if (checkedBooks == 0) {
             openErrorModal = true;
             errorHtml += "<p>Please check the books you wish to buy.</p>";
         }
 
+        console.log('userAddressExists = ' + userAddressExists);
+        console.log('phoneNumber = ' + phoneNumber);
+        console.log('checkedBooks = ' + checkedBooks);
+        console.log('errorHtml = ' + errorHtml);
         console.log('openErrorModal = ' + openErrorModal);
 
         if (openErrorModal) {

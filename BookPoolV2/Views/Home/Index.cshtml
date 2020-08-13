@@ -50,7 +50,7 @@
     }
 }
 
-<div class="section filtercontainer">
+<div class="section filtercontainer" style="display:none;">
     @{
         if (Request.IsAuthenticated)
         {
@@ -169,6 +169,10 @@
                 </div>
             }
         }
+        if (books.Count() == 0)
+        {
+            @Html.Partial("_NoBooksFound")
+        }
     }
 
 </div>
@@ -179,17 +183,42 @@
     });
 
     $(document).on('click', '.filterResults', function () {
-        var filterName = $(this).attr('data-Filter');
-        var filterValue = $(this).attr('data-Value');
 
-        $('.filterResults').removeClass('active');
-        $(this).addClass('active');
+        var isSelected = $(this).hasClass('active');
+        if (isSelected) {
+            console.log('IS SLECTED');
+            $(this).removeClass('active');
+        } else {
+            var filterName = $(this).attr('data-Filter');
+            var filterValue = $(this).attr('data-Value');
+
+            if (filterName == 'Language') {
+                $('.filterResults[data-Filter="Language"]').removeClass('active');
+            }
+
+            if (filterName == 'sortByPrice') {
+                $('.filterResults[data-Filter="sortByPopularity"]').removeClass('active');
+            }
+
+            if (filterName == 'sortByPopularity') {
+                $('.filterResults[data-Filter="sortByPrice"]').removeClass('active');
+            }
+
+            $(this).addClass('active');
+        }
+
+        console.log('getFilters() = ' + getFilters());
+
+        var filter = getFilters();
 
         if (@(ViewBag.Query == null ? "true" : "false")) {
-            var url = '@Url.Action("Index","Home")?' + filterName + "=" + filterValue;
+            var url = '@Url.Action("Index","Home")?' + filter;
             window.location = url;
         } else {
-            var url = '@Url.Action("Index","Home")?query=' + '@ViewBag.Query' + '&' + filterName + "=" + filterValue;
+            if (filter.length > 0) {
+                filter = '&' + filter;
+            }
+            var url = '@Url.Action("Index","Home")?query=' + '@ViewBag.Query' + filter;
             window.location = url;
         }
     });

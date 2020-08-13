@@ -321,7 +321,7 @@
 
         </nav>
         <nav id="searchBooksContainer" class="z-depth-0 titlenav" style="height:50px;background:white;">
-            <div class="nav-wrapper container" style="background:white; height:50px; padding-top:5px; width:100%;">
+            <div class="nav-wrapper container" style="background:white; height:50px; padding-top:5px; width:100%; display:contents;">
                 <div id="searchBooksInnerContainer" class="row searchBar">
                     <div class="col s12 m12 l12" style="height:50px;float:inherit;">
                         <div class="sectionnav">
@@ -497,8 +497,15 @@
             });
 
             $('.category').click(function () {
+                var filter = getFilters();
+                if (filter.length > 0) {
+                    filter = '&' + filter;
+                }
+
+                console.log('filter = ' + filter);
+
                 var categoryID = $(this).attr('data-CategoryID');
-                var url = '@Url.Action("FilteredByCategory", "Home")?CategoryID=' + categoryID;
+                var url = '@Url.Action("FilteredByCategory", "Home")?CategoryID=' + categoryID + filter;
                 window.location = url;
             });
 
@@ -684,6 +691,19 @@
                 $('#costOfItemsInCartFooter').text(price);
                 $('#messageFooter').show();
             }
+        }
+
+        function getFilters() {
+            var filter = [];
+            $('.filterResults.active').each(function () {
+                var filterName = $(this).attr('data-Filter');
+                var filterValue = $(this).attr('data-Value');
+                filter.push(filterName + '=' + filterValue);
+            });
+
+            filter = filter.join('&')
+
+            return filter;
         }
 
         @{

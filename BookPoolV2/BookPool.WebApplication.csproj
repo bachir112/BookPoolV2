@@ -469,6 +469,7 @@
     <Content Include="Views\Account\MyProfile.cshtml" />
     <Content Include="Views\Privacy\Index.cshtml" />
     <Content Include="Views\Home\ProductNotAvailable.cshtml" />
+    <Content Include="Views\Shared\_NoBooksFound.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

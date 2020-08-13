@@ -1,0 +1,21 @@
+﻿
+<div class="col s12 m12 l12" style="text-align:center;">
+    <img src="@Url.Content("~/img/books_not_found.jpg")" />
+    <h4>
+        We didn't find a book that matches your search result.
+    </h4>
+    @{
+        if (Request.IsAuthenticated)
+        {
+            <h5>
+                Do you have university/shool books you wish to sell? Just <a href="@Url.Action("MyBooks","Home")">click here</a> and sell them.
+            </h5>
+        }
+        else
+        {
+            <h5>
+                Do you have university/shool books you wish to sell? Just <a style="cursor:pointer;" class="modal-trigger" data-target="sell-my-book-modal">click here</a> and sell them.
+            </h5>
+        }
+    }
+</div>

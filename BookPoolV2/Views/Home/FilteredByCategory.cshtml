@@ -66,6 +66,10 @@
                 </div>
             }
         }
+        if (books.Count() == 0)
+        {
+            @Html.Partial("_NoBooksFound")
+        }
     }
 
 </div>

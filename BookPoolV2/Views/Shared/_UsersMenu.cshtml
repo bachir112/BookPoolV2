@@ -1,77 +1,76 @@
 ﻿@using BookPoolV2.Models
 @using Microsoft.AspNet.Identity
 
-<ul id="side-menu" class="sidenav side-menu">
-    @{
-        if (Request.IsAuthenticated)
-        {
-            <li>
-                <div class="user-view">
-                    <a href="#name">
-                        <i style="font-size:25px;float:left;padding-right:5px;" class="material-icons sidenav-trigger" data-target="side-menu">account_circle</i>
-                        <span style="margin-top:0px;" class="black-text name">@User.Identity.Name</span>
+    <ul id="side-menu" class="sidenav side-menu">
+        @{
+            if (Request.IsAuthenticated)
+            {
+                <li>
+                    <div class="user-view">
+                        <a href="#name">
+                            <i style="font-size:25px;float:left;padding-right:5px;" class="material-icons sidenav-trigger" data-target="side-menu">account_circle</i>
+                            <span style="margin-top:0px;" class="black-text name">@User.Identity.Name</span>
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <a href="@Url.Action("MyWishes","Home")" class="waves-effect">
+                        Books to find
+                        <i class="material-icons float-right">arrow_right</i>
                     </a>
-                </div>
-            </li>
-            <li>
-                <a href="@Url.Action("MyWishes","Home")" class="waves-effect">
-                    Books to find
-                    <i class="material-icons float-right">arrow_right</i>
-                </a>
-            </li>
-            <li>
-                <a href="@Url.Action("MyBooks","Home")" class="waves-effect">
-                    My Books
-                    <i class="material-icons float-right">arrow_right</i>
-                </a>
-            </li>
-            <li>
-                <a href="@Url.Action("MyOrders","Home")" class="collapsible-header waves-effect">
-                    My Orders
-                    <i class="material-icons float-right">arrow_right</i>
-                </a>
-            </li>
-            <li>
-                <a href="@Url.Action("About","Home")" class="waves-effect">
-                    About
-                    <i class="material-icons float-right">arrow_right</i>
-                </a>
-            </li>
+                </li>
+                <li>
+                    <a href="@Url.Action("MyBooks","Home")" class="waves-effect">
+                        My Books
+                        <i class="material-icons float-right">arrow_right</i>
+                    </a>
+                </li>
+                <li>
+                    <a href="@Url.Action("MyOrders","Home")" class="collapsible-header waves-effect">
+                        My Orders
+                        <i class="material-icons float-right">arrow_right</i>
+                    </a>
+                </li>
+            }
+            else
+            {
+                <li>
+                    <div class="user-view">
+                        @Html.Partial("~/Views/Account/_ExternalLoginsListPartial.cshtml", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
+                    </div>
+                </li>
+            }
         }
-        else
-        {
-            <li>
-                <div class="user-view">
-                    @Html.Partial("~/Views/Account/_ExternalLoginsListPartial.cshtml", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
-                </div>
-            </li>
-        }
-    }
 
-    <li><div class="divider"></div></li>
-    <li>
-        <a href="@Url.Action("Contact","Home")" class="waves-effect">
-            <i class="material-icons">mail_outline</i>Contact Us
-        </a>
-    </li>
-    @{
-        if (Request.IsAuthenticated)
-        {
+        <li><div class="divider"></div></li>
         <li>
-            <a href="@Url.Action("MyProfile","Account")" class="waves-effect">
-                <i class="material-icons">account_circle</i>Account
+            <a href="@Url.Action("About","Home")" class="waves-effect">
+                <i class="material-icons">info_outline</i>About Us
             </a>
         </li>
-            <li>
-                <a href="javascript:document.getElementById('logoutForm').submit()">
-                    <i class="fa fa-sign-out" style="font-size:24px;"></i>Logout
-                    @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @style = "display:none;" }))
-                    {
-                        @Html.AntiForgeryToken()
-                    }
-                </a>
-            </li>
+        <li>
+            <a href="@Url.Action("Contact","Home")" class="waves-effect">
+                <i class="material-icons">mail_outline</i>Contact Us
+            </a>
+        </li>
+        @{
+            if (Request.IsAuthenticated)
+            {
+                <li>
+                    <a href="@Url.Action("MyProfile","Account")" class="waves-effect">
+                        <i class="material-icons">account_circle</i>Account
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:document.getElementById('logoutForm').submit()">
+                        <i class="fa fa-sign-out" style="font-size:24px;"></i>Logout
+                        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @style = "display:none;" }))
+                        {
+                            @Html.AntiForgeryToken()
+                        }
+                    </a>
+                </li>
+            }
         }
-    }
-</ul>
+    </ul>
 
