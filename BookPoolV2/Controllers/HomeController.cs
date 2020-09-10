@@ -62,6 +62,11 @@ namespace BookPoolV2.Controllers
                     httpRoute.Append("&");
                     httpRoute.AppendFormat("sortByPopularity={0}", sortByPopularity);
                 }
+                if (User.Identity.IsAuthenticated)
+                {
+                    httpRoute.Append("&");
+                    httpRoute.AppendFormat("UserID={0}", User.Identity.GetUserId());
+                }
 
                 var response = await client.GetAsync(httpRoute.ToString());
                 if (response.IsSuccessStatusCode)
@@ -265,6 +270,11 @@ namespace BookPoolV2.Controllers
                 httpRoute.AppendFormat("query={0}", query);
                 httpRoute.Append("&");
                 httpRoute.AppendFormat("BookID={0}", bookID);
+                if (User.Identity.IsAuthenticated)
+                {
+                    httpRoute.Append("&");
+                    httpRoute.AppendFormat("UserID={0}", User.Identity.GetUserId());
+                }
 
                 var response = await client.GetAsync(httpRoute.ToString());
                 if (response.IsSuccessStatusCode)

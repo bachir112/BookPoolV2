@@ -17,7 +17,8 @@ namespace BookPool.DataInterface.Controllers
     {
         [System.Web.Http.Route("api/Books/GetBooks")]
         [System.Web.Http.HttpGet]
-        public async Task<JsonResult<Object>> GetBooks(string query = null, 
+        public async Task<JsonResult<Object>> GetBooks(string query = null,
+            string UserID = null,
             string language = null, 
             Nullable<int> BookID = null,
             bool sortByPrice = false, 
@@ -371,6 +372,10 @@ namespace BookPool.DataInterface.Controllers
                     results = results.OrderByDescending(x => x.AverageRating).Select(x => x).ToList();
                 }
 
+                if (UserID != null)
+                {
+                    results = results.Where(x => x.OwnerUserID != UserID).Select(x => x).ToList();
+                }
             }
             catch (Exception ex)
             {

@@ -306,6 +306,7 @@
     <Content Include="img\logo.png" />
     <Content Include="img\books_not_found.jpg" />
     <Content Include="img\sell-book.png" />
+    <Content Include="bookpool_email.html" />
     <Content Include="sw.js" />
     <Content Include="Content\lib\bootstrap\dist\css\bootstrap-grid.css" />
     <Content Include="Content\lib\bootstrap\dist\css\bootstrap-grid.min.css" />

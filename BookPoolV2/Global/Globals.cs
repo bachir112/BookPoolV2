@@ -1,8 +1,10 @@
 ﻿using BookPool.DataObjects.EDM;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -71,5 +73,47 @@ namespace BookPoolV2.Global
 
             return result;
         }
+
+        static public bool sendEmail(string title, string message, string fullName, string sendTo)
+        {
+            bool result = false;
+
+            try
+            {
+                MailMessage mail = new MailMessage();
+                SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
+
+                mail.From = new MailAddress("bookpool.me@gmail.com");
+                mail.To.Add(sendTo);
+                mail.Subject = title;
+
+                string body = string.Empty;
+                using (StreamReader reader = new StreamReader(System.Web.Hosting.HostingEnvironment.MapPath("~/on_point_email.html")))
+                {
+                    body = reader.ReadToEnd();
+                }
+                body = body.Replace("{Name}", fullName);
+                body = body.Replace("{Title}", title);
+                body = body.Replace("{Message}", message);
+
+                mail.Body = body;
+
+                mail.IsBodyHtml = true;
+                SmtpServer.Port = 587;
+                SmtpServer.Credentials = new System.Net.NetworkCredential("bookpool.me@gmail.com", "AnAbach@123");
+                SmtpServer.EnableSsl = true;
+
+                SmtpServer.Send(mail);
+                result = true;
+            }
+            catch (Exception ex)
+            {
+                result = false;
+            }
+
+            return result;
+        }
+
+
     }
 }
