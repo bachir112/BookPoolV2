@@ -14,6 +14,7 @@ namespace Bookpool_Management.Controllers
 {
     public class HomeController : Controller
     {
+        [Authorize(Roles = "Administrator")]
         public async Task<ActionResult> Index()
         {
             using (var db = new BookPoolEntities())

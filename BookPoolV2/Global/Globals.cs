@@ -15,10 +15,10 @@ namespace BookPoolV2.Global
     {
         //dev
         //public static string baseURL = "https://localhost:44361/";
-        public static string baseURL = "http://localhost/BookPool.DataInterface/";
+        //public static string baseURL = "http://localhost/BookPool.DataInterface/";
 
         //prod
-        //public static string baseURL = "http://localhost:44361/";
+        public static string baseURL = "http://localhost:44361/";
 
         static public string FacebookGraphAPIBaseUrl = "https://graph.facebook.com/";
         public const string DefaultFacebookFields = "id,name,email,gender,birthday,location,friends,first_name,last_name";
@@ -88,7 +88,7 @@ namespace BookPoolV2.Global
                 mail.Subject = title;
 
                 string body = string.Empty;
-                using (StreamReader reader = new StreamReader(System.Web.Hosting.HostingEnvironment.MapPath("~/on_point_email.html")))
+                using (StreamReader reader = new StreamReader(System.Web.Hosting.HostingEnvironment.MapPath("~/bookpool_email.html")))
                 {
                     body = reader.ReadToEnd();
                 }
