@@ -22,6 +22,129 @@
     }
 }
 
+<style>
+    .push-to-sell * {
+        box-sizing: border-box;
+    }
+    .push-to-sell div {
+        display: block;
+        height: 100%;
+        animation: hue-rotate 10s linear infinite;
+    }
+
+    .button {
+      -webkit-font-smoothing: antialiased;
+      background-color: #222;
+      border: none;
+      color: #fff;
+      display: inline-block;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 14px;
+      font-weight: 100;
+      text-decoration: none;
+      user-select: none;
+      letter-spacing: 1px;
+      color: white;
+      padding: 20px 40px;
+      text-transform: uppercase;
+      transition: all 0.1s ease-out;
+    }
+    .button:hover {
+      background-color: #90feb5;
+      color: #fff;
+    }
+    .button:active {
+      transform: scale(0.95);
+    }
+    .button--bubble {
+      position: relative;
+      z-index: 2;
+      color: white;
+      background: none;
+    }
+    .button--bubble:hover {
+      background: none;
+    }
+    .button--bubble:hover + .button--bubble__effect-container .circle {
+      background: #44fd82;
+    }
+    .button--bubble:hover + .button--bubble__effect-container .button {
+      background: #44fd82;
+    }
+    .button--bubble:active + .button--bubble__effect-container {
+      transform: scale(0.95);
+    }
+    .button--bubble__container {
+      position: relative;
+      display: inline-block;
+    }
+    .button--bubble__container .effect-button {
+      position: absolute;
+      width: 50%;
+      height: 25%;
+      top: 50%;
+      left: 25%;
+      z-index: 1;
+      transform: translateY(-50%);
+      background: #222;
+      transition: background 0.1s ease-out;
+    }
+    .button--bubble__effect-container {
+      position: absolute;
+      display: block;
+      width: 200%;
+      height: 400%;
+      top: -150%;
+      left: -50%;
+      -webkit-filter: url("#goo");
+      filter: url("#goo");
+      transition: all 0.1s ease-out;
+      pointer-events: none;
+    }
+    .button--bubble__effect-container .circle {
+      position: absolute;
+      width: 25px;
+      height: 25px;
+      border-radius: 15px;
+      background: #222;
+      transition: background 0.1s ease-out;
+    }
+    .button--bubble__effect-container .circle.top-left {
+      top: 40%;
+      left: 27%;
+    }
+    .button--bubble__effect-container .circle.bottom-right {
+      bottom: 40%;
+      right: 27%;
+    }
+    .goo {
+      position: absolute;
+      visibility: hidden;
+      width: 1px;
+      height: 1px;
+    }
+
+    .button--bubble__container {
+      top: 50%;
+      margin-top: -25px;
+    }
+    @@keyframes hue-rotate {
+      from {
+        -webkit-filter: hue-rotate(0);
+        -moz-filter: hue-rotate(0);
+        -ms-filter: hue-rotate(0);
+        filter: hue-rotate(0);
+      }
+      to {
+        -webkit-filter: hue-rotate(360deg);
+        -moz-filter: hue-rotate(360deg);
+        -ms-filter: hue-rotate(360deg);
+        filter: hue-rotate(360deg);
+      }
+    }
+
+</style>
+
 
 @{
     if (ViewBag.Query == null)
@@ -50,34 +173,101 @@
     }
 }
 
-<div class="section filtercontainer" style="display:none;">
+<div class="section filtercontainer push-to-sell" style="display:flex;padding-top:40px;">
     @{
         if (Request.IsAuthenticated)
         {
-        <div id="founderMessage" class="row">
-            <div class="col s12 m3">
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" class="goo">
+                    <defs>
+                        <filter id="goo">
+                            <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+                            <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9" result="goo" />
+                            <feComposite in="SourceGraphic" in2="goo" />
+                        </filter>
+                    </defs>
+                </svg>
 
+                <span class="button--bubble__container">
+                    <a href="@Url.Action("MyBooks","Home")" class="button button--bubble">
+                        I want to sell a book
+                    </a>
+                    <span class="button--bubble__effect-container">
+                        <span class="circle top-left"></span>
+                        <span class="circle top-left"></span>
+                        <span class="circle top-left"></span>
+
+                        <span class="button effect-button"></span>
+
+                        <span class="circle bottom-right"></span>
+                        <span class="circle bottom-right"></span>
+                        <span class="circle bottom-right"></span>
+                    </span>
+                </span>
             </div>
-            <div class="col s12 m6">
-                <div class="card blue darken-1">
-                    <div class="card-content white-text">
-                        <span class="card-title">Message from the founder</span>
-                        <p>
-                            Bookpool was created in order to provide Lebanese readers and academics with quality books for lower prices.
-                            This allows you, the user to sell your books on this platform for free and allows you to buy books cheaper than local or international libraries.
-                            Please consider selling books you're not using anymore.
-                        </p>
-                    </div>
-                    <div class="card-action">
-                        <a id="hideMessage">I'm here to buy</a>
-                        <a style="color:white;font-weight:bold;float:right;" href="@Url.Action("MyBooks","Home")">Sell a book</a>
+        }
+        else
+        {
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" class="goo">
+                    <defs>
+                        <filter id="goo">
+                            <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+                            <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9" result="goo" />
+                            <feComposite in="SourceGraphic" in2="goo" />
+                        </filter>
+                    </defs>
+                </svg>
+
+                <span class="button--bubble__container">
+                    <a class="button button--bubble modal-trigger" data-target="sell-my-book-modal">
+                        I want to sell a book
+                    </a>
+                    <span class="button--bubble__effect-container">
+                        <span class="circle top-left"></span>
+                        <span class="circle top-left"></span>
+                        <span class="circle top-left"></span>
+
+                        <span class="button effect-button"></span>
+
+                        <span class="circle bottom-right"></span>
+                        <span class="circle bottom-right"></span>
+                        <span class="circle bottom-right"></span>
+                    </span>
+                </span>
+            </div>
+        }
+    }
+</div>
+
+@*<div class="section filtercontainer" style="display:none;">
+    @{
+        if (Request.IsAuthenticated)
+        {
+            <div id="founderMessage" class="row">
+                <div class="col s12 m3">
+
+                </div>
+                <div class="col s12 m6">
+                    <div class="card blue darken-1">
+                        <div class="card-content white-text">
+                            <span class="card-title">Message from the founder</span>
+                            <p>
+                                Bookpool was created in order to provide Lebanese readers and academics with quality books for lower prices.
+                                This allows you, the user to sell your books on this platform for free and allows you to buy books cheaper than local or international libraries.
+                                Please consider selling books you're not using anymore.
+                            </p>
+                        </div>
+                        <div class="card-action">
+                            <a id="hideMessage">I'm here to buy</a>
+                            <a style="color:white;font-weight:bold;float:right;" href="@Url.Action("MyBooks","Home")">Sell a book</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col s12 m3">
+                <div class="col s12 m3">
 
+                </div>
             </div>
-        </div>
             <div id="sellABookContainer" style="display:none;">
                 <a href="@Url.Action("MyBooks","Home")" class="waves-effect waves-green btn-flat green" style="min-width:100px; color:white;">
                     I want to sell a book
@@ -117,7 +307,7 @@
             </div>
         }
     }
-</div>
+</div>*@
 
 <div class="section filtercontainer" style="width:100%; margin:0px;">
 
@@ -282,4 +472,53 @@
         }
     }
 
+</script>
+
+<script>
+    $('.button--bubble').each(function () {
+        var $circlesTopLeft = $(this).parent().find('.circle.top-left');
+        var $circlesBottomRight = $(this).parent().find('.circle.bottom-right');
+
+        var tl = new TimelineLite();
+        var tl2 = new TimelineLite();
+
+        var btTl = new TimelineLite({ paused: true });
+
+        tl.to($circlesTopLeft, 1.2, { x: -25, y: -25, scaleY: 2, ease: SlowMo.ease.config(0.1, 0.7, false) });
+        tl.to($circlesTopLeft.eq(0), 0.1, { scale: 0.2, x: '+=6', y: '-=2' });
+        tl.to($circlesTopLeft.eq(1), 0.1, { scaleX: 1, scaleY: 0.8, x: '-=10', y: '-=7' }, '-=0.1');
+        tl.to($circlesTopLeft.eq(2), 0.1, { scale: 0.2, x: '-=15', y: '+=6' }, '-=0.1');
+        tl.to($circlesTopLeft.eq(0), 1, { scale: 0, x: '-=5', y: '-=15', opacity: 0 });
+        tl.to($circlesTopLeft.eq(1), 1, { scaleX: 0.4, scaleY: 0.4, x: '-=10', y: '-=10', opacity: 0 }, '-=1');
+        tl.to($circlesTopLeft.eq(2), 1, { scale: 0, x: '-=15', y: '+=5', opacity: 0 }, '-=1');
+
+        var tlBt1 = new TimelineLite();
+        var tlBt2 = new TimelineLite();
+
+        tlBt1.set($circlesTopLeft, { x: 0, y: 0, rotation: -45 });
+        tlBt1.add(tl);
+
+        tl2.set($circlesBottomRight, { x: 0, y: 0 });
+        tl2.to($circlesBottomRight, 1.1, { x: 30, y: 30, ease: SlowMo.ease.config(0.1, 0.7, false) });
+        tl2.to($circlesBottomRight.eq(0), 0.1, { scale: 0.2, x: '-=6', y: '+=3' });
+        tl2.to($circlesBottomRight.eq(1), 0.1, { scale: 0.8, x: '+=7', y: '+=3' }, '-=0.1');
+        tl2.to($circlesBottomRight.eq(2), 0.1, { scale: 0.2, x: '+=15', y: '-=6' }, '-=0.2');
+        tl2.to($circlesBottomRight.eq(0), 1, { scale: 0, x: '+=5', y: '+=15', opacity: 0 });
+        tl2.to($circlesBottomRight.eq(1), 1, { scale: 0.4, x: '+=7', y: '+=7', opacity: 0 }, '-=1');
+        tl2.to($circlesBottomRight.eq(2), 1, { scale: 0, x: '+=15', y: '-=5', opacity: 0 }, '-=1');
+
+        tlBt2.set($circlesBottomRight, { x: 0, y: 0, rotation: 45 });
+        tlBt2.add(tl2);
+
+        btTl.add(tlBt1);
+        btTl.to($(this).parent().find('.button.effect-button'), 0.8, { scaleY: 1.1 }, 0.1);
+        btTl.add(tlBt2, 0.2);
+        btTl.to($(this).parent().find('.button.effect-button'), 1.8, { scale: 1, ease: Elastic.easeOut.config(1.2, 0.4) }, 1.2);
+
+        btTl.timeScale(2.6);
+
+        $(this).on('mouseover', function () {
+            btTl.restart();
+        });
+    });
 </script>

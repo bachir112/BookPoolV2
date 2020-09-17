@@ -152,6 +152,13 @@
     <script src="@Url.Content("~/Content/js/dynamics.min.js")"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.17.0/plugins/CSSPlugin.min.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.17.0/easing/EasePack.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.17.0/TweenLite.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TimelineLite.min.js"></script>
+
+
 
 
 
@@ -164,6 +171,29 @@
 
         gtag('config', 'UA-127455074-1');
     </script>
+
+
+    <!-- Facebook Pixel Code -->
+    <script>
+        !function (f, b, e, v, n, t, s) {
+            if (f.fbq) return; n = f.fbq = function () {
+                n.callMethod ?
+                    n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+            };
+            if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
+            n.queue = []; t = b.createElement(e); t.async = !0;
+            t.src = v; s = b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t, s)
+        }(window, document, 'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '453598252206975');
+        fbq('track', 'PageView');
+    </script>
+    <noscript>
+        <img height="1" width="1" style="display:none"
+             src="https://www.facebook.com/tr?id=453598252206975&ev=PageView&noscript=1" />
+    </noscript>
+    <!-- End Facebook Pixel Code -->
 
 </head>
 
@@ -474,27 +504,27 @@
                 $('.slider').toggleClass('close');
             });
 
-            $(function () {
-                noUiSlider.create(document.getElementById('slider-range'), {
-                    start: [5000, 75000],
-                    step: 5000,
-                    connect: true,
-                    direction: 'rtl',
-                    orientation: 'vertical',
-                    tooltips: true,
-                    range: {
-                        'min': 5000,
-                        'max': 75000
-                    },
-                    pips: { // Show a scale with the slider
-                        mode: 'steps',
-                        stepped: true,
-                        density: 5000
-                    }
-                }).on('change', function (values) {
-                    console.log(values);
-                });
-            });
+            //$(function () {
+            //    noUiSlider.create(document.getElementById('slider-range'), {
+            //        start: [5000, 75000],
+            //        step: 5000,
+            //        connect: true,
+            //        direction: 'rtl',
+            //        orientation: 'vertical',
+            //        tooltips: true,
+            //        range: {
+            //            'min': 5000,
+            //            'max': 75000
+            //        },
+            //        pips: { // Show a scale with the slider
+            //            mode: 'steps',
+            //            stepped: true,
+            //            density: 5000
+            //        }
+            //    }).on('change', function (values) {
+            //        console.log(values);
+            //    });
+            //});
 
             $('.category').click(function () {
                 var filter = getFilters();
