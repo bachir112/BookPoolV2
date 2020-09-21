@@ -8,22 +8,27 @@ using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Configuration;
+
 
 namespace BookPoolV2.Global
 {
     public class Globals
     {
         //dev
-        //public static string baseURL = "http://localhost/BookPool.DataInterface/";
+        public static string baseURL = ConfigurationManager.AppSettings["APIUrl"];
 
         //prod
-        public static string baseURL = "http://localhost:44361/";
+        //public static string baseURL = "http://localhost:44361/";
 
         static public string FacebookGraphAPIBaseUrl = "https://graph.facebook.com/";
         public const string DefaultFacebookFields = "id,name,email,gender,birthday,location,friends,first_name,last_name";
 
         public static string BookSellingStatus_Available = "Available";
         public static string BookSellingStatus_NotAvailable = "NotAvailable";
+
+        public static string BookpoolEmailAddress = ConfigurationManager.AppSettings["BookpoolEmailAddress"];
+        public static string BookpoolEmailAddressPassword = ConfigurationManager.AppSettings["BookpoolEmailAddressPassword"];
 
         public static async Task<List<UsersAddress>> GetUserAddresses(string userID)
         {
@@ -82,7 +87,7 @@ namespace BookPoolV2.Global
                 MailMessage mail = new MailMessage();
                 SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
 
-                mail.From = new MailAddress("bookpool.me@gmail.com");
+                mail.From = new MailAddress(BookpoolEmailAddress);
                 mail.To.Add(sendTo);
                 mail.Subject = title;
 
@@ -99,7 +104,7 @@ namespace BookPoolV2.Global
 
                 mail.IsBodyHtml = true;
                 SmtpServer.Port = 587;
-                SmtpServer.Credentials = new System.Net.NetworkCredential("bookpool.me@gmail.com", "AnAbach@123");
+                SmtpServer.Credentials = new System.Net.NetworkCredential(BookpoolEmailAddress, BookpoolEmailAddressPassword);
                 SmtpServer.EnableSsl = true;
 
                 SmtpServer.Send(mail);

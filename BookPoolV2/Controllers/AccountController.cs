@@ -12,6 +12,7 @@ using BookPoolV2.Models;
 using BookPoolV2.Global;
 using BookPoolV2.Classes;
 using BookPool.DataObjects.EDM;
+using WhatsAppApi;
 
 namespace BookPoolV2.Controllers
 {
@@ -222,17 +223,28 @@ namespace BookPoolV2.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, PhoneNumber = model.PhoneNumber, FirstName = model.FirstName, LastName = model.LastName };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
+                    string emailTitle = "Welcome to Bookpool";
+                    string emailMessage = $"Welcome to Bookpool your new online bookstore in Lebanon. <br/>" +
+                        $"You can now sell your old books on Bookpool for free. <br/>" +
+                        $"You can also search and buy books posted by other readers. <br/>" +
+                        $"If you didn't find the book you're looking for don't worry we have you covered! Just click on the 'Find it for me' button and we'll manually search local forums and libraries and find your book. <br />" +
+                        $"Finally, don't forget to follow us on our social media pages to stay updated!";
+
+                    Global.Globals.sendEmail(emailTitle, emailMessage, user.UserName, user.Email);
+
+                    WhatsApp wa = new WhatsApp("", "", "Bookpool", false, false);
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -457,7 +469,7 @@ namespace BookPoolV2.Controllers
                 {
                     return View("ExternalLoginFailure");
                 }
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, PhoneNumber = model.PhoneNumber };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, PhoneNumber = model.PhoneNumber, FirstName = model.FirstName, LastName = model.LastName };
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
@@ -465,6 +477,16 @@ namespace BookPoolV2.Controllers
                     if (result.Succeeded)
                     {
                         await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
+                        string emailTitle = "Welcome to Bookpool";
+                        string emailMessage = $"Welcome to Bookpool your new online bookstore in Lebanon. <br/>" +
+                            $"You can now sell your old books on Bookpool for free. <br/>" +
+                            $"You can also search and buy books posted by other readers. <br/>" +
+                            $"If you didn't find the book you're looking for don't worry we have you covered! Just click on the 'Find it for me' button and we'll manually search local forums and libraries and find your book. <br />" +
+                            $"Finally, don't forget to follow us on our social media pages to stay updated!";
+
+                        Global.Globals.sendEmail(emailTitle, emailMessage, user.UserName, user.Email);
+
                         return RedirectToLocal(returnUrl);
                     }
                 }

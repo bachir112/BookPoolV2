@@ -25,6 +25,7 @@
         margin-inline-end: 0px;
         font-weight: bold;
     }
+
 </style>
 
 
@@ -43,6 +44,26 @@
     <h4 style="margin-bottom:20px;">Register a new account.</h4>
     <hr />
     @Html.ValidationSummary("", new { @class = "text-danger" })
+
+
+    @Html.LabelFor(m => m.FirstName, new { @class = "col-md-2 control-label" })
+    <div class="col-md-10">
+        @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
+    </div>
+
+    @Html.LabelFor(m => m.LastName, new { @class = "col-md-2 control-label" })
+    <div class="col-md-10">
+        @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
+    </div>
+
+    @Html.LabelFor(m => m.PhoneNumber, new { @class = "col-md-2 control-label" })
+    <div class="col-md-10">
+        @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control phone-number", @type = "number" })
+        @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
+    </div>
+
     <div class="form-group">
         @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">

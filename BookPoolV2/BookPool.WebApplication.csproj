@@ -113,6 +113,9 @@
       <Private>True</Private>
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="WhatsAppApi, Version=1.0.2.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Whatsapp.NET.1.2.2\lib\WhatsAppApi.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="EntityFramework">
@@ -174,6 +177,7 @@
     <Compile Include="Controllers\AcademicController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CheckoutController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MagazinesController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -304,6 +308,9 @@
     <Content Include="Content\js\site.js" />
     <Content Include="img\bookpool-logo-transparent.png" />
     <Content Include="img\bookpool-logo.png" />
+    <Content Include="img\mail-logo.PNG" />
+    <Content Include="img\facebook-logo.png" />
+    <Content Include="img\instagram-logo.png" />
     <Content Include="img\logo.png" />
     <Content Include="img\books_not_found.jpg" />
     <Content Include="img\sell-book.png" />
@@ -472,6 +479,7 @@
     <Content Include="Views\Privacy\Index.cshtml" />
     <Content Include="Views\Home\ProductNotAvailable.cshtml" />
     <Content Include="Views\Shared\_NoBooksFound.cshtml" />
+    <Content Include="Views\Error\NotFound.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
