@@ -17,5 +17,6 @@ namespace BookPool.DataObjects.EDM
         public int ID { get; set; }
         public string GoogleID { get; set; }
         public string AspNetUserID { get; set; }
+        public Nullable<System.DateTime> RequestedOn { get; set; }
     }
 }

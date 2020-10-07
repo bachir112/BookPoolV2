@@ -117,7 +117,5 @@ namespace BookPoolV2.Global
 
             return result;
         }
-
-
     }
 }

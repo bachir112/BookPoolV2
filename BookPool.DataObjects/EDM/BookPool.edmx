@@ -67,6 +67,8 @@
           <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
           <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
           <Property Name="LastName" Type="nvarchar" MaxLength="50" />
+          <Property Name="RegisteredOn" Type="datetime" />
+          <Property Name="LastLogIn" Type="datetime" />
         </EntityType>
         <EntityType Name="AvailableBooks">
           <Key>
@@ -165,6 +167,7 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="GoogleID" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="AspNetUserID" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="RequestedOn" Type="datetime" />
         </EntityType>
         <EntityType Name="UserCart">
           <Key>
@@ -368,6 +371,8 @@
           <Property Name="UserName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RegisteredOn" Type="DateTime" Precision="3" />
+          <Property Name="LastLogIn" Type="DateTime" Precision="3" />
           <NavigationProperty Name="AspNetUserClaims" Relationship="BookPoolModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserClaim" />
           <NavigationProperty Name="AspNetUserLogins" Relationship="BookPoolModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserLogin" />
           <NavigationProperty Name="AspNetRoles" Relationship="BookPoolModel.AspNetUserRoles" FromRole="AspNetUser" ToRole="AspNetRole" />
@@ -469,6 +474,7 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="GoogleID" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="AspNetUserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="RequestedOn" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="UserCart">
           <Key>
@@ -566,6 +572,8 @@
           <EntitySetMapping Name="AspNetUsers">
             <EntityTypeMapping TypeName="BookPoolModel.AspNetUser">
               <MappingFragment StoreEntitySet="AspNetUsers">
+                <ScalarProperty Name="LastLogIn" ColumnName="LastLogIn" />
+                <ScalarProperty Name="RegisteredOn" ColumnName="RegisteredOn" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
@@ -685,6 +693,7 @@
           <EntitySetMapping Name="SearchForBooks">
             <EntityTypeMapping TypeName="BookPoolModel.SearchForBook">
               <MappingFragment StoreEntitySet="SearchForBook">
+                <ScalarProperty Name="RequestedOn" ColumnName="RequestedOn" />
                 <ScalarProperty Name="AspNetUserID" ColumnName="AspNetUserID" />
                 <ScalarProperty Name="GoogleID" ColumnName="GoogleID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />

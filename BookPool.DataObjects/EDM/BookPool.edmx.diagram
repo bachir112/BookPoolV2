@@ -4,12 +4,12 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="4f3bd7871f7a414eaef4bbe7d9f1e0af" Name="Diagram1">
+      <Diagram DiagramId="4f3bd7871f7a414eaef4bbe7d9f1e0af" Name="Diagram1" ZoomLevel="86">
         <EntityTypeShape EntityType="BookPoolModel.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="6.75" />
-        <EntityTypeShape EntityType="BookPoolModel.AspNetRole" Width="1.5" PointX="0.75" PointY="2.5" />
+        <EntityTypeShape EntityType="BookPoolModel.AspNetRole" Width="1.5" PointX="0.75" PointY="2.625" />
         <EntityTypeShape EntityType="BookPoolModel.AspNetUserClaim" Width="1.5" PointX="5.25" PointY="3.625" />
-        <EntityTypeShape EntityType="BookPoolModel.AspNetUserLogin" Width="1.5" PointX="5.25" PointY="1" />
-        <EntityTypeShape EntityType="BookPoolModel.AspNetUser" Width="1.5" PointX="3" PointY="1.125" />
+        <EntityTypeShape EntityType="BookPoolModel.AspNetUserLogin" Width="1.5" PointX="5.25" PointY="1.125" />
+        <EntityTypeShape EntityType="BookPoolModel.AspNetUser" Width="1.5" PointX="3" PointY="1" />
         <EntityTypeShape EntityType="BookPoolModel.AvailableBook" Width="1.5" PointX="2.75" PointY="6.75" />
         <EntityTypeShape EntityType="BookPoolModel.BookPoolCharge" Width="1.5" PointX="4.75" PointY="6.75" />
         <EntityTypeShape EntityType="BookPoolModel.Category" Width="1.5" PointX="6.75" PointY="6.75" />

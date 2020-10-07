@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -101,7 +102,7 @@ namespace BookPool.DataInterface.Controllers
                                         AverageRating = googleBooks.volumeInfo.averageRating,
                                         Categories = googleBooks.volumeInfo.categories,
                                         Description = googleBooks.volumeInfo.description,
-                                        ImageURL = googleBooks.volumeInfo.imageLinks.thumbnail.Replace("http:","https:"),
+                                        ImageURL = googleBooks.volumeInfo.imageLinks?.thumbnail?.Replace("http:","https:"),
                                         PageCount = googleBooks.volumeInfo.pageCount,
                                         PreviewLink = googleBooks.volumeInfo.previewLink,
                                         PrintType = googleBooks.volumeInfo.printType,
@@ -156,7 +157,7 @@ namespace BookPool.DataInterface.Controllers
                                                     AverageRating = googleBooks.volumeInfo.averageRating,
                                                     Categories = googleBooks.volumeInfo.categories,
                                                     Description = googleBooks.volumeInfo.description,
-                                                    ImageURL = googleBooks.volumeInfo.imageLinks.thumbnail.Replace("http:", "https:"),
+                                                    ImageURL = googleBooks.volumeInfo.imageLinks?.thumbnail?.Replace("http:", "https:"),
                                                     PageCount = googleBooks.volumeInfo.pageCount,
                                                     PreviewLink = googleBooks.volumeInfo.previewLink,
                                                     PrintType = googleBooks.volumeInfo.printType,
@@ -296,7 +297,7 @@ namespace BookPool.DataInterface.Controllers
                                         AverageRating = googleBooks.volumeInfo.averageRating,
                                         Categories = googleBooks.volumeInfo.categories,
                                         Description = googleBooks.volumeInfo.description,
-                                        ImageURL = googleBooks.volumeInfo.imageLinks.thumbnail.Replace("http:", "https:"),
+                                        ImageURL = googleBooks.volumeInfo.imageLinks?.thumbnail?.Replace("http:", "https:"),
                                         PageCount = googleBooks.volumeInfo.pageCount,
                                         PreviewLink = googleBooks.volumeInfo.previewLink,
                                         PrintType = googleBooks.volumeInfo.printType,
@@ -437,7 +438,7 @@ namespace BookPool.DataInterface.Controllers
                                 ID = availableBooks.ID,
                                 GoogleID = availableBooks.GoogleID,
                                 BookName = availableBooks.BookName,
-                                ImageURL = googleBooks.volumeInfo.imageLinks.thumbnail.Replace("http:", "https:")
+                                ImageURL = googleBooks.volumeInfo.imageLinks?.thumbnail?.Replace("http:", "https:")
                             }).DistinctBy(x => x.GoogleID).ToList();
             }
 
@@ -692,7 +693,7 @@ namespace BookPool.DataInterface.Controllers
                                     AverageRating = googleBooks.volumeInfo.averageRating,
                                     Categories = googleBooks.volumeInfo.categories,
                                     Description = googleBooks.volumeInfo.description,
-                                    ImageURL = googleBooks.volumeInfo.imageLinks.thumbnail.Replace("http:", "https:"),
+                                    ImageURL = googleBooks.volumeInfo.imageLinks?.thumbnail?.Replace("http:", "https:"),
                                     PageCount = googleBooks.volumeInfo.pageCount,
                                     PreviewLink = googleBooks.volumeInfo.previewLink,
                                     PrintType = googleBooks.volumeInfo.printType,
@@ -869,7 +870,7 @@ namespace BookPool.DataInterface.Controllers
                                     AverageRating = googleBooks.volumeInfo.averageRating,
                                     Categories = googleBooks.volumeInfo.categories,
                                     Description = googleBooks.volumeInfo.description,
-                                    ImageURL = googleBooks.volumeInfo.imageLinks.thumbnail.Replace("http:", "https:"),
+                                    ImageURL = googleBooks.volumeInfo.imageLinks?.thumbnail?.Replace("http:", "https:"),
                                     PageCount = googleBooks.volumeInfo.pageCount,
                                     PreviewLink = googleBooks.volumeInfo.previewLink,
                                     PrintType = googleBooks.volumeInfo.printType,
@@ -1057,7 +1058,7 @@ namespace BookPool.DataInterface.Controllers
                                     AverageRating = googleBooks.volumeInfo.averageRating,
                                     Categories = googleBooks.volumeInfo.categories,
                                     Description = googleBooks.volumeInfo.description,
-                                    ImageURL = googleBooks.volumeInfo.imageLinks.thumbnail.Replace("http:", "https:"),
+                                    ImageURL = googleBooks.volumeInfo.imageLinks?.thumbnail?.Replace("http:", "https:"),
                                     PageCount = googleBooks.volumeInfo.pageCount,
                                     PreviewLink = googleBooks.volumeInfo.previewLink,
                                     PrintType = googleBooks.volumeInfo.printType,
@@ -1212,7 +1213,7 @@ namespace BookPool.DataInterface.Controllers
 
         [System.Web.Http.Route("api/Books/SearchForThisBook")]
         [System.Web.Http.HttpGet]
-        public JsonResult<Object> SearchForThisBook(string UserID, string GoogleID)
+        public async Task<JsonResult<Object>> SearchForThisBook(string UserID, string GoogleID)
         {
             bool result = false;
 
@@ -1225,6 +1226,34 @@ namespace BookPool.DataInterface.Controllers
                     searchForBook.GoogleID = GoogleID;
                     db.SearchForBooks.Add(searchForBook);
                     db.SaveChanges();
+
+                    AspNetUser clientUser = db.AspNetUsers.First(x => x.Id == UserID);
+                    GoogleBook googleSearchResult = new GoogleBook();
+                    List<GoogleBook> googleSearchBooksResult = new List<GoogleBook>();
+                    using (var client = new HttpClient())
+                    {
+                        client.BaseAddress = new Uri(BookPool.DataObjects.Global.Globals.googleBaseAPI_SearchByID);
+                        StringBuilder httpRoute = new StringBuilder();
+                        httpRoute.Append(GoogleID);
+
+                        var response = await client.GetAsync(httpRoute.ToString());
+                        if (response.IsSuccessStatusCode)
+                        {
+                            googleSearchResult = await response.Content.ReadAsAsync<GoogleBook>();
+                            googleSearchBooksResult.Add(googleSearchResult);
+                        }
+                    }
+
+                    string emailTitle = $"Find Book: {googleSearchBooksResult.FirstOrDefault()?.volumeInfo?.title}";
+                    string emailBody = $"Name: {clientUser.FirstName} <br/>" +
+                        $"Phone Number: {clientUser.PhoneNumber} <br />" +
+                        $"Email Address: {clientUser.Email} <br />" +
+                        $"Book Name: {googleSearchBooksResult.FirstOrDefault()?.volumeInfo?.title} <br />" +
+                        $"Book Publisher: {googleSearchBooksResult.FirstOrDefault()?.volumeInfo?.publisher} <br />" +
+                        $"Book Image: <img src='{googleSearchBooksResult.FirstOrDefault()?.volumeInfo?.imageLinks?.thumbnail}' /> <br />" +
+                        $"Requested On: {DateTime.Now}";
+
+                    Global.Globals.sendEmail(emailTitle, emailBody, "Bachir and Sabine", "bookpool.me@gmail.com");
                 }
 
                 result = true;
@@ -1284,7 +1313,7 @@ namespace BookPool.DataInterface.Controllers
                                    AverageRating = googleBooks.volumeInfo.averageRating,
                                    Categories = googleBooks.volumeInfo.categories,
                                    Description = googleBooks.volumeInfo.description,
-                                   ImageURL = googleBooks.volumeInfo.imageLinks.thumbnail.Replace("http:", "https:"),
+                                   ImageURL = googleBooks.volumeInfo.imageLinks?.thumbnail?.Replace("http:", "https:"),
                                    PageCount = googleBooks.volumeInfo.pageCount,
                                    PreviewLink = googleBooks.volumeInfo.previewLink,
                                    PrintType = googleBooks.volumeInfo.printType,
@@ -1460,7 +1489,7 @@ namespace BookPool.DataInterface.Controllers
                                     AverageRating = googleBooks.volumeInfo.averageRating,
                                     Categories = googleBooks.volumeInfo.categories,
                                     Description = googleBooks.volumeInfo.description,
-                                    ImageURL = googleBooks.volumeInfo.imageLinks.thumbnail.Replace("http:", "https:"),
+                                    ImageURL = googleBooks.volumeInfo.imageLinks?.thumbnail?.Replace("http:", "https:"),
                                     PageCount = googleBooks.volumeInfo.pageCount,
                                     PreviewLink = googleBooks.volumeInfo.previewLink,
                                     PrintType = googleBooks.volumeInfo.printType,
