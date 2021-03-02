@@ -2,6 +2,12 @@
 @{
     ViewBag.Title = "MyOrders";
     Layout = "~/Views/Shared/_Layout_Out.cshtml";
+
+    string country = string.Empty;
+    if (Request.Cookies["Country"] != null)
+    {
+        country = Request.Cookies["Country"].Value;
+    }
 }
 
 <div id="mainSearchBar" style="background: white; height: 55px; display: none;">
@@ -38,30 +44,62 @@
 
 <div class="row container">
     <div class="col s12 m12 l12">
-        <p>
-            <i style="float: left;padding-right: 10px; line-height:0.8; color:var(--primaryRed); font-size:30px;" class="material-icons">location_searching</i>
-            We help Lebanese citizens and expacts living in Lebanon buy and sell books at the best prices.
-        </p>
-        <hr />
-        <p>
-            <i style="float: left;padding-right: 10px; line-height:0.8; color:var(--primaryRed); font-size:30px;" class="material-icons">motorcycle</i>
-            We buy the books you wish to sell and deliver it to other readers.
-        </p>
-        <hr />
-        <p>
-            <i style="float: left;padding-right: 10px; line-height:0.8; color:var(--primaryRed); font-size:30px;" class="material-icons">compare_arrows</i>
-            Damaged books are returned and clients are refunded.
-        </p>
-        <hr />
-        <p>
-            <i style="float: left;padding-right: 10px; line-height:0.8; color:var(--primaryRed); font-size:20px; font-style:normal;font-weight:bold;">L.L.</i>
-            All the prices available on Bookpool are in Lebanese Lira.
-        </p>
-        <hr />
-        <p>
-            <img style="width:35px; float: left;padding-right: 10px;" src="@Url.Content("~/Content/img/flags/Lebanese.png")">
-            Most importantly, we help you read more for less.
-        </p>
+        @{
+            if (country == "AM" || country == System.Configuration.ConfigurationManager.AppSettings["APIUrl_TestCountry"])
+            {
+                <p>
+                    <i style="float: left;padding-right: 10px; line-height:0.8; color:var(--primaryRed); font-size:30px;" class="material-icons">location_searching</i>
+                    We help Armenian citizens and expacts living in Armenia buy and sell books at the best prices.
+                </p>
+                <hr />
+                <p>
+                    <i style="float: left;padding-right: 10px; line-height:0.8; color:var(--primaryRed); font-size:30px;" class="material-icons">motorcycle</i>
+                    We buy the books you wish to sell and deliver it to other readers.
+                </p>
+                <hr />
+                <p>
+                    <i style="float: left;padding-right: 10px; line-height:0.8; color:var(--primaryRed); font-size:30px;" class="material-icons">compare_arrows</i>
+                    Damaged books are returned and clients are refunded.
+                </p>
+                <hr />
+                <p>
+                    <i style="float: left;padding-right: 10px; line-height:0.8; color:var(--primaryRed); font-size:20px; font-style:normal;font-weight:bold;">֏</i>
+                    All the prices available on Bookpool are in Armenian dram.
+                </p>
+                <hr />
+                <p>
+                    <img style="width:35px; float: left;padding-right: 10px;" src="@Url.Content("~/Content/img/flags/Armenian.png")">
+                    Most importantly, we help you read more for less.
+                </p>
+            }
+            else
+            {
+                <p>
+                    <i style="float: left;padding-right: 10px; line-height:0.8; color:var(--primaryRed); font-size:30px;" class="material-icons">location_searching</i>
+                    We help Lebanese citizens and expacts living in Lebanon buy and sell books at the best prices.
+                </p>
+                <hr />
+                <p>
+                    <i style="float: left;padding-right: 10px; line-height:0.8; color:var(--primaryRed); font-size:30px;" class="material-icons">motorcycle</i>
+                    We buy the books you wish to sell and deliver it to other readers.
+                </p>
+                <hr />
+                <p>
+                    <i style="float: left;padding-right: 10px; line-height:0.8; color:var(--primaryRed); font-size:30px;" class="material-icons">compare_arrows</i>
+                    Damaged books are returned and clients are refunded.
+                </p>
+                <hr />
+                <p>
+                    <i style="float: left;padding-right: 10px; line-height:0.8; color:var(--primaryRed); font-size:20px; font-style:normal;font-weight:bold;">L.L.</i>
+                    All the prices available on Bookpool are in Lebanese Lira.
+                </p>
+                <hr />
+                <p>
+                    <img style="width:35px; float: left;padding-right: 10px;" src="@Url.Content("~/Content/img/flags/Lebanese.png")">
+                    Most importantly, we help you read more for less.
+                </p>
+            }
+        }
     </div>
 </div>
 

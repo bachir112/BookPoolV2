@@ -34,42 +34,33 @@ namespace BookPoolV2.Global
         public static string BookpoolEmailAddress = ConfigurationManager.AppSettings["BookpoolEmailAddress"];
         public static string BookpoolEmailAddressPassword = ConfigurationManager.AppSettings["BookpoolEmailAddressPassword"];
 
+
         public static string GetCountryAPI()
         {
-            string apiURL = ConfigurationManager.AppSettings["APIUrl"];
-
             string ip = System.Web.HttpContext.Current.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
             if (string.IsNullOrEmpty(ip))
             {
                 ip = System.Web.HttpContext.Current.Request.ServerVariables["REMOTE_ADDR"];
             }
 
+            IpInfo ipInfo = new IpInfo();
+            string info = new WebClient().DownloadString("http://ipinfo.io/" + ip);
+            ipInfo = JsonConvert.DeserializeObject<IpInfo>(info);
+            ipInfo.Country = ipInfo.Country;
+
+            string apiURL = ConfigurationManager.AppSettings["APIUrl"];
+
             string apiUrl_TestCountry = ConfigurationManager.AppSettings["APIUrl_TestCountry"];
-            string originatingFromCountry = GetUserCountryByIp(ip);
-            if(originatingFromCountry == "Armenia" || apiUrl_TestCountry.Contains(originatingFromCountry))
+            string originatingFromCountry = ipInfo.Country;
+            if (originatingFromCountry == "AM" || originatingFromCountry == apiUrl_TestCountry)
             {
                 apiURL = ConfigurationManager.AppSettings["APIUrl_Armenia"];
             }
 
+            HttpContext.Current.Request.Cookies["IPAddress"].Value = ip;
+            HttpContext.Current.Request.Cookies["Country"].Value = ipInfo.Country;
+
             return apiURL;
-        }
-
-        public static string GetUserCountryByIp(string ip)
-        {
-            IpInfo ipInfo = new IpInfo();
-            try
-            {
-                string info = new WebClient().DownloadString("http://ipinfo.io/" + ip);
-                ipInfo = JsonConvert.DeserializeObject<IpInfo>(info);
-                RegionInfo myRI1 = new RegionInfo(ipInfo.Country);
-                ipInfo.Country = myRI1.EnglishName;
-            }
-            catch (Exception)
-            {
-                ipInfo.Country = string.Empty;
-            }
-
-            return ipInfo.Country;
         }
 
         public static async Task<List<UsersAddress>> GetUserAddresses(string userID)

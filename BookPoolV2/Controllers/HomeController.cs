@@ -1,9 +1,12 @@
 ﻿using BookPool.DataObjects.DTO;
 using BookPool.DataObjects.EDM;
 using Microsoft.AspNet.Identity;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,6 +23,22 @@ namespace BookPoolV2.Controllers
             bool AvailableOnly = false,
             bool sortByPopularity = false)
         {
+            //Start For Testing
+            string ip = System.Web.HttpContext.Current.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
+            if (string.IsNullOrEmpty(ip))
+            {
+                ip = System.Web.HttpContext.Current.Request.ServerVariables["REMOTE_ADDR"];
+            }
+
+            IpInfo ipInfo = new IpInfo();
+            string info = new WebClient().DownloadString("http://ipinfo.io/" + ip);
+            ipInfo = JsonConvert.DeserializeObject<IpInfo>(info);
+            ipInfo.Country = ipInfo.Country;
+
+            Response.Cookies["IPAddress"].Value = ip;
+            Response.Cookies["Country"].Value = ipInfo.Country;
+            //END For Testing
+
             ViewBag.Query = query;
             ViewBag.UserAddresses = await Global.Globals.GetUserAddresses(User.Identity.GetUserId());
             ViewBag.UserCartCookie = await Global.Globals.GetCart(User.Identity.GetUserId());

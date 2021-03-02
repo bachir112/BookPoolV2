@@ -308,6 +308,7 @@
     <Content Include="Content\js\site.js" />
     <Content Include="img\bookpool-logo-transparent.png" />
     <Content Include="img\bookpool-logo.png" />
+    <Content Include="img\flags\Armenian.png" />
     <Content Include="img\mail-logo.PNG" />
     <Content Include="img\facebook-logo.png" />
     <Content Include="img\instagram-logo.png" />
